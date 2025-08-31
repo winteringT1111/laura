@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>로그인 | Wintering Theory</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://kit.fontawesome.com/7076248453.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/effect/snow_reverse.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/registration/login.css' %}">
+    </head>
+    <body>
+        <div class="background"></div> <!-- 흐림 효과를 위한 배경 -->
+
+        {% include "effects/snow.html" %}
+
+        <div class="loginarea">
+            <div class="logoarea">
+                
+                <img class="logo" src="{% static 'img/로고2.png' %}"></img>
+            </div>
+
+
+            <div class="loginbox">
+        
+                <form method="post" action="{% url 'users:users_login' %}">
+                    {% csrf_token %}
+
+                    <div class="inputarea">
+                        <div class="inputbox">
+                            <div>
+                                <input placeholder="아이디" type="text" name="username" id="username">
+                              </div>
+                              <div>
+                                <input placeholder="비밀번호" type="text" name="password" id="password">
+                              </div>
+                        </div>
+
+                        <input class="loginbtn" type="image" src="{% static 'img/로그인버튼.png' %}">
+                    </div>
+                </form>
+
+                <a href="/signup"><img class="signup" src="{% static 'img/회원가입버튼.png' %}"></img></a>
+            
+            </div>
+            
+        </div>
+        
+    </body>
+</html>

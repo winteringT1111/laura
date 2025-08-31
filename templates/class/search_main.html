@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/class/search_main.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content_wrap">
+    <a href="/search/create"><button class="createbtn">조사</button></a>
+    <div class="content_box">
+            {% for post in postlist %}
+            <div class="postbox">
+                <div class="postbox_content">
+                    <h2>{{post.title}}</h2>
+                    <div class="post_profile">
+                        <img src="{% static 'img/charac/07/03/' %}{{ post.user.username }}07-1.png" alt="User Profile Image">
+                        <div class="user_info">
+                            <div>{{post.user.username}}</div>
+                            <p>{{post.date}}</p>
+                        </div>
+                    </div>
+                <hr/>
+                    <div class="post_content">
+                        <div class="post_word">{{post.content}}</div>
+                        {% if post.image %}
+                        <img src = "{{ post.image.url }}" alt="" width="840">
+                        {% endif %}
+                    </div>    
+                </div>
+                <div class="postbox_result">
+                    <b> SYSTEM:</b></br>{{post.comment.content}} </br></br>
+                    {% if post.comment.category == '갈레온' %}
+                     [ 갈레온 ] 을 획득했습니다.
+                    {% endif %}
+                    {% if post.comment.itemName %}
+                     [ {{post.comment.itemName}} ] 을/를 획득했습니다.
+                    {% endif %}
+                </div>          
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<div class="">
+ 
+</div>
+
+
+{% endblock %}

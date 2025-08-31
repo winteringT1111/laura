@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>계정생성 | Wintering Theory</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/7076248453.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/effect/snow.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/registration/signup.css' %}">
+    </head>
+    <body>
+        <div class="background"></div> <!-- 흐림 효과를 위한 배경 -->
+
+        {% include "effects/snow.html" %}
+
+        <div class="loginarea">
+            <div class="logoarea">
+                
+                <img class="logo" src="{% static 'img/로고2.png' %}"></img>
+            </div>
+
+
+            <div class="signupbox">
+
+                <div class="content_wrap">
+                    <form method="post" action="{% url 'users:users_signup' %}">
+                        {% csrf_token %}
+    
+                        <div class="inputarea">
+                            <div class="inputbox">
+                                <div class="input_section">
+                                    <input placeholder="아이디" type="text" name="username" id="username">
+                                </div>
+                                <div class="input_section">
+                                    <input placeholder="비밀번호" type="text" name="password1" id="password1">
+                                </div>
+                                <div class="input_section">
+                                    <input placeholder="비밀번호 확인" type="text" name="password2" id="password2">
+                                </div>
+                                <div class="input_section">
+                                    <input placeholder="커뮤니티 코드" type="text" name="commucode" id="commucode">
+                                </div>
+                            </div>
+                            <button class="loginbtn" type="submit">Sign Up</button>
+                        </div>
+                    </form>
+                    <a href="/" class="tomain">메인화면으로</a>
+                </div>
+        
+               
+            
+            </div>  
+        </div>
+    </body>
+</html>

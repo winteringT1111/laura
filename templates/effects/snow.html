@@ -1,0 +1,22 @@
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const numberOfSnowflakes = 100;
+        const body = document.body;
+
+        let isPlaying = false; // 음악 재생 상태를 추적
+
+        for (let i = 0; i < numberOfSnowflakes; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            
+            // 눈송이의 초기 위치와 애니메이션 속성 설정
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            snowflake.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            snowflake.style.animationDelay = `${Math.random() * 20}s`;
+            snowflake.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+            snowflake.style.opacity = Math.random();
+
+            body.appendChild(snowflake);
+        }
+    });
+</script>

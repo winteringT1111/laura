@@ -1,0 +1,151 @@
+{% load static %}
+
+<div class="user" id="user-box">
+    <div class="profile">
+        <div class="profile_image">
+            <img src={% static "img/base_profile.png" %}>
+        </div>
+        <div class="profile_name">
+            Guest
+        </div>
+    </div>
+    <div class="profile_content">
+        <div class="goto_twitter">
+            <a href="https://x.com/WinteringT" target="_blank">
+                <label>TWITTER</label>
+                <i class="fa-brands fa-twitter"></i>
+            </a>
+        </div>
+        <div class="audio">
+            <audio id="background-music" loop>
+                <source src="{% static 'bgm2.mp3' %}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="audio-controls">
+                <button id="play-pause-button">
+                    <i id="status" class="fa-solid fa-play"></i>
+                </button>
+                <button id="to-start-button">
+                    <i class="fa-solid fa-square"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="arrow" id="arrow">
+        <i class="fa-solid fa-chevron-left"></i>
+    </div>
+</div>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const audio = document.getElementById('background-music');
+        const playPauseButton = document.getElementById('play-pause-button');
+        const status = document.getElementById('status');
+        const toStart = document.getElementById('to-start-button');
+    
+        let isPlaying = false;
+    
+        // 페이지 간 재생 상태 유지
+        const loadAudioState = () => {
+            const savedTime = localStorage.getItem('audio-currentTime');
+            const savedIsPlaying = localStorage.getItem('audio-isPlaying');
+            if (savedTime) {
+                audio.currentTime = parseFloat(savedTime);
+            }
+            if (savedIsPlaying === 'true') {
+                playAudio();  // 자동 재생
+            }
+        };
+    
+        const saveAudioState = () => {
+            localStorage.setItem('audio-currentTime', audio.currentTime);
+            localStorage.setItem('audio-isPlaying', isPlaying);
+        };
+    
+        // 음악 재생 함수
+        const playAudio = () => {
+            audio.play().then(() => {
+                isPlaying = true;
+                status.classList = 'fa-solid fa-pause';
+            }).catch(error => {
+                console.log('자동 재생이 실패했습니다.', error);
+            });
+        };
+    
+        // 재생/일시 정지 버튼
+        playPauseButton.addEventListener('click', () => {
+            if (audio.paused) {
+                playAudio();
+            } else {
+                audio.pause();
+                isPlaying = false;
+                status.classList = 'fa-solid fa-play';
+            }
+            saveAudioState();
+        });
+    
+        // 처음부터 재생 버튼
+        toStart.addEventListener('click', () => {
+            audio.currentTime = 0;
+            if (!isPlaying) {
+                playAudio();
+            }
+            saveAudioState();
+        });
+    
+        // 음악 시간 저장
+        audio.addEventListener('timeupdate', () => {
+            saveAudioState();
+        });
+    
+        // 페이지 로드 시 저장된 상태 불러오기
+        loadAudioState();
+
+        // 페이지가 로드될 때 음악을 재생합니다.
+    window.onload = () => {
+        audio.currentTime = 0; // 항상 처음부터 시작
+        playAudio();
+    };
+    });
+    
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const userBox = document.getElementById('user-box');
+        const arrow = document.getElementById('arrow');
+        const arrowIcon = arrow.querySelector('i');
+    
+        // 처음에는 박스를 화면 밖에 숨긴 상태로 시작
+        userBox.style.left = '-250px';
+        arrowIcon.classList.remove('fa-chevron-left');
+        arrowIcon.classList.add('fa-chevron-right');
+    
+        // 페이지 로드 시 localStorage에서 상태 불러오기
+        const isVisible = localStorage.getItem('isVisible');
+        if (isVisible === 'true') {
+            userBox.style.left = '-5px';  // 박스를 화면에 보이게 설정
+            arrowIcon.classList.remove('fa-chevron-right');
+            arrowIcon.classList.add('fa-chevron-left');
+        }
+    
+        // 화살표 클릭 이벤트
+        arrow.addEventListener('click', () => {
+            if (userBox.style.left == '-250px') {
+                // 박스가 숨겨져 있으면 보여주기
+                userBox.style.left = '-5px';
+                arrowIcon.classList.remove('fa-chevron-right');
+                arrowIcon.classList.add('fa-chevron-left');
+                localStorage.setItem('isVisible', 'true');  // 보이는 상태 저장
+            } else {
+                // 박스가 보이면 숨기기
+                userBox.style.left = '-250px';
+                arrowIcon.classList.remove('fa-chevron-left');
+                arrowIcon.classList.add('fa-chevron-right');
+                localStorage.setItem('isVisible', 'false');  // 숨김 상태 저장
+            }
+        });
+    });
+     
+    
+</script>

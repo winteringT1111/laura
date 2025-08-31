@@ -1,0 +1,187 @@
+{% load static %}
+
+<div class="user" id="user-box">
+    <div class="profile">
+        <div class="profile_image">
+            <img src="{% static 'img/charac/07/03/' %}{{ user.username }}07-1.png" alt="User Profile Image">
+        </div>
+        <div class="profile_name">
+            {{ user.username }}
+        </div>
+    </div>
+    <div class="profile_content">
+        <div class="goto_twitter">
+            <a href="https://x.com/WinteringT" target="_blank">
+                <label>TWITTER</label>
+                <i class="fa-brands fa-twitter"></i>
+            </a>
+            <div class="active_content">
+                <div class="token">
+                    <img src="{% static 'img/갈레온.png' %}" alt="Galleon">
+                    <span>{{charInfo.galeon}}</span>
+                </div>
+                <div class="token">
+                    <img src="{% static 'img/토큰.png' %}" alt="Token">
+                    <span>{{charInfo.classToken}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="audio">
+            <!-- One audio tag -->
+            <audio id="background-music" loop>
+                <source src="{% static 'bgm2.mp3' %}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="audio-controls">
+                <button id="play-pause-button">
+                    <i id="status" class="fa-solid fa-play"></i>
+                </button>
+                <button id="to-start-button">
+                    <i class="fa-solid fa-square"></i>
+                </button>
+                <input type="range" id="volume-slider" value="50" step="1" min="0" max="100" class="volume-slider">
+            </div>
+        </div>
+    </div>
+    <div class="arrow" id="arrow">
+        <i class="fa-solid fa-chevron-left"></i>
+    </div>
+</div>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const audio = document.getElementById('background-music');
+        const playPauseButton = document.getElementById('play-pause-button');
+        const status = document.getElementById('status');
+        const toStart = document.getElementById('to-start-button');
+        const volumeSlider = document.getElementById('volume-slider');
+    
+        let isPlaying = false;
+
+        // 페이지 로드 시 저장된 오디오 상태를 불러오기
+        const loadAudioState = () => {
+            const savedTime = localStorage.getItem('audio-currentTime');
+            const savedIsPlaying = localStorage.getItem('audio-isPlaying');
+            if (savedTime) {
+                audio.currentTime = parseFloat(savedTime); // 이전에 듣던 시간으로 이동
+            }
+            if (savedIsPlaying === 'true') {
+                playAudio(); // 이전에 재생 중이었다면 다시 재생
+            }
+        };
+
+        // 음악의 볼륨 조절
+        volumeSlider.addEventListener('input', () => {
+            audio.volume = volumeSlider.value / 100;  // 볼륨을 0~1 사이로 설정
+            localStorage.setItem('audio-volume', volumeSlider.value); // 볼륨 값 저장
+        });
+
+        // 오디오 상태 저장 (시간과 재생 상태)
+        const saveAudioState = () => {
+            localStorage.setItem('audio-currentTime', audio.currentTime); // 현재 시간을 저장
+            localStorage.setItem('audio-isPlaying', isPlaying); // 재생 상태를 저장
+        };
+
+        // 음악 재생 함수
+        const playAudio = () => {
+            audio.play().then(() => {
+                isPlaying = true;
+                status.classList = 'fa-solid fa-pause';
+            }).catch(error => {
+                console.log('Auto play failed.', error);
+            });
+        };
+
+        // 재생/일시 정지 버튼 클릭 이벤트
+        playPauseButton.addEventListener('click', () => {
+            if (audio.paused) {
+                playAudio();
+            } else {
+                audio.pause();
+                isPlaying = false;
+                status.classList = 'fa-solid fa-play';
+            }
+            saveAudioState(); // 상태 저장
+        });
+
+        // 처음부터 재생 버튼 클릭
+        toStart.addEventListener('click', () => {
+            audio.currentTime = 0;
+            if (!isPlaying) {
+                playAudio();
+            }
+            saveAudioState(); // 상태 저장
+        });
+
+        // 오디오가 시간 변화할 때마다 상태 저장
+        audio.addEventListener('timeupdate', () => {
+            saveAudioState(); // 현재 시간을 저장
+        });
+
+        // 페이지 로드 시 상태 복원
+        loadAudioState();
+
+        // 볼륨 슬라이더 값 복원
+        const savedVolume = localStorage.getItem('audio-volume');
+        if (savedVolume) {
+            volumeSlider.value = savedVolume;  // 슬라이더 값 복원
+            audio.volume = savedVolume / 100; // 오디오 볼륨 값 설정
+        }
+
+        // 특수 비지엠이 있는 페이지에서 슬라이더 값 20으로 설정하고 자동으로 음악 재생
+        const userBox = document.getElementById('profile_music');
+        const musicFile = userBox.getAttribute('data-music'); 
+
+        if (musicFile) {
+            const musicSource = `{% static 'audio/' %}${musicFile}`;  // 예: audio/musicFile.mp3
+            const sourceElement = audio.querySelector('source');
+            sourceElement.src = musicSource; // 새 음악 파일 설정
+            audio.load(); // 오디오 재로드
+            
+            // 슬라이더 값 20으로 설정
+            volumeSlider.value = 20;
+            audio.volume = volumeSlider.value / 100;
+
+            // 음악이 자동으로 재생되도록 설정
+            playAudio();
+        }
+    });
+
+    // 화살표 클릭 시 프로필 박스 토글
+    document.addEventListener('DOMContentLoaded', () => {
+        const userBox = document.getElementById('user-box');
+        const arrow = document.getElementById('arrow');
+        const arrowIcon = arrow.querySelector('i');
+    
+        // 초기 상태는 프로필 박스를 숨김
+        userBox.style.left = '-360px';
+        arrowIcon.classList.remove('fa-chevron-left');
+        arrowIcon.classList.add('fa-chevron-right');
+    
+        // localStorage에서 사용자 상태 불러오기
+        const isVisible = localStorage.getItem('isVisible');
+        if (isVisible === 'true') {
+            userBox.style.left = '-5px';  // 박스 보이도록 설정
+            arrowIcon.classList.remove('fa-chevron-right');
+            arrowIcon.classList.add('fa-chevron-left');
+        }
+    
+        // 화살표 클릭 시 프로필 박스 토글
+        arrow.addEventListener('click', () => {
+            if (userBox.style.left === '-360px') {
+                userBox.style.left = '-5px';
+                arrowIcon.classList.remove('fa-chevron-right');
+                arrowIcon.classList.add('fa-chevron-left');
+                localStorage.setItem('isVisible', 'true');
+            } else {
+                userBox.style.left = '-360px';
+                arrowIcon.classList.remove('fa-chevron-left');
+                arrowIcon.classList.add('fa-chevron-right');
+                localStorage.setItem('isVisible', 'false');
+            }
+        });
+    });
+</script>

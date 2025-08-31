@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/class/creature.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="overlay"></div>
+<div class="gradient-overlay"></div>
+
+<div class="goback">
+    <a href="/class"><i class="fa-solid fa-chevron-left"></i></a>
+</div>
+
+
+<div class="herb_background">
+    <div class="herb_title">
+        Care of
+        <p>Magical Creatures</p> 
+    </div>
+
+    <div class="selected_box">
+        <p>획득 가능한 아이템</p>
+        <div class="selected">랜덤 신비한 동물 마법 재료, 기숙사 점수</div>
+    </div>
+
+    <div class="selected_image">
+        <span>?</span>
+    </div>    
+
+    <div class="modal_info">
+        <p><span><img src={% static "img/star.png" %}></span>수업 이수 시 1 수업 토큰이 소모됩니다.</p>
+    </div>
+
+    {% if token > 0 %}
+    <!-- If user has class tokens, show the "수업 이수" button that opens the modal -->
+    <button type="button" class="herb_btn" data-toggle="modal" data-target="#exampleModal">
+        수업 이수
+    </button>
+    {% else %}
+        <!-- If user has no class tokens, show a popover instead -->
+        <button type="button" id="noTokensButton" class="herb_btn" data-container="body" data-toggle="popover" data-placement="top" data-content="수업 토큰이 부족합니다.">
+            수업 이수
+        </button>
+    {% endif %}
+</div>
+
+
+
+<div class="modal fade" id="exampleModal" data-backdrop="static"  tabindex="-1" aria-labelledby="exampleModalLabel"  data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">    
+                <form method="post" id="herbForm">
+                    {% csrf_token %}
+                    <input class="hidden" value="{{herb.itemName}}" type="text" name="herbname" id="herbname">
+                    <input class="hidden" value="{{count}}" type="text" name="count" id="count">
+    
+                    <div class="herb_image">
+                        <img src="{% static 'img/store/'|add:herb.itemName|add:'.png' %}" alt="{{ herb.itemName }}">
+                        <span>x{{count}}</span>
+                        <div class="item_description">
+                            <p>{{ herb.itemName }}</p>
+                            <p class="category">{{ herb.itemCategory }}</p>
+                            <p class="item_info">{{ herb.itemInfo }}</p>
+                        </div>
+                    </div>   
+
+                    <div class="modal_info2">
+                        <p><span><img src={% static "img/star.png" %}></span>[{{herb.itemName}}] [{{count}}]개를 획득했습니다.</p>
+                    </div>
+    
+                    <button type="submit" class="finish" id="submit_button">이수 완료</button>  
+            
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // herb_background 요소 선택
+        const herbBackground = document.querySelector('.herb_background');
+        
+        // 애니메이션을 트리거하는 fadeInDown 클래스를 추가
+        if (herbBackground) {
+            herbBackground.style.visibility = 'visible';  // 요소를 보이게 설정
+            herbBackground.classList.add('fadeInDown');  // 애니메이션 시작
+        }
+
+        // Initialize popover for "noTokensButton" if it exists
+        const noTokensButton = document.getElementById('noTokensButton');
+        if (noTokensButton) {
+            $(noTokensButton).popover({
+                trigger: 'focus', // Focus trigger for showing popover
+                placement: 'top'   // Position of the popover (top, bottom, left, right)
+            });
+        }
+
+        // 폼 제출 후 모달 닫기
+        const submitButton = document.getElementById('submit_button');
+        if (submitButton) {
+            submitButton.addEventListener('click', function(event) {
+                event.preventDefault();  // 기본 submit 동작을 막음
+                var form = document.getElementById('herbForm');
+                if (form) {
+                    form.submit();  // 폼 제출
+                }
+
+                // 모달을 닫는 부분
+                $('#exampleModal').modal('hide');
+            });
+        }
+    });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% load static %}
+
+<!-- 오디오 파일을 포함시키기 -->
+<audio id="background-music" loop>
+    <source src="{% static 'bgm2.mp3' %}" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<!-- 오디오 컨트롤 -->
+<div class="audio-controls">
+    <button id="play-pause-button">Play</button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const audio = document.getElementById('background-music'); // 오디오 요소 선택
+        const playPauseButton = document.getElementById('play-pause-button');
+        const volumeSlider = document.getElementById('volume-slider');
+
+        let isPlaying = false; // 음악 재생 상태를 추적
+
+        // 자동 재생 시도
+        const tryAutoPlay = () => {
+            audio.play().then(() => {
+                isPlaying = true;
+                playPauseButton.textContent = 'Pause';
+            }).catch(error => {
+                console.log('자동 재생이 실패했습니다.', error);
+                // 자동 재생 실패 시 버튼을 사용하여 재생하도록 안내
+            });
+        };
+
+        // 재생/일시 정지 버튼 클릭 이벤트
+        playPauseButton.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.currentTime = 0; // 음악을 처음부터 재생하도록 설정
+                tryAutoPlay();
+            } else {
+                audio.pause();
+                isPlaying = false;
+                playPauseButton.textContent = 'Play';
+            }
+        });
+
+        // 음량 슬라이더 이벤트
+        volumeSlider.addEventListener('input', () => {
+            if (isPlaying) {
+                audio.volume = volumeSlider.value;
+            }
+        });
+
+        // 페이지 로드 시 자동 재생 시도
+        tryAutoPlay();
+    });
+</script>

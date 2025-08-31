@@ -1,0 +1,118 @@
+ <!-- 인벤토리 -->
+ {% load static %}
+
+<div class="inventory_wrap hidden" id="inventory-section">
+    <div class="inven_banner">
+        <img src={% static "img/인벤토리 배너.png" %}>
+    </div>
+
+    <div class="inventory_content">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+            <ol class="carousel-indicators">
+                {% for i in pages_items %}
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></li>
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner">
+                {% for items in pages_items %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="item_wrap">
+                            <div class="item_wrap2">
+                            {% for item in items %}
+                                {% if item.itemInfo.itemName == "빗자루" %}
+                                <div class="item">
+                                    <p class="item_count">x{{item.itemCount}}</p>
+                                    <img src="{% static 'img/store/' %}{{ item.itemInfo.itemName }}.png">
+                                    <div class="item_description">
+                                        <p>{{ item.itemInfo.itemName }}</p>
+                                        <p class="category">{{ item.itemInfo.itemCategory }}</p>
+                                        <p class="item_info">{{characinfo.user.username}}{{ item.itemInfo.itemInfo }}</p>
+                                    </div>                                
+                                </div>
+                                {% elif item.itemInfo.itemName == "우정 반지" %}
+                                <div class="item">
+                                    <p class="item_count">x{{item.itemCount}}</p>
+                                    <img src="{% static 'img/store/' %}{{ item.itemInfo.itemName }}.png">
+                                    <div class="item_description">
+                                        <p>{{ item.itemInfo.itemName }}</p>
+                                        <p class="category">{{ item.itemInfo.itemCategory }}</p>
+                                        <p class="item_info">{{ item.user2.username }}{{ item.itemInfo.itemInfo }}</p>
+                                    </div>                                
+                                </div>
+                                {% else %}
+                                <div class="item">
+                                    <p class="item_count">x{{item.itemCount}}</p>
+                                    <img src="{% static 'img/store/' %}{{ item.itemInfo.itemName }}.png">
+                                    <div class="item_description">
+                                        <p>{{ item.itemInfo.itemName }}</p>
+                                        <p class="category">{{ item.itemInfo.itemCategory }}</p>
+                                        <p class="item_info">{{ item.itemInfo.itemInfo }}</p>
+                                        {% if characinfo.user == user %}
+                                        <div class="ibtn_wrap">
+                                            {% if item.itemInfo.itemName == '포춘쿠키' %}
+                                            <!--포춘쿠키-->
+                                            <button class="itembtn" onclick="showUseModal('포춘쿠키')">사용</button>
+                                            {% elif item.itemInfo.itemName == '스크롤' %}
+                                            <!--스크롤-->
+                                            <button class="itembtn" onclick="showUseModal7('스크롤')">사용</button>
+                                            {% elif item.itemInfo.itemName == '투명 망토' %}
+                                            <!--스크롤-->
+                                            <button class="itembtn" onclick="showUseModal8('투명 망토')">사용</button>
+                                            {% elif item.itemInfo.itemName == '타임터너' %}
+                                            <!--타임터너-->
+                                            <button class="itembtn" onclick="showUseModal2('타임터너')">사용</button>
+                                            {% elif item.itemInfo.itemName == '마법 주머니' %}
+                                            <!--마법주머니-->
+                                            <button class="itembtn" onclick="showUseModal3('마법주머니')">사용</button>
+                                            {% elif item.itemInfo.itemName == '고급 마법 주머니' %}
+                                            <!--고급마법주머니-->
+                                            <button class="itembtn" onclick="showUseModal4('고급마법주머니')">사용</button>
+                                            {% elif item.itemInfo.itemName == '가챠' %}
+                                            <!--가챠-->
+                                            <button class="itembtn" onclick="showUseModal6('가챠')">뽑기</button>
+                                            {% elif item.itemInfo.itemCategory == '마법 재료' or item.itemInfo.itemCategory == '가챠' %}
+                                            <!-- 양도 버튼 추가 -->
+                                            <button class="itembtn" onclick="openTransferModal('{{ item.itemInfo.itemName }}')">양도</button>
+                                            {% elif item.itemInfo.itemName == '우정 반지(상자)' %}
+                                            <!-- 양도 버튼 추가 -->
+                                            <button class="itembtn" onclick="openTransferModal2('{{ item.itemInfo.itemName }}')">보내기</button>
+                                            {% elif item.itemInfo.itemCategory == '마법 약' %}
+                                            <!--마법 약 판매-->
+                                            <button class="itembtn" onclick="showUseModal5('{{ item.itemInfo.itemName }}','{{ item.itemInfo.price }}')">판매</button>
+                                            {% else %}
+                                            {% endif %}
+                                        </div>
+                                        {% else %}
+                                        {% endif %}
+                                    </div>                                
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="inventory_token">
+        <img src={% static "img/갈레온.png" %}>
+        <div class="inventoken">
+            {{characinfo.galeon}}
+        </div>
+        <img src={% static "img/토큰.png" %}>
+        <div class="inventoken">
+            {{characinfo.classToken}}
+        </div>
+    </div>
+</div>
+

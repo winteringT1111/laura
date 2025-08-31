@@ -1,0 +1,20 @@
+{% extends "notice_base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/notice/system.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="goback">
+    <a href="/"><i class="fa-solid fa-chevron-left"></i></a>
+</div>
+<div class="notice_wrap">
+    <a href="/system/total"><img src={% static "img/totalsystem.png" %}></a>
+    <a href="https://docs.google.com/document/d/1ypCH9AENMsVJMdqQ4-tXt7SkUmI1KjZDbNW82oMaoNw/edit?usp=sharing" target="_blank"><img src={% static "img/homepageguide.png" %}></a>
+    <a href="https://docs.google.com/document/d/14yJIL3LLU0sca5qQKoYLXWa830VjpMYGmfg8Jg9HdXE/edit?usp=sharing" target="_blank"><img src={% static "img/patch_note.png" %}></a>
+</div>
+
+{% endblock %}

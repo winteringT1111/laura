@@ -1,0 +1,347 @@
+    {% extends "base.html" %}
+    {% load static %}
+
+    {% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/class/potion.css' %}">
+    {% endblock %}
+
+    {% block content %}
+
+    
+<div class="overlay"></div>
+<div class="gradient-overlay"></div> 
+
+    <div class="goback">
+        <a href="/class"><i class="fa-solid fa-chevron-left"></i></a>
+    </div>
+
+
+    <div class="kettle_background">
+        <div class="select_background">
+            <div class="select_wrap">
+                <div class="select_content1" id="scontent">
+                </div>
+                <div class="select_content2" id="scontent">
+                </div>
+                <div class="select_content3" id="scontent">
+                </div>
+                <div class="select_content4" id="scontent">
+                </div>
+            </div>
+        </div>
+        <button class="reset_btn" id="initialize-btn">초기화</button>
+        <button type="button" class="make_btn">
+            조합하기
+        </button>
+    </div>
+
+
+    <div class="content-wrapper">  
+        <div class="btnss">
+            <a href="https://docs.google.com/spreadsheets/d/1iYuQlhoRYFsNd7augQHU64s7EZ5pjn3VaXRTRF4C3tU/edit?usp=sharing" target="_blank"><button class="recipe_btn"></button></a>
+            <button class="status_btn"></button>
+        </div>
+
+        <div class="recipe_box">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+                <ol class="carousel-indicators">
+                    {% for i in pages_items %}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></li>
+                    {% endfor %}
+                </ol>
+                <div class="carousel-inner">
+                    {% for items in pages_items %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="item_wrap">
+                                {% for item in items %}
+                                    <div class="item">
+                                        <p class="item_count">x{{item.itemCount}}</p>
+                                        <img src="{% static 'img/store/' %}{{ item.itemInfo.itemName }}.png">
+                                        <div class="item_description">
+                                            <p>{{ item.itemInfo.itemName }}</p>
+                                            <p class="category">{{ item.itemInfo.itemCategory }}</p>
+                                            <p class="item_info">{{ item.itemInfo.itemInfo }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" id="body_content">
+                <form method="post" id="purchaseForm">
+                    {% csrf_token %}
+
+                    <h5 id="modalTitle">Magical Potion</h5>
+
+                    <div class="selected_box">
+                        <p>선택한 아이템</p>
+                        <div class="selected"></div>
+                    </div>
+                   
+                    <div class="selected_image_box">
+                        <div class="selected_image">
+                        </div>
+                    </div>
+
+                    <div class="modal_info">
+                        <p><span><img src="{% static "img/star.png" %}"></span>위 재료들을 조합하시겠습니까?</p>
+                        <p>(조합에 사용된 아이템 및 1 수업 토큰이 소모됩니다.)</p>
+                    </div>
+
+                    <div class="modal_btns">
+                        <button type="button" data-dismiss="modal">취소</button>
+                        {% if token > 0 %}
+                        <button type="button" id="submitButton">
+                            조합
+                        </button>
+                        {% else %}
+                        <button type="button" id="noTokensButton" data-container="body" data-toggle="popover" data-placement="top" data-content="수업 토큰이 부족합니다.">
+                            조합
+                        </button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="resultModal" tabindex="-1"  data-backdrop="static" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" id="secondmodal">
+                <h5 class="modal-title" id="resultModalTitle">조합 결과</h5>
+                <div class="modal-image" id="resultModalImage">
+                </div>
+                <div class="modal-body" id="resultModalBody">
+                    
+                </div>
+                <button type="button" class="xbtn" id="xbtn" data-dismiss="modal">x</button>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Status Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="plsmodal">
+            <h2 class="modal-title" id="statusModalTitle">STATUS</h2>
+            <div class="modal-body" id="statusModalBody">
+                <p>수업 경험치: <span id="userXp">{{status.xp}}</span></p> <!-- 사용자 경험치 (초기값은 100) -->
+                <p>경험치 등급: <span id="userGrade">{{status.degree}}등급</span></p> <!-- 사용자 등급 (초기값은 3등급) -->
+                <p>마법의 약은 조합 난이도 ★~★★★으로 나뉘어져 있습니다.</p>
+                <ul>
+                    <li><strong>난이도 ★:</strong> 경험치 3등급부터 제조 가능</li>
+                    <li><strong>난이도 ★★:</strong> 경험치 2등급부터 제조 가능</li>
+                    <li><strong>난이도 ★★★:</strong> 경험치 1등급부터 제조 가능</li>
+                </ul>
+                <p>올바른 조합법을 사용하여도 수업 경험치 등급이 낮을 시 제조에 실패합니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const statusBtn = document.querySelector('.status_btn');
+        
+        // Handle status button click
+        statusBtn.addEventListener('click', () => {
+            // Show the modal
+            $('#statusModal').modal('show');
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize popover for "noTokensButton" if it exists
+        const noTokensButton = document.getElementById('noTokensButton');
+        if (noTokensButton) {
+            $(noTokensButton).popover({
+                trigger: 'focus', // Focus trigger for showing popover
+                placement: 'top'   // Position of the popover (top, bottom, left, right)
+            });
+        }
+
+    });
+// Get references to select content divs
+const selectContentDivs = [
+    document.querySelector('.select_content1'),
+    document.querySelector('.select_content2'),
+    document.querySelector('.select_content4'),
+    document.querySelector('.select_content3')
+];
+
+let selectedItems = []; // Array to track selected item names
+
+// 아이템 조합에 넣기
+function handleItemClick(item, itemImageSrc) {
+    // Check if the item has already been selected
+    const itemName = item.querySelector('.item_description p').textContent;
+    
+    if (selectedItems.length < 4 && item.dataset.itemCount > 0 && !selectedItems.includes(itemName)) {
+        // Add item to selected list
+        selectedItems.push(itemName);  // Track the item name
+        
+        // Display image in select_content divs
+        selectContentDivs[selectedItems.length - 1].innerHTML = `<img src="${itemImageSrc}" />`;
+
+        // Reduce item count
+        item.dataset.itemCount--;
+        item.querySelector('p').textContent = `x${item.dataset.itemCount}`;
+        
+        // Update modal with selected item details
+        const selectedNames = document.querySelector('.selected');
+        const selectedImages = document.querySelector('.selected_image');
+
+        // Add item name and image to the modal
+        const itemImage = `<img src="${itemImageSrc}" />`;
+        selectedNames.innerHTML += `<span>${itemName}</span>`;
+        selectedImages.innerHTML += `<span>${itemImage}</span>`;
+    } else if (selectedItems.includes(itemName)) {
+        // Optionally, you could show a message or handle the case where an item is already selected
+        alert('이미 선택한 아이템입니다.');
+    }
+}
+
+// Add event listeners to each item in item_wrap
+document.querySelectorAll('.item').forEach(item => {
+    const itemImageSrc = item.querySelector('img').src;
+    item.dataset.itemCount = item.querySelector('p').textContent.replace('x', ''); // Initialize item count
+    item.addEventListener('click', () => handleItemClick(item, itemImageSrc));
+});
+
+// 초기화 버튼
+document.getElementById('initialize-btn').addEventListener('click', () => {
+    selectContentDivs.forEach(div => div.innerHTML = '');
+    selectedItems = 0;
+    
+    // Clear modal contents
+    document.querySelector('.selected').innerHTML = '';
+    document.querySelector('.selected_image').innerHTML = '';
+
+    location.reload();
+});
+
+
+// 캐러셀 움직임
+const prevButton = document.querySelector('.carousel-control-prev');
+const nextButton = document.querySelector('.carousel-control-next');
+const itemWrap = document.querySelector('.carousel-inner');
+// 화살표 버튼 클릭 이벤트 처리
+function handleCarouselTransition() {
+    // 1초 동안 overflow hidden을 적용
+    itemWrap.style.overflow = 'hidden';
+    console.log("rgwwerg");
+
+    // 1초 후에 overflow를 다시 기본값으로 변경
+    setTimeout(() => {
+        itemWrap.style.overflow = 'visible';  // 기본값 (혹은 원하는 상태로 변경)
+    }, 1000);  // 1000ms = 1초
+}
+
+// 이전 버튼 클릭 시
+prevButton.addEventListener('click', () => {
+    handleCarouselTransition();
+    // 추가적인 캐러셀 이동 로직 (예: 현재 슬라이드 이전으로 이동)
+});
+
+// 다음 버튼 클릭 시
+nextButton.addEventListener('click', () => {
+    handleCarouselTransition();
+    console.log("rgwwsadfwefwfweerg");
+    // 추가적인 캐러셀 이동 로직 (예: 현재 슬라이드 다음으로 이동)
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const makeBtn = document.querySelector('.make_btn');
+    const selectContent2 = document.querySelector('.select_content2');
+
+    // Initialize Bootstrap popover on makeBtn
+    $(makeBtn).popover({
+        container: 'body',
+        placement: 'top',
+        trigger: 'manual',
+        content: '최소 2개의 아이템을 조합해주세요.'
+    });
+
+    makeBtn.addEventListener('click', () => {
+        if (selectContent2.innerHTML.trim() === '') {
+            // Show popover if no item is selected in .select_content2
+            $(makeBtn).popover('show');
+            setTimeout(() => $(makeBtn).popover('hide'), 2000); // Hide popover after 2 seconds
+        } else {
+            // Show modal if item is selected in .select_content2
+            $('#staticBackdrop').modal('show');
+        }
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const submitButton = document.getElementById('submitButton');
+
+    submitButton.addEventListener('click', () => {
+        const selectedItems = Array.from(document.querySelectorAll('.selected span')).map(span => span.textContent);
+
+        fetch("{% url 'main:check_combination' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({ selected_items: selectedItems }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            $('#staticBackdrop').modal('hide'); // Hide the initial modal
+
+            // Update result modal content based on the combination result
+            const resultModalTitle = document.getElementById("resultModalTitle");
+            const resultModalBody = document.getElementById("resultModalBody");
+            const resultModalImage = document.getElementById("resultModalImage");
+
+            if (data.result === "success") {
+                resultModalTitle.textContent = "조합 성공!";
+                resultModalBody.textContent = `${data.message}`;
+                resultModalImage.innerHTML = `<img src="/static/${data.image}" alt="Result Image">`;
+            } else {
+                resultModalTitle.textContent = "Better luck next time!";
+                resultModalBody.textContent = "사용한 마법 재료가 전부 소진되었습니다.";
+                resultModalImage.innerHTML = `<img src="/static/${data.image}" alt="Result Image">`;
+            }
+            $('#resultModal').modal('show');
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+
+
+document.getElementById('xbtn').addEventListener('click', () => {
+
+    location.reload(true);
+});
+</script>
+    
+
+{% endblock %}

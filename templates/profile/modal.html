@@ -1,0 +1,200 @@
+{% load static %}
+
+<!-- 포춘쿠키 -->
+<div class="modal fade" id="fortuneCookieModal"  data-backdrop="static" tabindex="-1" aria-labelledby="fortuneCookieModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <div class="plscenter">
+                <h2 style="font-family: 'Oleo Script', system-ui; font-size: 40px;">Fortune Cookie</h2>
+                <p id="fortuneMessage">{{ random_fortune|linebreaksbr|safe }}</p>  <!-- 랜덤 메시지 -->
+                <button type="button" onclick="useItem()" id="yesbtn">확인</button>  <!-- 사용 버튼 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 타임터너 -->
+<div class="modal fade" id="TimeTurnerModal"  data-backdrop="static" tabindex="-1" aria-labelledby="fortuneCookieModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <div class="plscenter">
+                <h2 style="font-family: 'Oleo Script', system-ui; font-size: 40px;">Time Turner</h2>
+                <p id="fortuneMessage">수업 토큰 1개를 획득했습니다.</p>  <!-- 랜덤 메시지 -->
+                <button type="button" onclick="useItem2()" id="yesbtn">확인</button>  <!-- 사용 버튼 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 타임터너 -->
+<div class="modal fade" id="GownModal"  data-backdrop="static" tabindex="-1" aria-labelledby="fortuneCookieModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <div class="plscenter">
+                <h2 style="font-family: 'Oleo Script', system-ui; font-size: 40px;">Invisibility Cloak</h2>
+                <p id="fortuneMessage">금일 내로 추가 조사가 1회 가능합니다.</p>  <!-- 랜덤 메시지 -->
+                <button type="button" onclick="useItem8()" id="yesbtn">확인</button>  <!-- 사용 버튼 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 포션 판매 -->
+<div class="modal fade" id="potionModal"  data-backdrop="static" tabindex="-1" aria-labelledby="fortuneCookieModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <div class="plscenter">
+                <div class="hidden" id="potionName"></div>
+                <h4><span id="potionPrice"></span>갈레온을 획득했습니다.</h4>
+                <button type="button" onclick="useItem5()" id="yesbtn">확인</button>  <!-- 사용 버튼 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 마법 주머니 -->
+<div class="modal fade" id="MagicItemModal"  data-backdrop="static" tabindex="-1" aria-labelledby="fortuneCookieModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <form method="POST" action="">
+                {% csrf_token %}
+                    <input type="hidden" name="boxtype" value="magic">
+                    <div class="selected_image_box">
+                        <div class="selected_image">
+                            {% for mitem in magicItem %}
+                            <input type="hidden" name="magic_item_names" value="{{ mitem.itemName }}">
+                            <span><img src="{% static 'img/store/' %}{{ mitem.itemName }}.png"></span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="plscenter2">
+                    <p id="fortuneMessage">마법 재료를 획득했습니다.</p>  
+                    <button type="submit" id="yesbtn2">확인</button> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 고급 마법 주머니 -->
+<div class="modal fade" id="GoldMagicItemModal"  data-backdrop="static" tabindex="-1" aria-labelledby="fortuneCookieModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <form method="POST" action="">
+                {% csrf_token %}
+                    <input type="hidden" name="boxtype" value="goldmagic">
+                    <div class="selected_image_box">
+                        <div class="selected_image2">
+                            {% for mitem in magicItem2 %}
+                            <input type="hidden" name="magic_item_names" value="{{ mitem.itemName }}">
+                            <span><img src="{% static 'img/store/' %}{{ mitem.itemName }}.png"></span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="plscenter2">
+                        <p id="fortuneMessage">마법 재료를 획득했습니다.</p>  
+                        <button type="submit" id="yesbtn2">확인</button> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 가챠 획득 -->
+<div class="modal fade" id="GachaModal"  data-backdrop="static" tabindex="-1" aria-labelledby="fortuneCookieModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <form method="POST" action="">
+                {% csrf_token %}
+                    <input type="hidden" name="boxtype" value="gacha">
+                    <div class="selected_image_box">
+                        <div class="selected_image2">
+                            <input type="hidden" name="gachaName" value="{{ gachaItem.itemName }}">
+                            <span><img src="{% static 'img/store/' %}{{ gachaItem.itemName }}.png"></span>
+                        </div>
+                    </div>
+                    <div class="plscenter2">
+                        <p id="fortuneMessage">{{ gachaItem.itemName }}을 획득했습니다.</p>  
+                        <button type="submit" id="yesbtn2">확인</button> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 양도 -->
+<div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <div class="character_select">
+                    <label for="characterSelect">양도할 대상</label>
+                    <select id="characterSelect" class="form-control">
+                        {% for character in charnames %}
+                            <option value="{{character}}">{{character}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="hidden" id="itemName"></div>
+                <button type="button" class="yesbtn2" onclick="transferItem()" id="confirmBtn">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 양도 -->
+<div class="modal fade" id="transferModal2" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <div class="character_select">
+                    <label for="characterSelect2">보낼 대상</label>
+                    <select id="characterSelect2" class="form-control">
+                        {% for character in charnames %}
+                            <option value="{{character}}">{{character}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="hidden" id="itemName2"></div>
+                <button type="button" class="yesbtn2" onclick="transferItem2()" id="confirmBtn">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 스크롤 -->
+<div class="modal fade" id="ScrollModal"  data-backdrop="static" tabindex="-1" aria-labelledby="ScrollModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+        <div class="modal-content" id="pm">
+            <div class="modal-body">
+                <div class="plscenter">
+                <h2 style="font-family: 'Oleo Script', system-ui; font-size: 40px;">Scroll</h2>
+                <p id="fortuneMessage">{{ random_scroll|linebreaksbr|safe }}</p>  <!-- 랜덤 메시지 -->
+                <button type="button" onclick="useItem7()" id="yesbtn">확인</button>  <!-- 사용 버튼 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

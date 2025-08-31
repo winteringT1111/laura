@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/gift/giftbox.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content_wrap">
+    <div class="content">
+        {% if gifts %}
+            {% for gift in gifts %}
+                {% if gift.anonymous %}
+                    {% if gift.accepted %}
+                    <div class="content_list2">
+                    {% else %}
+                    <div class="content_list">
+                    {% endif %}
+                        <div class="profile1">
+                            <div class="profile_image1">
+                                <img src={% static "img/base_profile.png" %}>
+                            </div>
+                            <div class="profile_name1">
+                                익명
+                            </div>
+                        </div>
+                        <div class="message">
+                            <div class="message_info">
+                                <p>[?]님 께서 [ {{gift.itemInfo.itemName}} ] [ {{gift.itemCount}} ] 개를 선물했습니다.</p>
+                                <p>{{gift.orderDate}}</p>
+                            </div>
+                            <div class="message_content">
+                                <img src={% static "img/star.png" %}>
+                                {% if gift.message %}
+                                {{gift.message}}
+                                {% else %}
+                                <span id="blank">메세지가 존재하지 않습니다.</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="function">
+                            <div class="item_image">
+                                <p class="item_count">x{{gift.itemCount}}</p>
+                                <img src="{% static 'img/store/' %}{{ gift.itemInfo.itemName }}.png">
+                                <div class="item_description">
+                                    <p>{{ gift.itemInfo.itemName }}</p>
+                                    <p class="category">{{ gift.itemInfo.itemCategory }}</p>
+                                    <p class="item_info">{{ gift.itemInfo.itemInfo }}</p>
+                                </div>
+                            </div>
+                            {% if gift.accepted %}
+                            <button class="accepted">수락</button>
+                            {% else %}
+                            <form method="post" id="giftIDForm">
+                                {% csrf_token %}
+                                <input type="hidden" id="show_gift_modal" name="giftcategory" value="{{ gift.itemInfo.itemCategory }}">
+                                <input type="hidden" id="show_gift_modal" name="giftidnum" value="{{ gift.giftID }}">
+                                <button class="not_accepted" data-toggle="modal" data-target="#exampleModal">수락</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    {% if gift.accepted %}
+                    <div class="content_list2">
+                    {% else %}
+                    <div class="content_list">
+                    {% endif %}
+                    <div class="profile1">
+                        <div class="profile_image1">
+                            <img src="{% static 'img/charac/07/03/'|add:gift.giver_user.username|add:'07-1.png' %}">
+                        </div>
+                        <div class="profile_name1">
+                            {{gift.giver_user.username}}
+                        </div>
+                    </div>
+                    <div class="message">
+                        <div class="message_info">
+                            <p>[{{gift.giver_user.username}}]님 께서 [ {{gift.itemInfo.itemName}} ] [ {{gift.itemCount}} ] 개를 선물했습니다.</p>
+                            <p>{{gift.orderDate}}</p>
+                        </div>
+                        <div class="message_content">
+                            <img src={% static "img/star.png" %}>
+                            {% if gift.message %}
+                            {{gift.message}}
+                            {% else %}
+                            <span id="blank">메세지가 존재하지 않습니다.</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="function">
+                        <div class="item_image">
+                            <p class="item_count">x{{gift.itemCount}}</p>
+                            <img src="{% static 'img/store/' %}{{ gift.itemInfo.itemName }}.png">
+                            <div class="item_description">
+                                <p>{{ gift.itemInfo.itemName }}</p>
+                                <p class="category">{{ gift.itemInfo.itemCategory }}</p>
+                                <p class="item_info">{{ gift.itemInfo.itemInfo }}</p>
+                            </div>
+                        </div>
+                        {% if gift.accepted %}
+                        <button class="accepted">수락</button>
+                        {% else %}
+                        <form method="post" id="giftIDForm">
+                            {% csrf_token %}
+                            <input type="hidden" id="show_gift_modal" name="giftcategory" value="{{ gift.itemInfo.itemCategory }}">
+                            <input type="hidden" id="show_gift_modal" name="giftidnum" value="{{ gift.giftID }}">
+                            <button class="not_accepted" data-toggle="modal" data-target="#exampleModal">수락</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="blank_info">
+                아직 받은 선물이 없습니다.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+      <div class="modal-content" id="modal_info">
+        <div class="modal-body" id="modal_contents">
+            <h4>선물이 인벤토리에 보관되었습니다.</h4>
+            <button type="button" data-dismiss="modal">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Select all forms with the class 'giftIDForm'
+    const forms = document.querySelectorAll('form#giftIDForm');
+
+    // Iterate over each form and set up the event listener
+    forms.forEach(function (form) {
+        const acceptButton = form.querySelector('.not_accepted');
+
+        if (acceptButton) {
+            acceptButton.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Show the modal
+                $('#exampleModal').modal('show');
+
+                // When the modal is hidden, submit the form
+                $('#exampleModal').on('hidden.bs.modal', function () {
+                    form.submit(); // Submit the form
+                });
+            });
+        }
+    });
+});
+
+</script>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,147 @@
+{% load static %}
+ <!-- Modal -->
+  <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
+      <div class="modal-content" id="gm">
+        <div class="modal-body">
+
+          <form method="post" id="giftForm">
+            {% csrf_token %}
+            <input class="hidden" value="gift" type="text" name="assort" id="assort">
+            <input class="hidden" value="" type="text" name="itemName2" id="itemName2">
+            <h5 id="modalTitle2">title</h5>
+            <h5 id="modalTitleEng2">Howler</h5>
+
+            <div class="priceline2"><h5 id="modalPrice2">10</h5><h5>G</h5></div>
+
+            <div class="charselect">
+                <div class="charselect_label">선물을 전달할 대상을 선택해주세요</div>
+                <select name="receiver" class="receiver_input">
+                  <option disabled selected>캐릭터 이름</option>
+                  {% for charname in charnames %}
+                      <option class="option" value="{{ charname }}">{{ charname }}</option>
+                  {% endfor %}
+              </select>
+              </div>
+
+            <div class="message_box">
+              <div class="message_box_info">
+                <div class="message_box_info_left">
+                  <img src={% static "img/star.png" %}>
+                  <div class="message_box_info_label">
+                    하단에 메세지를 작성하세요
+                  </div>
+                </div>
+                
+                <div class="message_box_info_right">
+                  <label for="anonymous">익명</label>
+                  <input type="checkbox" id="anonymous" name="anonymous">
+                </div>
+              </div>
+
+              <textarea id="message" name="message" placeholder="메시지를 입력하세요" class="message-input" maxlength="100"></textarea>
+              
+            </div>
+
+            <div class="lastline2">
+                <div class="quantity-spinner2">
+                    <button type="button" onclick="decreaseValue2()">-</button>
+                    <input type="number" name="quantity2" id="quantity2" value="1" min="1" readonly>
+                    <button type="button" onclick="increaseValue2()">+</button>
+                </div>
+
+                <input type="hidden" id="modalTotalPrice2" name="totalPrice2" value="10" readonly>
+
+                <button type="button" id="liveToastBtn2" data-toggle="popover" data-placement="top" data-content="갈레온이 부족합니다.">
+                    선물
+                </button>
+            </div>
+            
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+
+<script>
+  function updateTotalPrice2() {
+      var quantity = parseInt(document.getElementById('quantity2').value, 10);
+      var price = parseInt(document.getElementById('modalPrice2').textContent, 10);
+      var totalPrice = quantity * price;
+
+      // 총 가격을 input 요소에 업데이트
+      document.getElementById('modalTotalPrice2').value = totalPrice;
+  }
+
+  function increaseValue2() {
+      var value = parseInt(document.getElementById('quantity2').value, 10);
+      value = isNaN(value) ? 1 : value;
+      value++;
+      document.getElementById('quantity2').value = value;
+      updateTotalPrice2();  // 개수를 올릴 때 총 가격 업데이트
+  }
+
+  function decreaseValue2() {
+      var value = parseInt(document.getElementById('quantity2').value, 10);
+      value = isNaN(value) ? 1 : value;
+      value = value > 1 ? value - 1 : 1; // 최소 값 1
+      document.getElementById('quantity2').value = value;
+      updateTotalPrice2();  // 개수를 내릴 때 총 가격 업데이트
+  }
+
+
+  $(document).ready(function () {
+    $('#exampleModal2').on('show.bs.modal', function () {
+        document.getElementById('quantity2').value = 1;
+        var initialPrice2 = document.getElementById('modalPrice2').textContent;
+        document.getElementById('modalTotalPrice2').value = initialPrice2;
+        $('.receiver_input').prop('selectedIndex', 0); // Select the first (default) option
+        $('#anonymous').prop('checked', false);
+        $('#message').val('');
+    });
+
+    // 제출 버튼 클릭 이벤트
+    $('#liveToastBtn2').on('click', function () {
+        var totalPrice2 = parseInt(document.getElementById('modalTotalPrice2').value, 10);
+        var userGaleon = parseInt('{{ user2.galeon }}', 10); // 서버에서 user.galeon 값 가져오기
+        var receiver = $('.receiver_input').val(); // 선택된 캐릭터 이름
+
+
+        if (!receiver) {
+          // 캐릭터 이름이 선택되지 않은 경우 popover 표시
+          $(this).popover('dispose'); // 이전 popover를 제거
+          $(this).attr('data-content', "선물 대상을 지정하지 않았습니다.");
+          $(this).popover('show');
+        }
+        else if (totalPrice2 > userGaleon) {
+          // 갈레온이 부족한 경우 popover 표시
+          $(this).popover('dispose'); // 이전 popover를 제거
+          $(this).attr('data-content', "갈레온이 부족합니다.");
+          $(this).popover('show');   
+        } else {
+            // 폼 제출
+            $('#giftForm').submit();
+            // 모달 닫기
+            $('#exampleModal2').modal('hide');
+        }
+    });
+
+    // popover 초기화
+    $('[data-toggle="popover"]').popover({
+        trigger: 'manual', // manual trigger
+        animation: true,
+        delay: { "show": 500, "hide": 100 }
+    });
+
+    // popover 숨기기
+    $('[data-toggle="popover"]').on('mouseleave', function () {
+        $(this).popover('hide');
+    });
+});
+
+</script>
