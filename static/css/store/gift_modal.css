@@ -1,0 +1,247 @@
+#gm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 910px;
+    height: 759px;
+    background: url("../../img/gift_modal.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: none;
+    user-select: none;
+    filter: drop-shadow(8px 8px 8px #232425);
+}
+
+#giftForm {
+    width: 910px;
+    height: 759px;
+    user-select: none;
+}
+
+.quantity-spinner2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Adjust this to control spacing between buttons and input */
+}
+
+/* 수량 칸 */
+.quantity-spinner2 input {
+    width: 165px;
+    height: 40.7px;
+    background-color: #f7ebdb;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    color: rgb(50, 53, 78);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* +- 버튼 */
+.quantity-spinner2 button {
+    background-color: #938980;
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
+    color: aliceblue;
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 구매버튼 */
+#liveToastBtn2 {
+    width: 82.5px;
+    height: 40.7px;
+    background-color: #f7ebdb;
+    border: none;
+    border-radius: 5px;
+    color: rgb(50, 53, 78);
+    font-size: 17px;
+    margin-left: 20px;
+    font-family: "Hahmlet", serif;
+}
+
+.lastline2 {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+}
+
+.priceline2 {
+    display: flex;
+}
+
+
+#modalTitle2, #modalTitleEng2 {
+    width: 100%; /* Make sure the titles take up the full width of their container */
+    margin: 0 auto; /* Centering the titles */
+    text-align: center;
+    color: #B0B8CB;
+}
+
+#modalTitle2 {
+    position: absolute; 
+    top: 11%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    font-family: "Hahmlet", serif;
+}
+
+#modalTitleEng2 {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 65px;
+    font-family: "Oleo Script", system-ui;
+    font-style: normal;
+}
+
+.priceline2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 26%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #3d352c;
+    font-family: "Arima", system-ui;
+    width: 270px;
+    height: 65px;
+    background-image: url("../../img/가격띠.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.priceline2 h5 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0px 0px 9px; /* Removes any default margin that may be affecting alignment */
+}
+
+
+
+
+
+.charselect {
+    width: 580px;
+    border-radius: 4px; 
+    padding: 10px 30px;
+    display: flex;
+    background-color: #171a24;
+    position: absolute;
+    top: 37%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: space-between;
+    align-items: center;
+} .charselect_label {
+    color: #f7ebdb;
+    font-size: 17px; 
+}
+
+select {
+    width: 220px; 
+    padding: 8px; 
+    border: none;
+    border-radius: 4px; 
+    background-color:  #f7ebdb;
+    font-size: 16px; 
+    color: #707070; 
+    outline: none;
+    font-family: "Hahmlet", serif;
+    transition: border-color 0.3s; /* Smooth transition effect */
+}
+
+/* Change border color on focus */
+select:focus {
+    border-color: #DCC599; /* Blue border on focus */
+}
+
+/* Style the options (optional) */
+option {
+    padding: 8px; /* Add padding inside each option */
+    color: #555; /* Text color */
+    font-family: "Hahmlet", serif;
+    border-radius: 4px; 
+    background-color: #f7ebdb; /* White background for options */
+}
+
+/* Hover effect for options (only works in some browsers) */
+.option:hover {
+    background-color: #f1f1f1 !important;
+}
+
+
+.message_box {
+    width: 576px;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Hahmlet", serif;
+}
+
+.message_box_info {
+    display: flex;
+    justify-content: space-between;
+    color: #dbdbdb;
+    margin-bottom: 4px;
+}
+
+.message_box_info_left, .message_box_info_right {
+    display: flex;
+    font-size: 18px;
+} .message_box_info_left img {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.message-input {
+    width: 576px;
+    height: 203px;
+    background: none;
+    padding: 15px;
+    overflow: hidden;
+    background: url("../../img/message_box.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+    font-size: 18px
+}
+
+.message-input:focus {
+    outline: none; 
+}
+
+::selection {
+    background-color: #9FA3B1; /* 하늘색 배경 */
+    color: #eeeeee; /* 선택된 텍스트의 색상을 검정으로 설정 */
+}
+
+
+
+input[type="checkbox"]{
+    width: 20px;
+    height: 20px;
+    margin: 5px 10px 0px 10px;
+    background: #dbdbdb;
+}
+
+input[type="checkbox"]:checked {
+    content:'✔';
+    color: #938980;
+    background-color: #DCC599;
+}

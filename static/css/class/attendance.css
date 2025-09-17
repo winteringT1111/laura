@@ -1,0 +1,428 @@
+html, body {
+    width: 100%;
+    height: 100vh; /* 높이 100%로 설정 */
+    margin: 0; /* 기본 여백 제거 */
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../img/attendance_back.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: -2; /* 다른 콘텐츠 아래로 배치 */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(5px); 
+    z-index: -1; 
+}
+
+.gradient-overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100vw; 
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)); /* 그라데이션 */
+    z-index: 0; 
+}
+
+
+
+
+.att_background_griffin {
+    width: 897px;
+    height: 617.4px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/출석_그리핀도르.png);
+    background-size: cover;
+}
+
+.att_background_huffle {
+    width: 897px;
+    height: 617.4px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/출석_후플푸프.png);
+    background-size: cover;
+}
+
+.att_background_raven {
+    width: 897px;
+    height: 617.4px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/출석_래번클로.png);
+    background-size: cover;
+}
+
+.att_background_slyderin {
+    width: 897px;
+    height: 617.4px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/출석_슬리데린.png);
+    background-size: cover;
+}
+
+.att_content {
+    width: 500px;
+    height: 380px;
+    position: fixed;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    user-select: none;
+}
+
+.att_header {
+    text-align: center;
+    font-family: "Hahmlet", serif;
+    margin-top: 20px;
+    margin-bottom: 110px;
+} .att_header p {
+    margin: 0px;
+    margin-bottom: -5px;
+    font-size: 19px;
+    font-weight: 500;
+    color: #f3e5c9;
+}
+
+.att_info {
+    text-align: center;
+    font-family: "Hahmlet", serif;
+} .att_info h4 {
+    font-family: "Diphylleia", serif;
+    font-weight: 600;
+    margin-bottom: 15px;
+} .att_info p {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.att_btn {
+    width: 135px;
+    height: 45px;
+    background-color: #AA9B7D;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 2%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Hahmlet", serif;
+    font-size: 18px;
+    filter: drop-shadow(2px 2px 2px #232425);
+}
+
+
+.smallw {
+    font-size: medium !important;
+    margin-top: 5px !important;
+}
+
+
+
+/* 모달 */
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 641px;
+    height: 281px;
+    background: url("../../img/purchase_modal.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    filter: drop-shadow(8px 8px 8px #232425);
+}
+
+#modalContent {
+    color: #dbdbdb;
+    font-size: 25px;
+    text-align: center;
+    font-family: "Hahmlet", serif;
+}
+
+.modal_content_wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 130px;
+    user-select: none;
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} .modal_content_wrap button {
+    width: 135px;
+    height: 45px;
+    background-color: #AA9B7D;
+    font-size: 18px;
+    color: #232425;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    font-family: "Hahmlet", serif;
+}
+
+html, body {
+    width: 100%;
+    height: 100vh; /* 높이 100%로 설정 */
+    margin: 0; /* 기본 여백 제거 */
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../img/attendance_back.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: -2; /* 다른 콘텐츠 아래로 배치 */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(5px); 
+    z-index: -1; 
+}
+
+.gradient-overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100vw; 
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)); /* 그라데이션 */
+    z-index: 0; 
+}
+
+
+
+
+.att_background_griffin {
+    width: 897px;
+    height: 617.4px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/출석_그리핀도르.png);
+    background-size: cover;
+}
+
+.att_background_huffle {
+    width: 897px;
+    height: 617.4px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/출석_후플푸프.png);
+    background-size: cover;
+}
+
+.att_background_raven {
+    width: 897px;
+    height: 617.4px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/출석_래번클로.png);
+    background-size: cover;
+}
+
+.att_background_slyderin {
+    width: 897px;
+    height: 617.4px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/출석_슬리데린.png);
+    background-size: cover;
+}
+
+.att_content {
+    width: 500px;
+    height: 380px;
+    position: fixed;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    user-select: none;
+}
+
+.att_header {
+    text-align: center;
+    font-family: "Hahmlet", serif;
+    margin-top: 20px;
+    margin-bottom: 110px;
+} .att_header p {
+    margin: 0px;
+    margin-bottom: -5px;
+    font-size: 19px;
+    font-weight: 500;
+    color: #f3e5c9;
+}
+
+.att_info {
+    text-align: center;
+    font-family: "Hahmlet", serif;
+} .att_info h4 {
+    font-family: "Diphylleia", serif;
+    font-weight: 600;
+    margin-bottom: 15px;
+} .att_info p {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.att_btn {
+    width: 135px;
+    height: 45px;
+    background-color: #AA9B7D;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 2%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Hahmlet", serif;
+    font-size: 18px;
+    filter: drop-shadow(2px 2px 2px #232425);
+}
+
+
+
+
+
+
+/* 모달 */
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 641px;
+    height: 281px;
+    background: url("../../img/purchase_modal.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    filter: drop-shadow(8px 8px 8px #232425);
+}
+
+#modalContent {
+    color: #dbdbdb;
+    font-size: 25px;
+    text-align: center;
+    font-family: "Hahmlet", serif;
+}
+
+.modal_content_wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 130px;
+    user-select: none;
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} .modal_content_wrap button {
+    width: 135px;
+    height: 45px;
+    background-color: #AA9B7D;
+    font-size: 18px;
+    color: #232425;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    font-family: "Hahmlet", serif;
+}
+
+
+/* 애니메이션을 위해 필요한 클래스 정의 */
+.att_background_slyderin,
+.att_background_huffle,
+.att_background_raven,
+.att_background_griffin {
+    opacity: 0;  /* 처음에는 투명 */
+    transform: translate(-50%, -50%) translateY(-20px); /* 중앙에서 위로 이동한 상태 */
+    animation: fadeInDown 1s forwards;  /* 1초 동안 애니메이션 실행 */
+    visibility: hidden;  /* 초기에는 보이지 않도록 설정 */
+}
+
+/* 애니메이션 정의: fadeInDown */
+@keyframes fadeInDown {
+    to {
+        opacity: 1;  /* 최종적으로 보이게 */
+        transform: translate(-50%, -50%) translateY(0);  /* 중앙으로 이동 */
+    }
+}
+
+/* 중앙에서 시작하도록 translate를 설정 */
+.fadeInDown {
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) translateY(0) !important;  /* 중앙으로 완전히 정렬 */
+}

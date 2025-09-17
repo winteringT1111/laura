@@ -1,0 +1,73 @@
+.loginarea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.logoarea {
+    width: 300px;
+    height: 260px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width:300px;
+}
+
+/* 전체 로그인 박스 */
+.loginbox {
+    width: 330px;
+    height: 400px;
+    background-image: url('../../img/로그인화면.png');
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 인풋 로그인 박스 */
+.loginbox .inputarea {
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 120px;
+}
+
+.inputbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* 아이디 비번 박스 */
+.inputbox input {
+    width: 193px;
+    height: 22px;
+    background-color: transparent;
+    border-radius: 5px;
+    border-width: 0 0 2px;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.inputbox input:focus {
+    outline: none;
+}
+
+.inputbox input::placeholder {
+    color: #ffffff;
+    opacity: 0.7;
+}
+
+
+/* 회원가입 버튼 */
+.signup {
+    margin-top: -16px;
+}
+

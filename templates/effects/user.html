@@ -1,32 +1,32 @@
 {% load static %}
 
 <div class="user" id="user-box">
-    <div class="profile">
-        <div class="profile_image">
-            <img src="{% static 'img/charac/07/03/' %}{{ user.username }}07-1.png" alt="User Profile Image">
+    <div class="profile_image">
+        <img src="{% static 'img/charac/07/03/' %}{{ user.username }}07-1.png" alt="User Profile Image">
+    </div>
+
+    <div class="profile_name">
+        {{ user.username }}
+    </div>
+
+    <div class="active_content">
+        <div class="token">
+            <img src="{% static 'img/갈레온.png' %}" alt="Galleon">
+            <p>{{charInfo.galeon}}</p>
         </div>
-        <div class="profile_name">
-            {{ user.username }}
+        <div class="token">
+            <img src="{% static 'img/토큰.png' %}" alt="Token">
+            <p>{{charInfo.classToken}}</p>
         </div>
     </div>
-    <div class="profile_content">
-        <div class="goto_twitter">
+
+    <div class="goto_twitter">
             <a href="https://x.com/WinteringT" target="_blank">
-                <label>TWITTER</label>
                 <i class="fa-brands fa-twitter"></i>
             </a>
-            <div class="active_content">
-                <div class="token">
-                    <img src="{% static 'img/갈레온.png' %}" alt="Galleon">
-                    <span>{{charInfo.galeon}}</span>
-                </div>
-                <div class="token">
-                    <img src="{% static 'img/토큰.png' %}" alt="Token">
-                    <span>{{charInfo.classToken}}</span>
-                </div>
-            </div>
-        </div>
-        <div class="audio">
+    </div>
+
+    <div class="audio">
             <!-- One audio tag -->
             <audio id="background-music" loop>
                 <source src="{% static 'bgm2.mp3' %}" type="audio/mpeg">
@@ -39,16 +39,9 @@
                 <button id="to-start-button">
                     <i class="fa-solid fa-square"></i>
                 </button>
-                <input type="range" id="volume-slider" value="50" step="1" min="0" max="100" class="volume-slider">
             </div>
-        </div>
-    </div>
-    <div class="arrow" id="arrow">
-        <i class="fa-solid fa-chevron-left"></i>
     </div>
 </div>
-
-
 
 
 <script>
@@ -150,38 +143,5 @@
         }
     });
 
-    // 화살표 클릭 시 프로필 박스 토글
-    document.addEventListener('DOMContentLoaded', () => {
-        const userBox = document.getElementById('user-box');
-        const arrow = document.getElementById('arrow');
-        const arrowIcon = arrow.querySelector('i');
-    
-        // 초기 상태는 프로필 박스를 숨김
-        userBox.style.left = '-360px';
-        arrowIcon.classList.remove('fa-chevron-left');
-        arrowIcon.classList.add('fa-chevron-right');
-    
-        // localStorage에서 사용자 상태 불러오기
-        const isVisible = localStorage.getItem('isVisible');
-        if (isVisible === 'true') {
-            userBox.style.left = '-5px';  // 박스 보이도록 설정
-            arrowIcon.classList.remove('fa-chevron-right');
-            arrowIcon.classList.add('fa-chevron-left');
-        }
-    
-        // 화살표 클릭 시 프로필 박스 토글
-        arrow.addEventListener('click', () => {
-            if (userBox.style.left === '-360px') {
-                userBox.style.left = '-5px';
-                arrowIcon.classList.remove('fa-chevron-right');
-                arrowIcon.classList.add('fa-chevron-left');
-                localStorage.setItem('isVisible', 'true');
-            } else {
-                userBox.style.left = '-360px';
-                arrowIcon.classList.remove('fa-chevron-left');
-                arrowIcon.classList.add('fa-chevron-right');
-                localStorage.setItem('isVisible', 'false');
-            }
-        });
-    });
+
 </script>

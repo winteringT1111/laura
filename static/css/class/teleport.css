@@ -1,0 +1,294 @@
+html, body {
+    width: 100%;
+    height: 100vh; /* 높이 100%로 설정 */
+    margin: 0; /* 기본 여백 제거 */
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../img/teleport_back.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: -2; /* 다른 콘텐츠 아래로 배치 */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(5px); 
+    z-index: -1; 
+}
+
+.gradient-overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100vw; 
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgb(0, 0, 0)); /* 그라데이션 */
+    z-index: 0; 
+}
+
+.goback {
+    position: fixed;
+    top: 30px;
+    left: 50px;
+    z-index: 30;
+    width: 45px;
+    height: 45px;
+    background-color: #3D485A;
+    border: 2px solid #DCC599;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+} .goback a {
+    text-decoration: none;
+} .goback a i {
+    color: #dbdbdb;
+    font-size: 22px;
+}
+
+
+.flying_background {
+    width: 862px;
+    height: 671px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/teleport_background.png);
+    background-size: cover;
+    font-family: "Hahmlet", serif;
+    text-align: center;
+    user-select: none;
+}
+
+
+.flying_title {
+    font-family: 'Tangerine', cursive;
+    position: absolute;
+    font-size: 130px;
+    font-weight: 500;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #dbdbdb;
+    z-index: 6;
+}
+
+.selected_box {
+    background-color: #161718;
+    border-radius: 10px;
+    padding: 20px 70px;
+    color: rgb(255, 220, 105);
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} .selected_box p {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.modal_info {
+    position: absolute;
+    top: 72%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    color: #dbdbdb;
+    width: 120%;
+} .modal_info p {
+    margin: 0;
+    font-size: larger;
+} .modal_info span {
+    margin-right: 13px;
+}
+
+.modal_info2 {
+    position: absolute;
+    top: 56%;
+    left: 58.5%;
+    transform: translate(-50%, -50%); 
+    color: #dbdbdb;
+    text-align: left;
+} .modal_info2 p {
+    margin: 0px 0px;
+    font-size: medium;
+}
+
+
+.herb_btn {
+    background-color: #dbdbdb;
+    font-size: large;
+    border: none;
+    border-radius: 5px;
+    width: 120px;
+    height: 50px;
+    position: absolute;
+    bottom: 9%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+}
+
+
+.selected_image {
+    background: url("../../img/flying_box.png");
+    width: 90px;
+    height: 90px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;  /* 부모 요소에 relative 추가 */
+    top: 56%;
+    left: 43%;
+    transform: translate(-50%, -50%); 
+} .selected_image img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 60%;
+} 
+
+/* popover */
+.item_description {
+    position: absolute;  /* 절대 위치 지정 */
+    background-color: rgba(219, 219, 219, 0.8); 
+    padding: 10px 10px 13px 10px;
+    border-radius: 5px;
+    display: none;  /* 기본적으로 숨김 */
+    z-index: 10;  /* 다른 요소보다 위로 올리기 */
+    width: 170px; 
+    text-align: center;
+    color: #2e3942;
+    font-family: "Hahmlet", serif;
+    font-weight: 400;
+    top: -12%; /* 부모 요소의 바로 아래에 위치 */
+    right: 105%; /* 부모 요소의 왼쪽에 위치 */
+}
+
+.selected_image:hover .item_description {
+    display: block; /* hover 시 보이게 설정 */
+}
+
+.item_description p {
+    margin: 0;
+}
+
+.category {
+    background-color: #d3bb8e;
+    color: white;
+    padding: 2px;
+    font-size: small;
+    border-radius: 8px;
+    width: 80px;
+    display: inline-block; 
+    text-align: center;
+}
+
+.item_info {
+    font-size: small;
+    margin-top: 4px !important;
+}
+
+
+/* .herb_background 기본 스타일 */
+.flying_background {
+    width: 862px;
+    height: 671px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(-20px); /* 애니메이션 시작 위치 */
+    z-index: 0;
+    filter: drop-shadow(8px 8px 8px #232425);
+    background-image: url(../../img/teleport_background.png);
+    background-size: cover;
+    font-family: "Hahmlet", serif;
+    text-align: center;
+    user-select: none;
+    opacity: 0;  /* 초기에는 투명 */
+    animation: fadeInDown 1s forwards; /* 애니메이션 실행 */
+}
+
+/* 애니메이션 정의: fadeInDown */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(-20px); /* 시작 시 위치 */
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(0); /* 끝 시 위치 */
+    }
+}
+
+/* 애니메이션이 끝난 후 */
+.flying_background.fadeInDown {
+    opacity: 1; /* 애니메이션 종료 후 요소는 완전히 보임 */
+    transform: translate(-50%, -50%) translateY(0); /* 최종 위치 */
+}
+
+
+/* 모달 */
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 641px;
+    height: 281px;
+    background: url("../../img/purchase_modal.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    filter: drop-shadow(8px 8px 8px #232425);
+}
+.modal-body {
+    width: 641px;
+}
+
+#modalContent {
+    width: 100%;
+    color: #dbdbdb;
+    font-size: 25px;
+    text-align: center;
+    font-family: "Hahmlet", serif;
+}
+
+.modal_content_wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 130px;
+    user-select: none;
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} .modal_content_wrap button {
+    width: 135px;
+    height: 45px;
+    background-color: #AA9B7D;
+    font-size: 18px;
+    color: #232425;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    font-family: "Hahmlet", serif;
+}

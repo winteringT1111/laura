@@ -1,0 +1,117 @@
+#pm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 641px;
+    height: 281px;
+    background: url("../../img/purchase_modal.png");
+    background-size: contain;
+    border: none;
+    user-select: none;
+    filter: drop-shadow(8px 8px 8px #232425);
+}
+
+.quantity-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Adjust this to control spacing between buttons and input */
+}
+
+/* 수량 칸 */
+.quantity-spinner input {
+    width: 150px;
+    height: 37px;
+    background-color: #f7ebdb;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    color: rgb(50, 53, 78);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* +- 버튼 */
+.quantity-spinner button {
+    background-color: #938980;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: aliceblue;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 구매버튼 */
+#liveToastBtn {
+    width: 75px;
+    height: 37px;
+    background-color: #f7ebdb;
+    border: none;
+    border-radius: 5px;
+    color: rgb(50, 53, 78);
+    font-size: 17px;
+    margin-left: 20px;
+}
+
+.lastline {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+}
+
+.priceline {
+    display: flex;
+}
+
+
+#modalTitle, #modalTitleEng {
+    width: 100%; /* Make sure the titles take up the full width of their container */
+    margin: 0 auto; /* Centering the titles */
+    text-align: center;
+    color: #B0B8CB;
+}
+
+#modalTitle {
+    margin-top: 20px;
+    font-size: 30px;
+    font-family: "Hahmlet", serif;
+}
+
+#modalTitleEng {
+    font-size: 55px;
+    font-family: "Oleo Script", system-ui;
+    font-style: normal;
+    margin-top: -5px;
+}
+
+.priceline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 21%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #3d352c;
+    font-family: "Arima", system-ui;
+    width: 270px;
+    height: 65px;
+    background-image: url("../../img/가격띠.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.priceline h5 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0px 0px 9px; /* Removes any default margin that may be affecting alignment */
+}

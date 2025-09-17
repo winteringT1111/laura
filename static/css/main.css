@@ -1,0 +1,67 @@
+html, body {
+    overflow: hidden; 
+    user-select: none;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../img/bg1.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: -2; /* 다른 콘텐츠 아래로 배치 */
+}
+
+@font-face {
+    font-family: 'MyCustomFont'; /* 원하는 폰트 이름 */
+    src: url('../Killega.ttf') format('truetype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
+.main_content_wrap {
+    display: flex;
+    position: fixed;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95); /*축소*/
+    gap: 12px;
+    margin-left: -30px;
+}
+
+
+.c1_wrap {
+    display: flex;
+    gap: 5px;
+    margin: 10px 0px 20px 0px;
+}
+
+.main_content_1 {     
+    text-align: right;
+}
+
+.header {
+    display: flex;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95); /*축소*/
+}
+
+/*NOTICE WORLD SYSTEM GUILD*/
+.subtitle {
+    width: 184px;
+    height: 218px;
+    margin: 0;
+    font-family: 'MyCustomFont', sans-serif;
+    font-size: 40px;
+    line-height: 218px;
+    align-items: center;
+    text-align: center;
+    color: white;
+    background-image: url('../img/main/run.png');;
+}

@@ -1,0 +1,25 @@
+* {
+    cursor: url('../../cur/Sapphire_Normal.cur') 2 2, auto;
+}
+
+.snowflake {
+    position: absolute;
+    width: 2px; /* Snowflake size */
+    height: 2px; /* Snowflake size */
+    background: white; /* Snowflake color */
+    opacity: 0.8; /* Opacity */
+    pointer-events: none;
+    animation: rise linear infinite; /* Use the rise animation */
+    top: 100vh; /* Start from below the screen */
+}
+
+@keyframes rise {
+    to {
+        transform: translateY(-100vh); /* Move up by the entire height of the screen */
+    }
+}
+
+body {
+    font-family: 'Noto Sans KR';
+    font-weight: 300;
+}

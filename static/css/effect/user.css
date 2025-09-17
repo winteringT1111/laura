@@ -1,0 +1,79 @@
+.user {
+    width: 410px !important;
+    height: 80px !important;
+    position: fixed;
+    top: 20px;
+    left: 0; /* 기본 상태에서 박스가 왼쪽으로 숨겨짐 */
+    z-index: 5;
+    color: white;
+    padding: 10px;
+    padding-left: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    transition: left 0.5s ease; /* 왼쪽으로 움직일 때 애니메이션 효과 */
+    font-family: "Hahmlet", serif;
+}
+
+
+#background-music {
+    display: none;
+  } .audio-controls button {
+    background: none;
+    border: none;
+} .audio-controls button i {
+    color: #dbdbdb; 
+    font-size: 14px;
+} .audio-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    border-radius: 10px;
+    padding: 5px 10px;
+    border: 1.5px solid #dbdbdb;
+    background-color: rgba(48, 47, 53, 0.5);
+}
+
+.profile_name {
+    max-width: 120px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.profile_image img {
+    width: 80px;
+    border: 2px solid #dbdbdb;
+    border-radius: 50%;
+}
+
+.active_content {
+    display: flex;
+}
+
+.token img {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+    margin-bottom: 3px;
+    position: absolute;
+    top: 50%;
+    transform: scaleY(-50%);
+}
+
+.token p {
+    margin: none;
+    margin-bottom: 10px;
+}
+
+.token {
+    display: flex;
+    position: relative;
+    margin: 0px 5px;
+    padding: 8px;
+    width: 100px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: rgb(31, 26, 18);
+}
+

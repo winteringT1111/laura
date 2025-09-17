@@ -1,0 +1,99 @@
+.loginarea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.logoarea {
+    width: 300px;
+    height: 260px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width:300px;
+}
+
+/* 전체 회원가입 박스 */
+.signupbox {
+    width: 1471px;
+    height: 735px;
+    background-image: url('../../img/계정생성.png');
+    background-color: #3e4a6c;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    display: block;
+}
+
+.inputarea {
+    overflow-y: auto;
+}
+
+.input_section input {
+    width: 300px;
+    height: 25px;
+    background-color: #f0f0f0;
+    color: #414167;
+    border: none;
+    border-radius: 5px;
+    margin: 5px 0px;
+    padding: 10px;
+    font-size: 15px;
+    font-family: "Hahmlet", serif;
+}
+
+button {
+    width: 320px;
+    height: 50px;
+    background-color: #3e4a6c;
+    color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 15px;
+    font-family: "Hahmlet", serif;
+    transition: all 2s ease-in;
+}
+
+button:hover {
+    border: solid 3px #DCC599;
+}
+
+.tomain {
+    width: 300px;
+    height: 32px;
+    line-height: 32px;
+    background-color: #3e4a6c;
+    color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 15px;
+    font-family: "Hahmlet", serif;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+
+.tomain:hover {
+    width: 299px;
+    height: 31px;
+    border: solid 1px #ffffff;
+}
+
+.content_wrap {
+    position: absolute;
+    top: 56%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

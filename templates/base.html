@@ -29,14 +29,12 @@
 	    {% endblock %}
     </head>
     <body>
-        <div class="background"></div> <!-- 흐림 효과를 위한 배경 -->
+        <div class="background"></div>
         {% include "effects/navbar.html" %}
         {% include "effects/snow.html" %}
 
         {% if user.is_authenticated %}
         {% include "effects/user.html" %}
-        {% else %}
-        {% include "effects/guest_user.html" %}
         {% endif %}
         
         {% block content %}

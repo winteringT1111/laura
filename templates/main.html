@@ -4,7 +4,7 @@
 <html lang="ko">
     <head>
         <meta charset="utf-8">
-        <title>Wintering Theory</title>
+        <title>The Light of Laura</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://kit.fontawesome.com/7076248453.js" crossorigin="anonymous"></script>
@@ -12,15 +12,8 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
         {% if user.is_authenticated %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/effect/user.css' %}">
-        {% else %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/effect/guest_user.css' %}">
         {% endif %}
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         
@@ -30,90 +23,38 @@
         <div class="background"></div> <!-- 흐림 효과를 위한 배경 -->
         {% if user.is_authenticated %}
         {% include "effects/user.html" %}
-        {% else %}
-        {% include "effects/guest_user.html" %}
         {% endif %}
 
-        
-        <div class="background_wrap">
-            <div class="background_box">
-                <div class="navbar">
-                    <img id="wrap_background1" src={% static "img/메인띠.png" %}>
-                    <div class="navbar_content">
-                        <a href="/"><img src={% static "img/로고.png" %}></a>
-                        <nav>
-                            <ul class="menu align-center expanded text-center SMN_effect-44">
-                            <li><a class="navhover" href="/notice">NOTICE</a></li>
-                            <li><a class="navhover" href="/world">WORLD</a></li>
-                            <li><a class="navhover" href="/system">SYSTEM</a></li>
-                            <li><a class="navhover" href="/store">STORE</a></li>
-                            <li><a class="navhover" href="/member">MEMBER</a></li>
-                            </ul> 
-                        </nav>
-                        <div class="copyright">
-                            <p>
-                                ⓒ 2024. Wintering Theory<br/>
-                                All rights reserved.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="main_wrap">
-                    <img id="wrap_background2" src={% static "img/메인배경.png" %}>
-                    <div class="main_contents_wrap">
-                        <div class="carousel_wrap">
-                            <div id="carouselExampleInterval" class="carousel slide carousel-fade" data-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active" data-interval="8000">
-                                        <a href="https://url.kr/531v7o" target="_blank"><img src="{% static 'img/공지사항배너.png' %}" class="d-block w-100" alt="..."></a>
-                                    </div>
-                                    <div class="carousel-item" data-interval="8000">
-                                        <a href="https://url.kr/kc3cig" target="_blank"><img src="{% static 'img/세계관배너.png' %}" class="d-block w-100" alt="..."></a>
-                                    </div>
-                                    <div class="carousel-item" data-interval="8000">
-                                        <a href="https://url.kr/ewbvq3" target="_blank"><img src="{% static 'img/시스템배너.png' %}" class="d-block w-100" alt="..."></a>
-                                    </div>
-                                    <div class="carousel-item" data-interval="8000">
-                                        <a href="https://url.kr/bwkysb" target="_blank"><img src="{% static 'img/신청서배너.png' %}" class="d-block w-100" alt="..."></a>
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-target="#carouselExampleInterval" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-target="#carouselExampleInterval" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </button>
-                            </div>
-                        </div>
-    
-                        <div class="weather_wrap">
-                            <p id="countdown">새벽 중 옅은 눈보라가 일었습니다.</p>
-                        </div>
-                        <div class="contents_wrap">                   
-                            <div class="badge">
-                                <img src={% static "img/hogwart.png" %}>
-                                <h5>Today's Highest Score</h5>
-                            </div>
-                            <img class="calender" src={% static "img/10월달력.png" %}>
-                            <div class="gotobox">
-                                <div class="goto">
-                                    <a href="/attendance"><img class="calender" id="ed" src={% static "img/moon.png" %}> </a>
-                                    <h5>ATTENDANCE</h5>
-                                </div>
-                                <div class="goto">
-                                    <a href="/class"><img class="calender" src={% static "img/book.png" %}></a>
-                                    <h5>LESSON</h5>
-                                </div>                                   
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>     
-            </div>
+<div class="header">
+        <a><p class="subtitle">NOTICE</p></a>
+        <a><p class="subtitle">WORLD</p></a>
+        <a><img src="{% static 'img/로고.png' %}" alt="QnA"></a>
+        <a><p class="subtitle">SYSTEM</p></a>
+        <a><p class="subtitle">GUILD</p></a>        
+</div>
+
+<div class="main_content_wrap">
+    <div class="main_content_1">
+        <a><img src="{% static 'img/main/story.png' %}" alt="QnA"></a>
+        <div class="c1_wrap">
+            <a><img src="{% static 'img/main/message.png' %}" alt="QnA"></a>
+            <a><img src="{% static 'img/main/store.png' %}" alt="QnA"></a>
         </div>
         
+        <a><img src="{% static 'img/main/qna.png' %}" alt="QnA"></a>
+    </div>
+    <div class="main_content_2">
+        <a><img src="{% static 'img/main/application.png' %}" alt="Login"></a>
+        <a><img src="{% static 'img/main/calender.png' %}" alt="Login"></a>
+    </div>
+    <div class="main_content_3">
+        <a><img src="{% static 'img/main/quest.png' %}" alt="Login"></a>
+        <a><img src="{% static 'img/main/login_back.png' %}" alt="Login"></a>
+    </div>
+    </div>
+</div>
+        
+
 
         {% include "effects/snow.html" %}
             
