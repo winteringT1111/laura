@@ -23,13 +23,50 @@ html, body {
     font-style: normal; /* 폰트 스타일 (optional) */
 }
 
+
+
+/*NOTICE WORLD SYSTEM GUILD*/
+.subtitle {
+    width: 184px;
+    height: 218px;
+    margin: 0;
+    font-family: 'MyCustomFont', sans-serif;
+    font-size: 28px;
+    line-height: 218px;
+    align-items: center;
+    text-align: center;
+    color: rgb(199, 190, 139);
+    background-image: url('../img/main/run.png');
+    padding-top: 10px;
+    transition: transform 0.5s ease;
+}
+
+.subtitle-text {
+    display: inline-block;   /* transform 적용 가능 */
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+    transform: scaleY(1.2);  /* 글자만 세로로 30% 늘림 */
+}
+
+.subtitle:hover {
+    transform: translateY(5px); /* 5% 커짐 */
+}
+
+.logo {
+    width: 340px;
+    filter: drop-shadow(2px 2px 14px rgb(255, 235, 146));
+    margin: -105px -15px;
+}
+
+
+
+
 .main_content_wrap {
     display: flex;
     position: fixed;
-    top: 65%;
+    top: 63%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.95); /*축소*/
-    gap: 12px;
+    gap: 30px;
     margin-left: -30px;
 }
 
@@ -38,10 +75,58 @@ html, body {
     display: flex;
     gap: 5px;
     margin: 10px 0px 20px 0px;
+    filter: drop-shadow(0px 5px 8px rgba(0, 0, 0, 0.7));
+}
+.c1_wrap a {
+    display: inline-block;
 }
 
-.main_content_1 {     
+
+
+/* hover wrapper 설정 */
+.hover_wrap {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.hover_wrap:hover {
+    transform: translateY(5px); /* hover 시 부드럽게 이동 */
+}
+
+/* img 등장 애니메이션만 img에 적용 */
+.c1_wrap a img {
+    display: block;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* 순차 등장 */
+.c1_wrap a:nth-child(1) img { animation-delay: 0.1s; }
+.c1_wrap a:nth-child(2) img { animation-delay: 0.3s; }
+
+/* 등장 애니메이션 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+.main_content_1 { 
+    margin-top: 50px;    
     text-align: right;
+}
+
+.main_content_3 { 
+    margin-left: -15px;
 }
 
 .header {
@@ -49,19 +134,366 @@ html, body {
     position: fixed;
     top: 25%;
     left: 50%;
+    gap: 18px;
     transform: translate(-50%, -50%) scale(0.95); /*축소*/
 }
 
-/*NOTICE WORLD SYSTEM GUILD*/
-.subtitle {
-    width: 184px;
-    height: 218px;
-    margin: 0;
+
+
+
+.app {
+    margin-left: -30px;
+   
+}
+
+.cal {
+    margin-top: -50px;
+    margin-left: -10px;
+    filter: drop-shadow(2px 2px 5px rgb(255, 235, 146, 0.8));
+}
+
+.quest {
+    filter: drop-shadow(0px 5px 8px rgba(0, 0, 0, 0.7));
+}
+
+
+
+
+
+
+
+
+
+.loginbox{
+    height: 450px;
+    background-image: url('../img/main/login_back.png');
+    position: relative;
+}
+
+.inputbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+/* 인풋 로그인 박스 */
+.inputarea {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    gap: 18px;
+    transform: translate(-50%, -50%) 
+}
+
+/* 아이디 비번 박스 */
+.inputbox input {
+    width: 270px;
+    height: 45px;
+    background-color: rgb(131, 124, 109);
+    border-radius: 5px;
+    border-width: 0 0 2px;
+    color: #ffffff;
+    margin-bottom: 6px;
+    font-size: 16px;
+    padding: 20px 15px;
+
+}
+
+.inputbox input:focus {
+    outline: none;
+    
+}
+
+.inputbox input::placeholder {
     font-family: 'MyCustomFont', sans-serif;
-    font-size: 40px;
-    line-height: 218px;
-    align-items: center;
-    text-align: center;
-    color: white;
-    background-image: url('../img/main/run.png');;
+    font-size: 14px;
+    color: #ffffff;
+    opacity: 0.7;
+}
+
+.loginbtn{
+    width: 200px;
+    height: 45px;
+    line-height: 58px;
+    font-family: 'MyCustomFont', sans-serif;
+    background-color: rgb(199, 180, 129);
+    font-weight: bold;
+    font-size: 17px;
+    color: rgb(83, 70, 37);
+    border-radius: 5px;
+    border-width: 0 0 2px;
+    margin-left: 35px;
+    transition: transform 0.2s ease;
+}
+
+.loginbtn:hover {
+  transform: translateY(3px); /* 마우스 올리면 5px 아래로 이동 */
+}
+
+.loginbox form p {
+    color: #e4d39d;
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16.5px;
+    transform: translate(-50%, -50%) ;
+}
+
+
+
+
+
+
+
+.sheen_wrap {
+    position: relative;
+    display: inline-block;
+    overflow: hidden; /* sheen이 이미지 밖으로 안 나가도록 */
+}.sheen_wrap img {
+    display: block;
+}
+
+.sheen_wrap2 {
+    position: relative;
+    display: inline-block;
+    overflow: hidden; /* sheen이 이미지 밖으로 안 나가도록 */
+} .sheen_wrap2 img {
+    display: block;
+    margin: 20px 0 12px 0;
+
+}
+
+/* sheen 레이어 */
+.sheen {
+    position: absolute;
+    top: 0;
+    left: -50%;           /* 시작 위치 */
+    width: 40%;           /* 이미지보다 작게 */
+    height: 98%;
+    background: linear-gradient(
+        120deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.6) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    transform: skewX(-25deg);
+    pointer-events: none;
+    opacity: 0;            /* 기본에는 안 보임 */
+}
+
+/* sheen 레이어 */
+.sheen2 {
+    position: absolute;
+    top: 22%;
+    left: -50%;           /* 시작 위치 */
+    width: 40%;           /* 이미지보다 작게 */
+    height: 69%;
+    background: linear-gradient(
+        120deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.6) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    transform: skewX(-25deg);
+    pointer-events: none;
+    opacity: 0;            /* 기본에는 안 보임 */
+}
+
+/* hover 시 fade in + 이동 */
+.sheen_wrap:hover .sheen {
+    animation: sheen_fade 1s forwards;
+}
+
+/* hover 시 fade in + 이동 */
+.sheen_wrap2:hover .sheen2 {
+    animation: sheen_fade 1s forwards;
+}
+
+@keyframes sheen_fade {
+    0% {
+        left: -20%;
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;         /* 점점 나타남 */
+    }
+    100% {
+        left: 110%;         /* 이미지 오른쪽 끝으로 이동 */
+        opacity: 0;         /* 사라짐 */
+    }
+}
+
+
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 245, 186); /* 노란색 테두리 */
+  background: transparent;                  /* 내부는 비움 */
+  transform: scale(0);
+  animation: ripple-effect 0.5s ease-out;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@keyframes ripple-effect {
+  to {
+    transform: scale(1.3); 
+    opacity: 0;          
+  }
+}
+
+
+.main_content_1 img,
+.main_content_1 a {
+    opacity: 0;                          /* 처음에는 안 보임 */
+    transform: translateX(-50px);        /* 왼쪽으로 밀려 있음 */
+    animation: fadeSlideIn 1s ease forwards;
+}
+
+/* 순차적으로 등장하도록 delay 주기 */
+.main_content_1 img:nth-child(1),
+.main_content_1 a:nth-child(1) {
+    animation-delay: 0.1s;
+}
+.main_content_1 img:nth-child(2),
+.main_content_1 a:nth-child(2) {
+    animation-delay: 0.4s;
+}
+.main_content_1 img:nth-child(3),
+.main_content_1 a:nth-child(3) {
+    animation-delay: 0.6s;
+}
+.main_content_1 img:nth-child(4),
+.main_content_1 a:nth-child(4) {
+    animation-delay: 0.8s;
+}
+
+@keyframes fadeSlideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);   /* 원래 자리로 */
+    }
+}
+
+
+.main_content_1 img,
+.main_content_1 a {
+    opacity: 0;                          /* 처음에는 안 보임 */
+    transform: translateX(-50px);        /* 왼쪽으로 밀려 있음 */
+    animation: fadeSlideIn 1s ease forwards;
+}
+
+/* 순차적으로 등장하도록 delay 주기 */
+.main_content_1 img:nth-child(1),
+.main_content_1 a:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.main_content_1 img:nth-child(4),
+.main_content_1 a:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+@keyframes fadeSlideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);   /* 원래 자리로 */
+    }
+}
+
+
+.main_content_2 img {
+    opacity: 0; /* 처음엔 숨김 */
+}
+
+/* 첫 번째 요소: 위 → 아래 */
+.main_content_2 a img {
+    transform: translateY(-30px);
+    animation: fadeDown 1s ease forwards;
+    animation-delay: 0.1s; /* 살짝 늦게 등장 */
+}
+
+/* 두 번째 요소: 아래 → 위 */
+.main_content_2 img.cal {
+    transform: translateY(30px);
+    animation: fadeUp 1s ease forwards;
+    animation-delay: 0.3s; /* 첫 번째보다 늦게 등장 */
+}
+
+@keyframes fadeDown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.main_content_3 > * {
+    opacity: 0; /* 처음엔 숨김 */
+    transform: translateX(50px); /* 오른쪽에 대기 */
+}
+
+/* 첫 번째: quest 이미지 */
+.main_content_3 .sheen_wrap2 {
+    animation: slideLeft 1s ease forwards;
+    animation-delay: 0.1s;
+}
+
+/* 두 번째: 로그인 박스 */
+.main_content_3 .loginbox {
+    animation: slideLeft 1s ease forwards;
+    animation-delay: 0.4s; /* 살짝 늦게 */
+}
+
+@keyframes slideLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+
+
+/* 로고 순차 등장 */
+.header a:nth-child(3) { 
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: fadeDown 1s ease forwards;
+    animation-delay: 0.2s;
+}
+
+/* 2. WORLD & SYSTEM */
+.header a:nth-child(2),
+.header a:nth-child(4) {
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: fadeDown 1s ease forwards;
+    animation-delay: 0.3s; /* 로고 나온 후 등장 */
+}
+
+/* 3. NOTICE & GUILD */
+.header a:nth-child(1),
+.header a:nth-child(5) {
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: fadeDown 1s ease forwards;
+    animation-delay: 0.4s; /* 그 다음 등장 */
+}
+
+/* 등장용 keyframes */
+@keyframes fadeDown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

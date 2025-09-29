@@ -9,49 +9,16 @@
 
 <div class="overlay"></div> <!-- 흐림 효과 적용 영역 -->
 
-<a href="/member"><div class="goback">
-    <i class="fa-solid fa-chevron-left"></i>
-</div></a>
+<a href="/member" class="goback">RETURN</a>
 
 <div class="content">
 
-<!-- 캐릭터 -->
-<div class="character_wrap hidden" id="grade1">
-    <div class="cha">
-        {% if char.charFirstName == "Yvonne" or char.charFirstName == "Ezekiel" or char.charFirstName == "Ezell"  or char.charFirstName == "Rebecca"  or char.charFirstName == "Remia"%}
-        <img class="character2" id=""src="{% static 'img/charac/01/02/' %}{{ char.charImageA }}.png"></img>
-        {% elif char.charFirstName == "Sophia" %}
-        <img class="character4" src="{% static 'img/charac/01/02/' %}{{ char.charImageA }}.png"></img>
-        {% else %}
-        <img class="character" src="{% static 'img/charac/01/02/' %}{{ char.charImageA }}.png"></img>
-        {% endif %}
-    </div>
-</div>
 
-<div class="character_wrap hidden" id="grade4">
+<div class="character_wrap fade-in-left" id="grade7">
     <div class="cha">
-        {% if char.charFirstName == "Yvonne"%}
-        <img class="character2" id=""src="{% static 'img/charac/04/01/' %}{{ char04.charImageA }}.png"></img>
-        {% else %}
-        <img class="character" src="{% static 'img/charac/04/01/' %}{{ char04.charImageA }}.png"></img>
-        {% endif %}
-    </div>
-</div>
-
-<div class="character_wrap" id="grade7">
-    <div class="cha">
-        {% if char.charFirstName == "Yvonne" or char.charFirstName == "Ezell" or char.charFirstName == "Werner" or char.charFirstName == "Tillman" %}
-        <img class="character2" id=""src="{% static 'img/charac/07/01/' %}{{ char07.charImageA }}.png"></img>
-        {% elif char.charFirstName == "Agatha" %}
-        <img class="character3" id=""src="{% static 'img/charac/07/01/' %}{{ char07.charImageA }}.png"></img>
-        {% elif char.charFirstName == "Patch" %}
-        <img class="character5" id=""src="{% static 'img/charac/07/01/' %}{{ char07.charImageA }}.png"></img>
-        {% else %}
         <img class="character" src="{% static 'img/charac/07/01/' %}{{ char07.charImageA }}.png"></img>
-        {% endif %}
     </div>
 </div>
-
 
 {% if char.charProfileMusic %}
 <div id="profile_music" class="hidden" data-music="{{char.charProfileMusic}}.mp3"></div>
@@ -60,633 +27,174 @@
 
 <div class="wrap fade-in-right">
     <div class="inven">
-        {% if char.charFirstName == "Werner" or char.charFirstName == "Tillman" %}
-        <button class="transbtn" onclick="show7grade2()">Grade 7</button>
-        <button class="transbtn" onclick="showInventory2()">인벤토리</button>
-        {% else %}
-        <button class="transbtn" onclick="show1grade()">Grade 1</button>
-        <button class="transbtn" onclick="show4grade()">Grade 4</button>
         <button class="transbtn" onclick="show7grade()">Grade 7</button>
         <button class="transbtn" onclick="showInventory()">인벤토리</button>
-        {% endif %}
     </div>
 
-{% if char.charFirstName == "Werner" or char.charFirstName == "Tillman" %}
-{% else %}
- <!-- 1학년 기본정보 -->
- <div class="info_wrap hidden" id="profile-section">
-    <div class="info_content">
-        <div class="catchphrase">
-            [ {{char.charCatchPhrase}} ]
-        </div>
-        <div class="name_wrap">
-            <div class="name_content">
-                <p class="name1">
-                    {{char.charEngName}}
-                </p>
-                <p class="name2">
-                    {{char.charName}}
-                </p>
+
+    <div class="info_wrap" id="profile-section7">
+        <div class="content1">
+            <div class="catchphrase">
+                <p>일찍 일어나는 고양이가 쥐를 잡는다</p>
             </div>
-        </div>
-        <div class="phrase">
-            <p><span>"  </span> {{char.charPhrase}} <span>  "</span></p>
-        </div>
-        <div class="spec_wrap">
-            <div class="spec_content">
-                <div class="spec_info_content">
-                    <div class="info_line_content">
-                        <p>{{char.charSex}} | {{char.charHeight}}cm | {{char.charWeight}}kg | {{char.charNationality}} | {{char.charBlood}}</p>
-                    </div>
+            <div class="name_wrap">
+                <img class="position" src="{% static 'img/profile/tank.png' %}" alt="position">
+                <div class="name_info">
+                    <p>카르디엘 실베스터</p>
+                    <p>Cardiell Sylvester</p>
+                    <p>Dark Elf</p>
                 </div>
-                {% if char.charHouse == "후플푸프" %}
-                    <img class="houseimgH" src="{% static 'img/' %}{{ char.charHouse }}.png">
-                {% else %}
-                    <img class="houseimg" src="{% static 'img/' %}{{ char.charHouse }}.png">
+                <img class="star" src="{% static 'img/profile/star.png' %}" alt="star">
+            </div>
+            <div class="sub_wrap">
+                <div class="lines">
+                    <p>" 믿고 맡겨보시죠<br>장사 수완의 기본, '신뢰'아니겠나요? "</p>
+                </div>
+                <div class="sub_info">
+                    MALE | 378세 | 179cm | 76kg
+                </div>
+            </div>
+        </div>
+          
+        <div class="content2"> 
+            <button class="sub_section">
+                PERSONALITY
+            </button>
+            {% if char07.charCommission  or char07.charImageInfo %}
+            <button class="sub_section">
+                APPEARANCE
+            </button>
+            {% endif %}
+            <button class="sub_section">
+                ETC
+            </button>
+            <button class="sub_section">
+                STAT
+            </button>
+        </div>
+
+        <div class="content_personality">
+            <div class="keyword_wrap">
+                <div class="keyword">
+                    <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
+                    자유롭되
+                </div>
+                <div class="keyword">
+                    <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
+                    인과 예를 그르치지 않고
+                </div>
+                <div class="keyword">
+                    <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
+                    제 몫만큼은 확실히
+                </div>
+            </div>
+
+            <div class="scroll_box">
+                <p>
+                    여기에 긴 글을 넣으면 됩니다.  
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                </p>
+            </div>
+        </div>
+
+        <div class="content_appearance">
+            
+            <div class="keyword_wrap">
+                <div class="keyword">
+                    {% if char07.charCommission %}
+                    <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
+                    vvr325_3
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="scroll_box">
+                {% if char07.charImageInfo %}
+                <p>
+                    여기에 긴 글을 넣으면 됩니다.  
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
+                    ...
+                </p>
                 {% endif %}
             </div>
         </div>
-    </div>
 
-    <div class="button_content">
-        <div class="button_wrap">
-            <button class="infobtn" onclick="showProfile()">기본 정보</button>
-            {% if char.charCommission  or char.charImageInfo %}
-            <button class="infobtn" onclick="showImgInfo()">외관</button>
-            {% endif %}
-            <button class="infobtn" onclick="showEtc()">상세 정보</button>
-            <button class="infobtn" onclick="showWand()">지팡이</button>
-        </div>
-    </div>
 
-    <div class="personality_content" id="personality_section">
-        <div class="personality_wrap">
-            <div class="keywords">
-                <button class="keywordbtn">{{char.charKeyword1}}</button>
-                <button class="keywordbtn">{{char.charKeyword2}}</button>
-                <button class="keywordbtn">{{char.charKeyword3}}</button>
-            </div>
-            <hr/>
-            <div class="info_scrollbox">
-                {{char.charPersonality|linebreaksbr|safe}}
-            </div>
-            <hr/>
-        </div>
-    </div>
 
-    <div class="imgInfo_content hidden" id="imgInfo_section">
-        <div class="personality_wrap">
-            {% if char.charCommission %}
-            <div class="imgInfo_header">
-                <button class="keywordbtn">ⓒ {{char.charCommissionInfo}}</button>
-            </div>
-            <hr/>
-            <div class="info_scrollbox">
-                {{char.charImageInfo|linebreaksbr|safe}}
-            </div>
-            <hr/>
-            {% else %}
-            <hr class="mod"/>
-            <div class="info_scrollbox2">
-                {{char.charImageInfo|linebreaksbr|safe}}
-            </div>
-            <hr/>
-            {% endif %}
-        </div>
-    </div>
 
-    <div class="etc_content hidden" id="etc_section">
-        <div class="personality_wrap">
-            <div class="imgInfo_header">
-            </div>
-            <hr/>
-            <div class="info_scrollbox2">
-                {{char.charEtc|linebreaksbr|safe}}
-            </div>
-            <hr/>
-        </div>
     </div>
-
-    <div class="wand_content hidden" id="wand_section">
-        <div class="personality_wrap">
-            <div class="keywords">
-                <button class="keywordbtn">{{char.charWand1}}</button>
-                <button class="keywordbtn">{{char.charWand2}}</button>
-                <button class="keywordbtn">{{char.charWand3}}"</button>
-                <button class="keywordbtn">{{char.charWand4}}</button>
-            </div>
-            <hr/>
-            <div class="info_scrollbox">
-                {% if char.charWandInfo %}
-                {{char.charWandInfo|linebreaksbr|safe}}
-                {% elif char.charFirstName == "Patch" %}
-                <img src={% static "img/패치포트리스.png" %}>
-                {% else %}
-                {% endif %}
-            </div>
-            <hr/>
-        </div>
-    </div>
+</div>
 
 </div>
 
-<!-- 4학년 기본정보 -->
-{% include "profile/grade4.html" %}
 
-{% endif %}
-
-
-<!-- 7학년 기본정보 -->
-{% include "profile/grade7.html" %}
-
-
-{% include "profile/inventory.html" %}
-
-</div>
-
-{% include "profile/modal.html" %}
 
 
 <script>
+    const buttons = document.querySelectorAll('.sub_section');
+    const contents = {
+        'PERSONALITY': document.querySelector('.content_personality'),
+        'APPEARANCE': document.querySelector('.content_appearance'),
+        // 나머지 버튼도 추가 가능
+    };
 
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            Object.values(contents).forEach(c => c.style.display = 'none');
 
-    function openModal7() {
-        $('#ScrollModal').modal('show');
-    }
-
-    function closeModal7() {
-        $('#ScrollModal').modal('hide');
-    }
-
-    // "사용" 버튼 클릭 시 모달 열기
-    function showUseModal7(itemName) {
-        openModal7();  // 모달 열기
-    }
-
-    // "확인" 버튼 클릭 시 서버로 요청 보내기
-    function useItem7() {
-        // 포춘쿠키 사용 처리하는 AJAX 요청 보내기
-        fetch('/use_fortune_cookie/', {  // 포춘쿠키 사용을 위한 서버 엔드포인트
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}',  // CSRF 토큰을 포함
-            },
-            body: JSON.stringify({ 'item_name': 'scroll' })  // 아이템 이름을 서버로 전송
-        })
-        // 모달 닫기
-        closeModal7();
-        location.reload(true);
-    }
-
-        // 모달 열기 및 닫기 (Bootstrap 방식)
-        function openModal() {
-            $('#fortuneCookieModal').modal('show');
-        }
-    
-        function closeModal() {
-            $('#fortuneCookieModal').modal('hide');
-        }
-    
-        // "사용" 버튼 클릭 시 모달 열기
-        function showUseModal(itemName) {
-            if (itemName === "포춘쿠키") {
-                openModal();  // 모달 열기
+            const key = button.textContent.trim();
+            if(contents[key]){
+                contents[key].style.display = 'block';
             }
-        }
-    
-        // "확인" 버튼 클릭 시 서버로 요청 보내기
-        function useItem() {
-            // 포춘쿠키 사용 처리하는 AJAX 요청 보내기
-            fetch('/use_fortune_cookie/', {  // 포춘쿠키 사용을 위한 서버 엔드포인트
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',  // CSRF 토큰을 포함
-                },
-                body: JSON.stringify({ 'item_name': 'fortune_cookie' })  // 아이템 이름을 서버로 전송
-            })
-            // 모달 닫기
-            closeModal();
-            location.reload(true);
-        }
-
-        function openModal2() {
-            $('#TimeTurnerModal').modal('show');
-        }
-    
-        function closeModal2() {
-            $('#TimeTurnerModal').modal('hide');
-        }
-    
-        // "사용" 버튼 클릭 시 모달 열기
-        function showUseModal2(itemName) {
-            if (itemName === "타임터너") {
-                openModal2();  // 모달 열기
-            }
-        }
-
-        function openModal8() {
-            $('#GownModal').modal('show');
-        }
-    
-        function closeModal8() {
-            $('#GownModal').modal('hide');
-        }
-    
-        // "사용" 버튼 클릭 시 모달 열기
-        function showUseModal8(itemName) {
-            if (itemName === "투명 망토") {
-                openModal8();  // 모달 열기
-            }
-        }
-
-        // "확인" 버튼 클릭 시 서버로 요청 보내기
-        function useItem8() {
-            // 포춘쿠키 사용 처리하는 AJAX 요청 보내기
-            fetch('/use_fortune_cookie/', {  // 포춘쿠키 사용을 위한 서버 엔드포인트
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',  // CSRF 토큰을 포함
-                },
-                body: JSON.stringify({ 'item_name': 'gown' })  // 아이템 이름을 서버로 전송
-            })
-            // 모달 닫기
-            closeModal8();
-            location.reload(true);
-        }
-    
-        // "확인" 버튼 클릭 시 서버로 요청 보내기
-        function useItem2() {
-            // 포춘쿠키 사용 처리하는 AJAX 요청 보내기
-            fetch('/use_fortune_cookie/', {  // 포춘쿠키 사용을 위한 서버 엔드포인트
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',  // CSRF 토큰을 포함
-                },
-                body: JSON.stringify({ 'item_name': 'time_turner' })  // 아이템 이름을 서버로 전송
-            })
-            // 모달 닫기
-            closeModal2();
-            location.reload(true);
-        }
-
-        function openModal3() {
-            $('#MagicItemModal').modal('show');
-        }
-    
-        function closeModal3() {
-            $('#MagicItemModal').modal('hide');
-        }
-    
-        // "사용" 버튼 클릭 시 모달 열기
-        function showUseModal3(itemName) {
-            if (itemName === "마법주머니") {
-                openModal3();  // 모달 열기
-            }
-        }
-   
-        function openModal4() {
-            $('#GoldMagicItemModal').modal('show');
-        }
-    
-        function closeModal4() {
-            $('#GoldMagicItemModal').modal('hide');
-        }
-    
-        // "사용" 버튼 클릭 시 모달 열기
-        function showUseModal4(itemName) {
-            if (itemName === "고급마법주머니") {
-                openModal4();  // 모달 열기
-            }
-        }
-    
-        function openModal6() {
-            $('#GachaModal').modal('show');
-        }
-    
-        function closeModal6() {
-            $('#GachaModal').modal('hide');
-        }
-    
-        // "사용" 버튼 클릭 시 모달 열기
-        function showUseModal6(itemName) {
-            if (itemName === "가챠") {
-                openModal6();  // 모달 열기
-            }
-        }
-
-        function closeModal5() {
-            $('#potionModal').modal('hide');
-        }
-    
-        // "사용" 버튼 클릭 시 모달 열기
-        function showUseModal5(itemName, price) {
-            selectedPotion = itemName;  // 양도할 아이템 이름 저장
-            
-            document.getElementById('potionName').innerText = itemName;  // 아이템 이름 표시
-            document.getElementById('potionPrice').innerText = price;  // 아이템 이름 표시
-            $('#potionModal').modal('show');
-        }
-    
-        // "확인" 버튼 클릭 시 서버로 요청 보내기
-        function useItem5() {
-            // 포춘쿠키 사용 처리하는 AJAX 요청 보내기
-            const getpotion = document.getElementById('potionName').innerText;  
-            const getprice = document.getElementById('potionPrice').innerText;  
-
-            fetch('/use_fortune_cookie/', {  // 포춘쿠키 사용을 위한 서버 엔드포인트
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',  // CSRF 토큰을 포함
-                },
-                body: JSON.stringify({ 'item_name': 'potion',
-                                        'potionName': getpotion,
-                                        'price' : getprice })  // 아이템 이름을 서버로 전송
-            })
-            // 모달 닫기
-            closeModal();
-            location.reload(true);
-        }
-
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const wrapElement = document.querySelector('.wrap');
-        wrapElement.classList.add('fade-in-right');
+        });
     });
-    function showImgInfo() {
-        document.getElementById('imgInfo_section').classList.remove('hidden');
-        document.getElementById('personality_section').classList.add('hidden');
-        document.getElementById('etc_section').classList.add('hidden');
-        document.getElementById('wand_section').classList.add('hidden');
-    }
-
-    function showProfile() {
-        document.getElementById('imgInfo_section').classList.add('hidden');
-        document.getElementById('personality_section').classList.remove('hidden');
-        document.getElementById('etc_section').classList.add('hidden');
-        document.getElementById('wand_section').classList.add('hidden');
-    }
-
-    function showEtc() {
-        document.getElementById('imgInfo_section').classList.add('hidden');
-        document.getElementById('personality_section').classList.add('hidden');
-        document.getElementById('etc_section').classList.remove('hidden');
-        document.getElementById('wand_section').classList.add('hidden');
-    }
-
-    function showWand() {
-        document.getElementById('imgInfo_section').classList.add('hidden');
-        document.getElementById('personality_section').classList.add('hidden');
-        document.getElementById('etc_section').classList.add('hidden');
-        document.getElementById('wand_section').classList.remove('hidden');
-    }
-
-
-    function showImgInfo4() {
-        document.getElementById('imgInfo_section4').classList.remove('hidden');
-        document.getElementById('personality_section4').classList.add('hidden');
-        document.getElementById('etc_section4').classList.add('hidden');
-        document.getElementById('wand_section4').classList.add('hidden');
-    }
-
-    function showProfile4() {
-        document.getElementById('imgInfo_section4').classList.add('hidden');
-        document.getElementById('personality_section4').classList.remove('hidden');
-        document.getElementById('etc_section4').classList.add('hidden');
-        document.getElementById('wand_section4').classList.add('hidden');
-    }
-
-    function showEtc4() {
-        document.getElementById('imgInfo_section4').classList.add('hidden');
-        document.getElementById('personality_section4').classList.add('hidden');
-        document.getElementById('etc_section4').classList.remove('hidden');
-        document.getElementById('wand_section4').classList.add('hidden');
-    }
-
-    function showWand4() {
-        document.getElementById('imgInfo_section4').classList.add('hidden');
-        document.getElementById('personality_section4').classList.add('hidden');
-        document.getElementById('etc_section4').classList.add('hidden');
-        document.getElementById('wand_section4').classList.remove('hidden');
-    }
-
-
-    function showImgInfo7() {
-        document.getElementById('imgInfo_section7').classList.remove('hidden');
-        document.getElementById('personality_section7').classList.add('hidden');
-        document.getElementById('etc_section7').classList.add('hidden');
-        document.getElementById('wand_section7').classList.add('hidden');
-    }
-
-    function showProfile7() {
-        document.getElementById('imgInfo_section7').classList.add('hidden');
-        document.getElementById('personality_section7').classList.remove('hidden');
-        document.getElementById('etc_section7').classList.add('hidden');
-        document.getElementById('wand_section7').classList.add('hidden');
-    }
-
-    function showEtc7() {
-        document.getElementById('imgInfo_section7').classList.add('hidden');
-        document.getElementById('personality_section7').classList.add('hidden');
-        document.getElementById('etc_section7').classList.remove('hidden');
-        document.getElementById('wand_section7').classList.add('hidden');
-    }
-
-    function showWand7() {
-        document.getElementById('imgInfo_section7').classList.add('hidden');
-        document.getElementById('personality_section7').classList.add('hidden');
-        document.getElementById('etc_section7').classList.add('hidden');
-        document.getElementById('wand_section7').classList.remove('hidden');
-    }
-
-
-    function show1grade() {
-        document.getElementById('profile-section').classList.remove('hidden');
-        document.getElementById('profile-section4').classList.add('hidden');
-        document.getElementById('profile-section7').classList.add('hidden');
-        document.getElementById('inventory-section').classList.add('hidden');
-        document.getElementById('grade7').classList.add('hidden');
-        document.getElementById('grade4').classList.add('hidden');
-        document.getElementById('grade1').classList.remove('hidden');
-    }
-
-    function show4grade() {
-        document.getElementById('profile-section').classList.add('hidden');
-        document.getElementById('profile-section4').classList.remove('hidden');
-        document.getElementById('profile-section7').classList.add('hidden');
-        document.getElementById('inventory-section').classList.add('hidden');
-        document.getElementById('grade7').classList.add('hidden');
-        document.getElementById('grade4').classList.remove('hidden');
-        document.getElementById('grade1').classList.add('hidden');
-    }
-
-    function show7grade() {
-        document.getElementById('profile-section').classList.add('hidden');
-        document.getElementById('profile-section4').classList.add('hidden');
-        document.getElementById('profile-section7').classList.remove('hidden');
-        document.getElementById('inventory-section').classList.add('hidden');
-        document.getElementById('grade7').classList.remove('hidden');
-        document.getElementById('grade4').classList.add('hidden');
-        document.getElementById('grade1').classList.add('hidden');
-    }
-
-
-    function showInventory() {
-        document.getElementById('profile-section').classList.add('hidden');
-        document.getElementById('profile-section4').classList.add('hidden');
-        document.getElementById('profile-section7').classList.add('hidden');
-        document.getElementById('inventory-section').classList.remove('hidden');
-        document.getElementById('grade7').classList.remove('hidden');
-        document.getElementById('grade4').classList.add('hidden');
-        document.getElementById('grade1').classList.add('hidden');
-    }
-
-
-    function show7grade2() {
-        document.getElementById('profile-section7').classList.remove('hidden');
-        document.getElementById('inventory-section').classList.add('hidden');
-        document.getElementById('grade7').classList.remove('hidden');
-    }
-
-
-    function showInventory2() {
-        document.getElementById('profile-section7').classList.add('hidden');
-        document.getElementById('inventory-section').classList.remove('hidden');
-        document.getElementById('grade7').classList.remove('hidden');
-    }
-
-    let selectedItem = '';  // 양도할 아이템 이름
-
-// "양도" 버튼 클릭 시 호출되는 함수
-function openTransferModal(itemName) {
-    selectedItem = itemName;  // 양도할 아이템 이름 저장
-    document.getElementById('itemName').innerText = itemName;  // 아이템 이름 표시
-
-    $('#transferModal').modal('show');  // 모달 열기
-}
-
-// 모달 닫기
-function closeTransferModal() {
-    $('#transferModal').modal('hide');
-}
-
-// 양도 확인 버튼 클릭 시 서버로 데이터 전송
-function transferItem() {
-    const selectedCharacterId = document.getElementById('characterSelect').value;  // 선택된 캐릭터 ID
-
-    // AJAX로 서버에 양도 요청 보내기
-    fetch('/transfer_item/', {  // 양도 요청을 처리할 서버 엔드포인트
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token }}',  // CSRF 토큰 포함
-        },
-        body: JSON.stringify({
-            'item_name': selectedItem,
-            'character_id': selectedCharacterId
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('양도가 완료되었습니다.');
-            location.reload();  // 페이지 새로고침
-        } else {
-            alert('양도 실패: ' + data.error);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('서버 오류');
-    });
-
-    closeTransferModal();  // 모달 닫기
-    location.reload(true)
-}
-
-
-
-// "양도" 버튼 클릭 시 호출되는 함수
-function openTransferModal2(itemName) {
-    selectedItem = itemName;  // 양도할 아이템 이름 저장
-    document.getElementById('itemName2').innerText = itemName;  // 아이템 이름 표시
-
-    $('#transferModal2').modal('show');  // 모달 열기
-}
-
-// 모달 닫기
-function closeTransferModal2() {
-    $('#transferModal2').modal('hide');
-}
-
-// 양도 확인 버튼 클릭 시 서버로 데이터 전송
-function transferItem2() {
-    const selectedCharacterId = document.getElementById('characterSelect2').value;  // 선택된 캐릭터 ID
-
-    // AJAX로 서버에 양도 요청 보내기
-    fetch('/transfer_item/', {  // 양도 요청을 처리할 서버 엔드포인트
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token }}',  // CSRF 토큰 포함
-        },
-        body: JSON.stringify({
-            'item_name': selectedItem,
-            'character_id': selectedCharacterId
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('양도가 완료되었습니다.');
-            location.reload();  // 페이지 새로고침
-        } else {
-            alert('양도 실패: ' + data.error);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('서버 오류');
-    });
-
-    closeTransferModal2();  // 모달 닫기
-    location.reload(true)
-}
-
-
-// 캐러셀 움직임
-const prevButton = document.querySelector('.carousel-control-prev');
-const nextButton = document.querySelector('.carousel-control-next');
-const itemWrap = document.querySelector('.carousel-inner');
-// 화살표 버튼 클릭 이벤트 처리
-function handleCarouselTransition() {
-    // 1초 동안 overflow hidden을 적용
-    itemWrap.style.overflow = 'hidden';
-    console.log("rgwwerg");
-
-    // 1초 후에 overflow를 다시 기본값으로 변경
-    setTimeout(() => {
-        itemWrap.style.overflow = 'visible';  // 기본값 (혹은 원하는 상태로 변경)
-    }, 1000);  // 1000ms = 1초
-}
-
-// 이전 버튼 클릭 시
-prevButton.addEventListener('click', () => {
-    handleCarouselTransition();
-    // 추가적인 캐러셀 이동 로직 (예: 현재 슬라이드 이전으로 이동)
-});
-
-// 다음 버튼 클릭 시
-nextButton.addEventListener('click', () => {
-    handleCarouselTransition();
-    console.log("rgwwsadfwefwfweerg");
-    // 추가적인 캐러셀 이동 로직 (예: 현재 슬라이드 다음으로 이동)
-});
-
 </script>
 
 {% endblock %}

@@ -2,13 +2,12 @@
     <ul>
     <li><a href="/"><i class="fa-solid fa-house"></i></a></li>
     <li><a href="/store"><i class="fa-solid fa-store"></i></a></li>
-    <li><a href="/member"><i class="fa-solid fa-user-group"></i></a></li>
-    <li><a href="/attendance"><i class="fa-solid fa-clipboard"></i></a></li>
-    <li><a href="/search"><i class="fa-solid fa-compass"></a></i></li>
-    <li><a href="/class"><i class="fa-solid fa-book"></i></a></li>
-    <li><a href="/giftbox"><i class="fa-solid fa-gift"></i></a></li>
-    <li><a href="/member/{{ user.username }}"><i class="fa-solid fa-user"></i></a></li>
-    <li><a href="https://open.kakao.com/o/sn3lg6Yg" target="_blank"><i class="fa-solid fa-circle-info"></i></a></li>
+    <li><a href="/member"><i class="fa-regular fa-user"></i></a></li>
+    <li><a href="/attendance"><i class="fa-regular fa-bookmark"></i></a></li>
+    <li><a href="/search"><i class="fa-regular fa-calendar-check"></i></a></li>
+    <li><a href="/class"><i class="fa-regular fa-lightbulb"></i></a></li>
+    <li><a href="/giftbox"><i class="fa-regular fa-envelope"></i></a></li>
+    <li><a href="https://open.kakao.com/o/sn3lg6Yg" target="_blank"><i class="fa-regular fa-circle-question"></i></a></li>
     <li>
         <form action="{% url 'users:logout' %}" method="post" style="display:inline;">
             {% csrf_token %}

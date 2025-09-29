@@ -17,6 +17,10 @@
     width:300px;
 }
 
+
+
+
+
 /* 전체 로그인 박스 */
 .loginbox {
     width: 330px;
@@ -66,8 +70,4 @@
 }
 
 
-/* 회원가입 버튼 */
-.signup {
-    margin-top: -16px;
-}
 

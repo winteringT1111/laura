@@ -10,6 +10,7 @@
         <script src="https://kit.fontawesome.com/7076248453.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/effect/navbar.css' %}">
         {% if user.is_authenticated %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/effect/user.css' %}">
         {% endif %}
@@ -25,40 +26,100 @@
         {% include "effects/user.html" %}
         {% endif %}
 
-<div class="header">
-        <a><p class="subtitle">NOTICE</p></a>
-        <a><p class="subtitle">WORLD</p></a>
-        <a><img src="{% static 'img/로고.png' %}" alt="QnA"></a>
-        <a><p class="subtitle">SYSTEM</p></a>
-        <a><p class="subtitle">GUILD</p></a>        
-</div>
-
-<div class="main_content_wrap">
-    <div class="main_content_1">
-        <a><img src="{% static 'img/main/story.png' %}" alt="QnA"></a>
-        <div class="c1_wrap">
-            <a><img src="{% static 'img/main/message.png' %}" alt="QnA"></a>
-            <a><img src="{% static 'img/main/store.png' %}" alt="QnA"></a>
+        <div class="header">
+                <a href="/notice"><p class="subtitle"><span class="subtitle-text">NOTICE</span></p></a>
+                <a href="/world"><p class="subtitle"><span class="subtitle-text">WORLD</span></p></a>
+                <a><img src="{% static 'img/로고.png' %}" class="logo" alt="QnA"></a>
+                <a href="/system"><p class="subtitle"><span class="subtitle-text">SYSTEM</span></p></a>
+                <a href="/member"><p class="subtitle"><span class="subtitle-text">GUILD</span></p></a>        
         </div>
-        
-        <a><img src="{% static 'img/main/qna.png' %}" alt="QnA"></a>
-    </div>
-    <div class="main_content_2">
-        <a><img src="{% static 'img/main/application.png' %}" alt="Login"></a>
-        <a><img src="{% static 'img/main/calender.png' %}" alt="Login"></a>
-    </div>
-    <div class="main_content_3">
-        <a><img src="{% static 'img/main/quest.png' %}" alt="Login"></a>
-        <a><img src="{% static 'img/main/login_back.png' %}" alt="Login"></a>
-    </div>
-    </div>
-</div>
-        
 
+        <div class="main_content_wrap">
+            <div class="main_content_1">
+                <a href="/notice" class="sheen_wrap">
+                    <img src="{% static 'img/main/story.png' %}" alt="story">
+                    <span class="sheen"></span>
+                </a>
 
-        {% include "effects/snow.html" %}
+                <div class="c1_wrap">
+                    <a href="/giftbox">
+                        <span class="hover_wrap">
+                            <img src="{% static 'img/main/message.png' %}" alt="message">
+                        </span>
+                    </a>
+                    <a href="/store">
+                        <span class="hover_wrap">
+                            <img src="{% static 'img/main/store.png' %}"  alt="store">
+                        </span>
+                    </a>
+                </div>
+
+                <a class="sheen_wrap">
+                    <img src="{% static 'img/main/qna.png' %}" alt="qna">
+                    <span class="sheen"></span>
+                </a>
+            </div>
+
+            <div class="main_content_2">
+                <a><img src="{% static 'img/main/application.png' %}" class="app" alt="Login"></a>
+                <img src="{% static 'img/main/calender.png' %}" class="cal cal_default" alt="Login">
+            </div>
+
+            <div class="main_content_3">
+                <a class="sheen_wrap2">
+                    <img src="{% static 'img/main/quest.png' %}" class="quest" alt="Login">
+                    <span class="sheen2"></span>
+                </a>
+                <div class="loginbox">
+                    <form method="post" action="{% url 'users:users_login' %}">
+                        {% csrf_token %}
+                        <div class="inputarea">
+                            <div class="inputbox">
+                                <div>
+                                    <input placeholder="ID" type="text" name="username" id="username">
+                                </div>
+                                <div>
+                                    <input placeholder="PW" type="text" name="password" id="password">
+                                </div>
+                            </div>
+                            <input class="loginbtn" type="submit" value="LOGIN"> 
+                        </div>
+                        <p>용사님, 준비는 되셨나요?</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+                
+
+        {% include "effects/navbar.html" %}
+        {% include "effects/flower.html" %}
             
-        
+        </style>
+
+        <script>
+        document.addEventListener("click", function(e) {
+        const ripple = document.createElement("span");
+        ripple.classList.add("ripple");
+
+        // 클릭 좌표
+        ripple.style.left = e.clientX + "px";
+        ripple.style.top = e.clientY + "px";
+
+        document.body.appendChild(ripple);
+
+        // 파장 크기 설정 (50px 기본)
+        ripple.style.width = ripple.style.height = "50px";
+        ripple.style.marginLeft = "-25px";
+        ripple.style.marginTop = "-25px";
+
+        // 애니메이션 끝나면 제거
+        ripple.addEventListener("animationend", () => {
+            ripple.remove();
+        });
+        });
+        </script>
+
+
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
         

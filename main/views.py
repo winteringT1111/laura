@@ -16,23 +16,18 @@ from django.views.decorators.http import require_POST
 # Create your views here.
 
 
-@login_required(login_url='/login')
 def main_page(request):
     return render(request, "main.html")
 
-@login_required(login_url='/login')
 def notice(request):
     return render(request, "notice/notice.html")
 
-@login_required(login_url='/login')
 def world(request):
     return render(request, "notice/world.html")
 
-@login_required(login_url='/login')
 def system(request):
     return render(request, "notice/system.html")
 
-@login_required(login_url='/login')
 def totalsystem(request):
     return render(request, "notice/total_system.html")
 
