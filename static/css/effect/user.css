@@ -2,15 +2,17 @@
     min-width: 410px;
     height: auto;
     position: fixed;
-    top: 20px;
+    top: 15px;
     left: 0; 
     z-index: 10;
     padding: 10px;
-    padding-left: 30px;
+    padding-left: 15px;
     display: block;
     align-items: center;
     font-family: "Hahmlet", serif;
+    transform: scale(0.9);
 }
+
 .audio{
     margin-right: 93px;
 }

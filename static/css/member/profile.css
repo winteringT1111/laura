@@ -18,7 +18,7 @@
 .character_wrap {
     min-width: 1200px;
     margin-top: 2vh;
-    margin-left: 3%;
+    margin-left: 2%;
     height: 98vh;
     overflow-y: auto;
     display: flex;
@@ -46,6 +46,7 @@
     height: 100vh;
     position: fixed;
     right: 0;
+    transform: scale(0.9);
 }
 
 /* 오른쪽 버튼 영역 */
@@ -57,7 +58,8 @@
     display: flex;
     flex-direction: column; 
     gap: 10px; 
-} /* 탭 버튼 */
+} 
+
 .transbtn {
     background: url("../../img/프로필띠.png");
     border: none;
@@ -115,7 +117,7 @@
 
 /* 오른쪽 정보 박스 */
 .info_wrap {
-    width: 780px;
+    width: 695px;
     height: 100vh;
     background: rgba(36, 34, 30, 0.85);
     box-shadow: 5px 5px 5px 13px rgba(0, 0, 0, 0.2);
@@ -153,7 +155,7 @@
 }
 
 .name_info p:first-child {
-    font-size: 33px;
+    font-size: 30px;
     font-weight: 500;
     color: rgb(230, 224, 203);
     transform: scaleY(1.1);
@@ -162,7 +164,7 @@
 
 .name_info p:nth-child(2) {
     font-family: 'Times New Roman', Times, serif;
-    font-size: 25px;
+    font-size: 23px;
     font-weight: 300;
     color: rgb(167, 153, 105);
     margin: 0;
@@ -172,7 +174,7 @@
 .name_info p:last-child {
     transform: scaleY(1.1);
     font-family: 'Times New Roman', Times, serif;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 300;
     color: rgb(199, 184, 136);
     margin: 0;
@@ -198,13 +200,13 @@
     font-family: "Hahmlet", serif;
     width: 80%;
     margin: 0 auto;
-    margin-top: -3%;
+    margin-top: -3.5%;
 }
 
 .lines p {
     margin: 0;
     margin-bottom: 1.5%;
-    font-size: 20px;
+    font-size: 18px;
     transform: scaleY(1.1);
 }
 
@@ -219,43 +221,50 @@
     border-radius: 10px;
 }
 
-
 .content2 {
     display: flex;
     justify-content: center;
+    align-items: center;
+    margin: 2.5% auto;  /* 위아래는 2.5%, 좌우는 자동 */
+    width: 85%;
 }
+
 
 .sub_section {
     display: flex;
     background: none;
     border: none;
     background-image: url('../../img/profile/profilebtn.png'); 
-    background-size: cover;   
+    background-size: 95% 110%; /* ← X는 100%, Y는 110%로 스케일 */
     background-repeat: no-repeat;
     width: 175px;
     height: 35px;
     align-items: center;
-    line-height: center;
     justify-content: center;
     color: #e4d6b2;
-    font-size: large;
-    transform: scaleY(1.1) scale(0.95);
-    transition: transform 0.2s ease ;
-    scale: 0.95;
+    font-size: 16px;
+    transition: transform 0.2s ease;
 }
+
 
 .sub_section:active {
   transform: translateY(3px); /* 클릭 시 살짝 밑으로 */
 }
 
-
-
 .content_personality {
     height: 50%;
-    margin-top: 3%;
     align-items: center;
     text-align: center;
+    margin-top: -1%;
 }
+
+.content_appearance {
+    height: 50%;
+    text-align: center;
+    display: none;
+    margin-top: -1%;
+}
+
 
 .keyword_wrap {
     display: flex;
@@ -265,12 +274,12 @@
 }
 
 .keyword {
-    margin-top: 2%;
+    margin-top: 2.5%;
     display: flex;
     gap: 2%;
     line-height: 35px;
     white-space: nowrap;
-    font-size: 19px;
+    font-size: 17px;
 } .keyword img {
     margin-right: 2%;
 }
@@ -279,20 +288,12 @@
     width: 85%;
     max-height: 80%;
     overflow-y: auto;
-    margin: 25px auto; 
+    margin: 20px auto; 
     line-height: 1.5;
-    font-size: large;
+    font-size: 16px;
     text-align: left;
     padding: 1% 1%;
     font-weight: 300;
-}
-
-.content_appearance {
-    height: 50%;
-    margin-top: 3%;
-
-    text-align: center;
-    display: none;
 }
 
 .cms_wrap {

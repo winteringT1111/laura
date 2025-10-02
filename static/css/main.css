@@ -65,7 +65,7 @@ html, body {
     position: fixed;
     top: 63%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.95); /*축소*/
+    transform: translate(-50%, -50%) scale(0.9); /*축소*/
     gap: 30px;
     margin-left: -30px;
 }
@@ -132,10 +132,10 @@ html, body {
 .header {
     display: flex;
     position: fixed;
-    top: 25%;
+    top: 23%;
     left: 50%;
     gap: 18px;
-    transform: translate(-50%, -50%) scale(0.95); /*축소*/
+    transform: translate(-50%, -50%) scale(0.9); /*축소*/
 }
 
 
