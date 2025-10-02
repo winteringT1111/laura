@@ -39,10 +39,18 @@ html, body {
     }
 }
 
+@font-face {
+    font-family: 'sageyl'; /* 원하는 폰트 이름 */
+    src: url('../../sageyl.ttf') format('truetype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
 .subheader {
     margin: none;
     margin-bottom: 40px;
-    font-family: 'MyCustomFont';
+    font-family: 'sageyl';
+    font-size: 60px;
     transform: scaleY(1.2);
     color: #e2cd86ea;
     filter: drop-shadow(4px 4px 4px rgb(17, 16, 15));
@@ -65,8 +73,9 @@ html, body {
 
 .content ul li {
     margin-bottom: 8px;
-    font-weight: 350;
+    font-weight: 300;
     line-height: 2;
+    font-size: 18.5px;
 }
 
 .content ul li::marker {

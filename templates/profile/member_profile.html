@@ -58,18 +58,18 @@
           
         <div class="content2"> 
             <button class="sub_section">
-                PERSONALITY
+                <span>PERSONALITY</span>
             </button>
             {% if char07.charCommission  or char07.charImageInfo %}
             <button class="sub_section">
-                APPEARANCE
+                <span>APPEARANCE</span>
             </button>
             {% endif %}
             <button class="sub_section">
-                ETC
+                <span>ETC</span>
             </button>
             <button class="sub_section">
-                STAT
+                <span>STATS</span>
             </button>
         </div>
 
@@ -77,46 +77,21 @@
             <div class="keyword_wrap">
                 <div class="keyword">
                     <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
-                    자유롭되
+                    {{char07.charKeyword1}}
                 </div>
                 <div class="keyword">
                     <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
-                    인과 예를 그르치지 않고
+                    {{char07.charKeyword2}}
                 </div>
                 <div class="keyword">
                     <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
-                    제 몫만큼은 확실히
+                    {{char07.charKeyword3}}
                 </div>
             </div>
 
             <div class="scroll_box">
                 <p>
-                    여기에 긴 글을 넣으면 됩니다.  
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
+                    {{char07.charPersonality|linebreaksbr|safe}}
                 </p>
             </div>
         </div>
@@ -135,37 +110,41 @@
             <div class="scroll_box">
                 {% if char07.charImageInfo %}
                 <p>
-                    여기에 긴 글을 넣으면 됩니다.  
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
-                    여러 줄을 작성해도 자동으로 스크롤이 생깁니다.  
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
-                    Praesent vehicula massa at dui egestas, at pulvinar ligula euismod.  
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.  
-                    ...
+                    {{ char07.charImageInfo|linebreaksbr|safe }}  
                 </p>
                 {% endif %}
             </div>
         </div>
 
+        <div class="content_etc">
+            
+            <div class="keyword_wrap">
+                <div class="keyword">
+
+                </div>
+            </div>
+
+            <div class="scroll_box">
+                <p>
+                    {{ char07.charEtc|linebreaksbr|safe }}  
+                </p>
+            </div>
+        </div>
+
+        <div class="content_stats">
+            
+            <div class="keyword_wrap">
+                <div class="keyword">
+
+                </div>
+            </div>
+
+            <div class="scroll_box">
+                <p>
+                    {{ char07.charEtc|linebreaksbr|safe }}  
+                </p>
+            </div>
+        </div>
 
 
 
@@ -182,7 +161,8 @@
     const contents = {
         'PERSONALITY': document.querySelector('.content_personality'),
         'APPEARANCE': document.querySelector('.content_appearance'),
-        // 나머지 버튼도 추가 가능
+        'ETC': document.querySelector('.content_etc'),
+        'STATS': document.querySelector('.content_stats'),
     };
 
     buttons.forEach(button => {

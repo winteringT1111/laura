@@ -9,6 +9,28 @@
     z-index: -1; 
 }
 
+@font-face {
+    font-family: 'hana'; /* 원하는 폰트 이름 */
+    src: url('../../Hana2-Medium.ttf') format('truetype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
+@font-face {
+    font-family: 'romantice'; /* 원하는 폰트 이름 */
+    src: url('../../romantice.otf') format('opentype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
+@font-face {
+    font-family: 'sageyl'; /* 원하는 폰트 이름 */
+    src: url('../../sageyl.ttf') format('truetype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
+
 /* 전체 컨텐츠 */
 .content {
     display: flex;
@@ -124,9 +146,9 @@
     justify-content: center; 
     position: fixed;
     right: 0;
-    font-family: sans-serif;
+    font-family: 'sans serif';
     z-index: 2;
-    color: white;
+    color: rgb(224, 223, 217);
 }
 
 .content1 {
@@ -135,10 +157,18 @@
     text-align: center;
 }
 
+@font-face {
+    font-family: 'JoseonBoldMyongjo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunKm.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
 .catchphrase {
     color: rgb(199, 184, 136);
     margin-top: 4%;
     margin-bottom: 3%;
+    font-family: 'JoseonBoldMyongjo';
 }
 
 
@@ -160,6 +190,7 @@
     color: rgb(230, 224, 203);
     transform: scaleY(1.1);
     margin: 0;
+    font-family: 'hana';
 }
 
 .name_info p:nth-child(2) {
@@ -173,9 +204,9 @@
 
 .name_info p:last-child {
     transform: scaleY(1.1);
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 28px;
-    font-weight: 300;
+    font-family: 'sageyl';
+    font-size: 33px;
+    font-weight: 550;
     color: rgb(199, 184, 136);
     margin: 0;
     margin-top: 10px;
@@ -219,6 +250,7 @@
     padding-bottom: 1.5%;
     padding-right: 9%;
     border-radius: 10px;
+    font-family: 'hana';
 }
 
 .content2 {
@@ -239,11 +271,17 @@
     background-repeat: no-repeat;
     width: 175px;
     height: 35px;
-    align-items: center;
     justify-content: center;
     color: #e4d6b2;
-    font-size: 16px;
+    font-size: 18px;
+    vertical-align: middle;
+    font-family: 'romantice';
     transition: transform 0.2s ease;
+}
+
+.sub_section span {
+    position: relative;
+    top: 10px;
 }
 
 
@@ -251,7 +289,8 @@
   transform: translateY(3px); /* 클릭 시 살짝 밑으로 */
 }
 
-.content_personality {
+.content_personality, .content_appearance,
+.content_etc, .content_stats {
     height: 50%;
     align-items: center;
     text-align: center;
@@ -280,6 +319,7 @@
     line-height: 35px;
     white-space: nowrap;
     font-size: 17px;
+    font-family: 'hana';
 } .keyword img {
     margin-right: 2%;
 }
@@ -290,7 +330,7 @@
     overflow-y: auto;
     margin: 20px auto; 
     line-height: 1.5;
-    font-size: 16px;
+    font-size: 16.5px;
     text-align: left;
     padding: 1% 1%;
     font-weight: 300;
