@@ -1,0 +1,134 @@
+{% load static %}
+
+<div class="user" id="user-box">
+
+    <div class="profile_section">
+        <div class="profile_image">
+            <img src="{% static 'img/baseprof.png' %}" alt="User Profile Image">
+        </div>
+
+        <div class="profile_name">
+            <p>새로운 용사</p>
+            <p>The New Knight</p>
+        </div>
+    </div>
+    
+    <div class="active_content">
+        <div class="token">
+            <img src="{% static 'img/갈레온.png' %}" alt="Galleon">
+            <span>0 G</span>
+        </div>
+        <div class="token">
+            <img class="token_img" src="{% static 'img/토큰.png' %}" alt="Token">
+            <span>0 EXP</span>
+        </div>
+    </div>
+
+
+    <div class="audio">
+            <!-- One audio tag -->
+            <audio id="background-music" loop>
+                <source src="{% static 'bgm2.mp3' %}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="audio-controls">
+                <button id="play-pause-button">
+                    <i id="status" class="fa-solid fa-play"></i>
+                </button>
+                <button id="to-start-button">
+                    <i class="fa-solid fa-square"></i>
+                </button>
+            </div>
+    </div>
+
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const audio = document.getElementById('background-music');
+        const playPauseButton = document.getElementById('play-pause-button');
+        const status = document.getElementById('status');
+        const toStart = document.getElementById('to-start-button');
+        const volumeSlider = document.getElementById('volume-slider');
+    
+        let isPlaying = false;
+
+        // 페이지 로드 시 저장된 오디오 상태를 불러오기
+        const loadAudioState = () => {
+            const savedTime = localStorage.getItem('audio-currentTime');
+            const savedIsPlaying = localStorage.getItem('audio-isPlaying');
+            if (savedTime) {
+                audio.currentTime = parseFloat(savedTime); // 이전에 듣던 시간으로 이동
+            }
+            if (savedIsPlaying === 'true') {
+                playAudio(); // 이전에 재생 중이었다면 다시 재생
+            }
+        };
+
+        // 오디오 상태 저장 (시간과 재생 상태)
+        const saveAudioState = () => {
+            localStorage.setItem('audio-currentTime', audio.currentTime); // 현재 시간을 저장
+            localStorage.setItem('audio-isPlaying', isPlaying); // 재생 상태를 저장
+        };
+
+        // 음악 재생 함수
+        const playAudio = () => {
+            audio.play().then(() => {
+                isPlaying = true;
+                status.classList = 'fa-solid fa-pause';
+            }).catch(error => {
+                console.log('Auto play failed.', error);
+            });
+        };
+
+        // 재생/일시 정지 버튼 클릭 이벤트
+        playPauseButton.addEventListener('click', () => {
+            if (audio.paused) {
+                playAudio();
+            } else {
+                audio.pause();
+                isPlaying = false;
+                status.classList = 'fa-solid fa-play';
+            }
+            saveAudioState(); // 상태 저장
+        });
+
+        // 처음부터 재생 버튼 클릭
+        toStart.addEventListener('click', () => {
+            audio.currentTime = 0;
+            if (!isPlaying) {
+                playAudio();
+            }
+            saveAudioState(); // 상태 저장
+        });
+
+        // 오디오가 시간 변화할 때마다 상태 저장
+        audio.addEventListener('timeupdate', () => {
+            saveAudioState(); // 현재 시간을 저장
+        });
+
+        
+        // 페이지 로드 시 상태 복원
+        loadAudioState();
+        
+        // 특수 비지엠이 있는 페이지에서 슬라이더 값 20으로 설정하고 자동으로 음악 재생
+        const userBox = document.getElementById('profile_music');
+
+        
+        
+        const musicFile = userBox.getAttribute('data-music'); 
+
+        if (musicFile) {
+            const musicSource = `{% static 'audio/' %}${musicFile}`;  // 예: audio/musicFile.mp3
+            const sourceElement = audio.querySelector('source');
+            sourceElement.src = musicSource; // 새 음악 파일 설정
+            audio.load(); // 오디오 재로드
+
+            // 음악이 자동으로 재생되도록 설정
+            playAudio();
+        }
+    });
+
+
+</script>

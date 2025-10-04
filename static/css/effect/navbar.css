@@ -7,7 +7,7 @@ nav {
     align-items: center; /* 수직 중앙 정렬 */
     position: fixed; /* 절대 위치 지정 */
     top: 50%;
-    left: 1%;
+    left: 1.1%;
     transform: translate(-50%, -50%);
     z-index: 10; /* 다른 요소보다 위에 오도록 설정 */
 }

@@ -4,11 +4,8 @@
     left: 50%;
     bottom: 0%;
     transform: translateX(-50%);  /* 중앙 정렬 */
-    width: 1500px;
+    width: 1600px;
     height: 850px;
-    background-color: rgba(30, 39, 61, 0.7);
-    border: 4px solid #585d63;
-    border-radius: 7px;
     visibility: hidden;  /* 숨겨놓고 애니메이션 시작 시 나타나게 */
 }
 
@@ -16,7 +13,7 @@
 /* Content inside the container */
 .member_content {
     position: absolute;
-    width: 1300px;
+    width: 1475px;
     height: 700px;
     display: flex;
     flex-wrap: wrap;
@@ -32,70 +29,51 @@
 }
 
 .member_card {
-    width: 280px;
-    height: 425px;
-
-    margin: 40px 22.5px;
+    width: 265px;
+    height: 383px;
+    margin: 20px 15px;
 }
 
 .member_card_up {
     width: 100%;
-    height: 350px;
+    height: 381px;
     position: relative;
-    border-radius: 7px;
 } .member_img {
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0px;
     left: 0px;
-    border-radius: 7px;
+    z-index: 3;
 }
 
-.b {
-    margin-right: 6px;
-    margin-bottom: 5px;
-}
 
-.member_house img {
-    width: 60px;
+.frame img {
+    width: 265px;
     position: absolute;
-    top: 5px;
-    left: 5px;
-    z-index: 2;
-} .member_overlay {
-    background: linear-gradient(to top, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50%);
+    top: 0;
+    left: 0;
+    z-index: 5;
+} .member_back {
     position: absolute;
     width: 100%;
-    height: 350px;
+    height: 381px;
     top: 0px;
     left: 0px;
-    z-index: 3;
-    border-radius: 7px;
-} .member_frame {
+    z-index: 1;
+} .member_overlay {
     position: absolute;
-    bottom: 7px;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 100%;
+    height: 200px;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 1) 10%,   /* 밑부분 더 진하게 */
+        rgba(255, 255, 255, 0) 100%
+    );
     z-index: 4;
 }
-
-.member_card_down {
-    width: 280px;
-    height: 105px;
-    background: 
-        linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgb(196, 186, 145,0.3) 50%, rgba(255, 255, 255, 0) 100%), 
-        url("../../img/멤버띠.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    line-height: 105px;
-    font-family: "Hahmlet", serif;
-    font-size: large;
-    text-align: center;
-    color: white;
-    font-weight: 400;
-}
-
 
 
 .member_content_wrap.fade-in-left-to-right {

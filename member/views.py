@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
 
-@login_required(login_url='/')
 def member_profile(request, charName):
     getUser = request.user
     # 1학년 캐릭터
@@ -348,7 +347,6 @@ def transfer_item(request):
 
     return JsonResponse({'success': False, 'error': '잘못된 요청입니다.'})
 
-@login_required(login_url='/')
 def member_main(request):
     chars = Characters.objects.filter(charGrade=7).order_by('charFirstName')
     context = {

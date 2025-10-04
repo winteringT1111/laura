@@ -6,28 +6,27 @@
 {% endblock %}
 
 {% block content %}
+
+<a href="/" class="goback">RETURN</a>
+
+<img src="{% static 'img/profile/star.png' %}">
+
 <div class="member_content_wrap fade-in-left-to-right">
     <div class="member_content">
         {% for char04 in chars %}
         <div class="member_card">
             <div class="member_card_up">               
-                <div class="member_house">
-                    <img src="{% static 'img/' %}{{ char04.charHouse }}.png">
-                </div>              
-                <div class="member_frame">
-                    <img src={% static "img/멤버별.png" %}>
+                <div class="frame">
+                    <img src="{% static 'img/profile/frame' %}.png">
+                </div>  
+                <div class="member_overlay"></div>                            
+                <img class="member_img" src="{% static 'img/charac/narvia_crop' %}.png">
+                <div class="member_info">
+
                 </div>
-                <a href="/member/{{char04.charFirstName}}">
-                    <div class="member_overlay"></div>
-                </a>
-                <img class="member_img" src="{% static 'img/charac/07/02/' %}{{ char04.charImageP }}.png">
+                <img class="member_back" src={% static 'img/profile/frame_back.png' %}>
             </div>
-            <div class="member_card_down">
-                {% if char04.charFirstName == "Agatha" or char04.charFirstName == "Margot" or char04.charFirstName == "Ezekiel" or char04.charFirstName == "Soniya" %}
-                <img class="b" src="{% static 'img/badge.png' %}">                
-                {% endif %}
-                {{char04.charName}}
-            </div>
+
         </div>
         {% endfor %}
     </div>

@@ -52,11 +52,16 @@ html, body {
     margin: none;
     margin-bottom: 40px;
     font-family: 'sageyl';
-    font-size: 60px;
-    transform: scaleY(1.2);
-    color: #e2cd86ea;
+    font-size: 50px;
+    color: #ecda9d;
     filter: drop-shadow(4px 4px 4px rgb(17, 16, 15));
 }
+
+.notice_head {
+    margin-left: 325px;
+    margin-bottom: 70px;
+}
+
 
 .fade-line {
     width: 100%;
@@ -84,6 +89,17 @@ html, body {
     content: "✶  ";
 }
 
+.minor {
+    margin-bottom: 8px !important;
+    font-weight: 300 !important;
+    line-height: 1.5 !important;
+    font-size: 16px !important;
+}
+
+.minor::marker {
+    content: "⭑  " !important;
+}
+
 .blue {
     background-color: #3D485A;
     color: #dbdbdb;
@@ -102,7 +118,7 @@ html, body {
 table {
     margin: 30px auto; /* 수평 중앙 정렬과 상하 여백 */
     border-collapse: collapse; /* 중첩된 테두리 제거 */
-    width: 90%; /* 필요에 따라 너비 조절 */
+    width: 75%; /* 필요에 따라 너비 조절 */
     text-align: left; 
     margin-bottom: 50px;
     margin-top: -20px;
@@ -110,7 +126,7 @@ table {
 
 /* 테이블 내부 패딩 */
 table td {
-    border: 3px solid #6b5f45ea;
+    border: 2px solid #6b5f45ea;
     padding: 25px; /* 셀 내부 패딩 */
 }
 
@@ -120,16 +136,12 @@ table td:first-child {
     background-color:  #6b5f45ea;
 }
 
-.liofch li {
-    margin-bottom: 8px;
-    font-weight: 300;
-    line-height: 2;
-    font-size: 16px;
-} .liofch li::marker {
-    content: " ";
-}
 
 table {
     margin-top: 50px;
     margin-bottom: 70px;
+}
+
+tr td img {
+    width: 130px;
 }

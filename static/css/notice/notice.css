@@ -48,14 +48,19 @@ html, body {
     font-style: normal; /* 폰트 스타일 (optional) */
 }
 
+
 .subheader {
     margin: none;
     margin-bottom: 40px;
     font-family: 'sageyl';
-    font-size: 60px;
-    transform: scaleY(1.2);
-    color: #e2cd86ea;
+    font-size: 50px;
+    color: #ecda9d;
     filter: drop-shadow(4px 4px 4px rgb(17, 16, 15));
+}
+
+.notice_head {
+    margin-left: 325px;
+    margin-bottom: 70px;
 }
 
 .fade-line {
