@@ -109,12 +109,13 @@
         });
 
         
-
+        // 페이지 로드 시 상태 복원
+        loadAudioState();
+        
         // 특수 비지엠이 있는 페이지에서 슬라이더 값 20으로 설정하고 자동으로 음악 재생
         const userBox = document.getElementById('profile_music');
 
-        // 페이지 로드 시 상태 복원
-        loadAudioState();
+        
         
         const musicFile = userBox.getAttribute('data-music'); 
 

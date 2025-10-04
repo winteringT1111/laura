@@ -1,20 +1,155 @@
-{% extends "notice_base.html" %}
+{% extends "base.html" %}
+
 {% load static %}
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/notice/system.css' %}">
-
 {% endblock %}
 
 {% block content %}
 
-<div class="goback">
-    <a href="/"><i class="fa-solid fa-chevron-left"></i></a>
-</div>
+<a href="/" class="goback">RETURN</a>
+
+
 <div class="notice_wrap">
-    <a href="/system/total"><img src={% static "img/totalsystem.png" %}></a>
-    <a href="https://docs.google.com/document/d/1ypCH9AENMsVJMdqQ4-tXt7SkUmI1KjZDbNW82oMaoNw/edit?usp=sharing" target="_blank"><img src={% static "img/homepageguide.png" %}></a>
-    <a href="https://docs.google.com/document/d/14yJIL3LLU0sca5qQKoYLXWa830VjpMYGmfg8Jg9HdXE/edit?usp=sharing" target="_blank"><img src={% static "img/patch_note.png" %}></a>
+    <div class="content_box">
+
+        <h1 class="subheader">01. SYSTEM</h1>
+
+        <div class="content">
+            <ul>
+                <li>모든 러너들은 하루에 한 번, AM 6:00~PM 20:00 사이 ‘보급 신청’을 할 수 있습니다. 신청 완료 시 재화 및 경험치가 지급됩니다.</li>
+                <li>하루 한 번 일일 퀘스트 진행이 가능합니다. 홈페이지의 퀘스트 란에 접속해 원하는 퀘스트를 수락 후 이행하면 보상을 받을 수 있으며, 글 또는 그림 로그가 요구됩니다.</li>
+                <li>러닝 중 활동을 통해 커뮤니티 재화인 골드를 습득할 수 있습니다. 획득처는 다음과 같습니다.</li>
+                <li>전 러닝 기간동안 통금 시스템이 적용됩니다. AM 2:00~AM6:00 동안 홈페이지 이용 및 기존 타래 잇기를 제외한 퍼블릭 트윗 활동이 제한됩니다.</li>
+                <li>본 커뮤니티에는 총 2회의 휴식기가 존재합니다. 해당 기간에는 모든 활동이 전면 금지되며 프로필 리뉴얼 및 텍관 생성만이 가능합니다. 프로필 리뉴얼은 선택 요소로, 이전 프로필을 유지하여도 무관합니다.</li>
+                <li>본 커뮤니티의 탐사 및 레이드를 포함한 모든 진행은 PM 21:00부터 시작되며 최대 3시간이 소요될 것을 상정하고 있습니다.</li>
+                <li>러너 분들의 불필요한 수고를 덜기 위해 대부분의 시스템(스토리 챕터, 일일퀘스트, 제조 등)은 홈페이지에서 진행됩니다. 일부 시스템은 추후 공개됩니다.</li>
+            </ul>
+        </div>
+
+        <div class="fade-line"></div>
+        <h1 class="subheader">02. DUNGEON</h1>
+
+        <div class="content">
+            <ul>
+                <li>러닝 기간은 약 6주(42D) ±a로 예정되어 있으며 러닝 중 일정은 1-2일씩 유동적으로 조정될 가능성이 있습니다.</li>
+                <li>본 커뮤니티는 트위터 플랫폼 및 자체 제작 홈페이지를 이용합니다. 이에 따른 트위터 계정 생성이 필수이며 PC 사용을 권장하고 있습니다.</li>
+                <li>신청서 합격제를 차용합니다. 합격자 명단 공개 이후 계정 프로텍트를 활성화한 뒤 폼이 공개되오니 참고 바랍니다. </li>
+                <li>시리어스 기간 진입 이후 하차를 금하고 있습니다. 엔딩 직후 트윗수가 700트 미만인 러너는 연공이 불가합니다. 러닝 기간이 짧지 않은 만큼 일정을 확인하신 뒤 신청서 접수 바랍니다.</li>
+            </ul>
+        </div>
+
+        <div class="fade-line"></div>
+        <h1 class="subheader">03. EXPEDITION</h1>
+
+        <div class="content">
+            <ul>
+                <li>본 커뮤니티는 삼진아웃제를 차용하고 있습니다. 개인 경고 3회 누적 시 이유불문 제명 처리됩니다.</li>
+                <li>단체경고 3회 누적 시 조기엔딩으로 이어질 수 있음을 사전에 고지합니다. </li>
+            </ul>
+        </div>
+        
+        <table border="1">
+            <tr>
+              <td>경고 사항</td>
+              <td>
+                <ul class="liofch">
+                    <li>@tos, @null 사용</li>
+                    <li>48시간 이상 미접속 (언질하지 않은 무통보 잠수가 지속될 경우 제명 처리될 수 있습니다.)</li>
+                    <li>모든 종류의 편파 행위 (글, 그림, 성별 등)</li>
+                    <li>초성 및 이모티콘 사용</li>
+                    <li>과한 메타적 발언</li>
+                    <li>세계관 배경에 맞지 않는 발언</li>
+                    <li>계정 실수 트윗에 반응하는 행위</li>
+                    <li>과도한 타임라인 대화 지속 (20분 이상으로 제한하며, 잦을 경우 전체 경고 부여 가능성이 있습니다.)</li>
+                    <li>운영진 계정을 포함하지 않은 1:1 연락</li>
+                    <li>통금 시간 중 퍼블릭 트윗 작성</li>
+                    <li>러닝 중 계정 및 멘션에 오너 기호 사용 (사정을 바이오에 기재하는 행위 등 불가)</li>
+                    <li>길이 제한이 넘는 위치 대화 및 외부 링크를 사용하는 위치 대화</li>
+                    <li>리뉴얼 기간 중 위치 대화</li>
+                    <li>러너 캐릭터들 간 조율 중 과한 썰 풀이</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>러닝 중</br>금지 사항</td>
+              <td>
+                <ul class="liofch">
+                    <li>원작의 등장인물 언급</li>
+                    <li>메타 발언, 과도한 개그성 발언, 밈 사용</li>
+                    <li>4학년 이후 개그성 짤 트레</li>
+                    <li>출처를 밝히지 않은 짤 트레 (단, 과열될 시 제제가 들어갈 수 있습니다.)</li>
+                    <li>과한 개그성 플로우</li>
+                    <li>제명 및 하차 캐릭터에 관한 이야기/언급</li>
+                    <li>공개 계정으로 캐릭터 스포일러 및 러닝 타래 세우기 (커뮤니티 스토리 외부 유출)</li>
+                    <li>모든 종류의 지인플</li>
+                    <li>시간순이 아닌 트윗 답변 (이가 지나치게 반복될 시 경고 부여)</li>
+                    <li>커뮤니티 수위에 맞지 않는 모든 행위</li>
+                    <li>러너 캐릭터 간의 고백/답변 로그 를 주고받는 행위</li>
+                    <li>자해/자살 로그 업로드</li>
+                    <li>특정 캐릭터 간의 가족 놀이, ~~조 생성,  분위기 조성</li>
+                    <li>운영진 측에서 주최하지 않은 러너 캐릭터 간의 미니 게임 주최</li>
+                    <li>깨뜨릴 수 없는 맹세 사용</li>
+                    <li>세베루스 창작 마법 사용</li>
+                    <li>용서할 수 없는 주문 사용</li>
+                    <li>러너 캐릭터 간의 약혼 및 결혼 관계</li>
+                    <li>엔딩 이전 연락처 공유</li>
+                </ul>
+              </td>
+            </tr>
+        </table>
+        
+        <p class="info"><span>그 외 타인에게 불쾌감 혹은 소외감을 유발할 수 있는 행위를 모두 금하며, 운영진들의 판단 하에 경고 행위로 구분되는 행위 또한 경고를 부여합니다. 최대한 모니터링에 힘쓸 예정이나, 수위등급에 어긋나는 행위를 목격, 겪을 시 총괄계 측으로 연락 바랍니다.</span></p>
+        
+        <table class="tab2">
+            <tr>
+                <td>경고 사항</td>
+                <td>
+                  <ul class="liofch">
+                      <li>@tos, @null 사용</li>
+                      <li>48시간 이상 미접속 (언질하지 않은 무통보 잠수가 지속될 경우 제명 처리될 수 있습니다.)</li>
+                      <li>모든 종류의 편파 행위 (글, 그림, 성별 등)</li>
+                      <li>과한 메타적 발언</li>
+                      <li>세계관 배경에 맞지 않는 발언</li>
+                      <li>계정 실수 트윗에 반응하는 행위</li>
+                      <li>과도한 타임라인 대화 지속 (15분 이상으로 제한하며, 잦을 경우 전체 경고 부여 가능성이 있습니다.)</li>
+                      <li>쿠션이 존재하지 않는 트리거를 유발할 수 있는 트윗 (올릴 시에 꼭 기재해 주시기 바랍니다.)</li>
+                      <li>성장 프로필 미제출 및 무통보 지각</li>
+                      <li>운영진 계정을 포함하지 않은 1:1 연락</li>
+                      <li>통금 시간 중 퍼블릭 트윗 작성</li>
+                      <li>러닝 중 계정 및 멘션에 오너 기호 사용 (사정을 바이오에 기재하는 행위 등 불가)</li>
+                      <li>길이 제한이 넘는 위치 대화 및 외부 링크를 사용하는 위치 대화</li>
+                      <li>리뉴얼 기간 중 위치 대화</li>
+                      <li>러너 캐릭터들 간 조율 중 과한 썰 풀이</li>
+                      <li>성장 이후 IF에 작성되어 있지 않던 설정 추가 (필요 시 운영진과의 조율이 필수입니다.)</li>
+                  </ul>
+                </td>
+              </tr>
+        </table>
+
 </div>
+
+
+
+
+<p><span></span></p>
+
+
+
+<script>
+    document.addEventListener('scroll', function() {
+        const contentBox = document.querySelector('.content_box');
+        const scrollPosition = window.scrollY;
+    
+        console.log('스크롤 위치:', scrollPosition); // 현재 스크롤 위치 출력
+    
+        if (scrollPosition > 100) {
+            contentBox.style.marginTop = '0px'; // 스크롤이 100px 이상일 때 위로 이동
+        } else {
+            contentBox.style.marginTop = '100px'; // 스크롤이 100px 미만일 때 원래 위치로 돌아옴
+        }
+    });
+</script>
 
 {% endblock %}

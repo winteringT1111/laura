@@ -38,7 +38,7 @@
 
 /* 캐릭터 이미지 영역 */
 .character_wrap {
-    min-width: 1200px;
+    min-width: 1240px;
     margin-top: 2vh;
     margin-left: 2%;
     height: 98vh;
@@ -64,7 +64,7 @@
 
 /* 오른쪽 고정 영역 */
 .wrap {
-    width: 905px;
+    width: 780px;
     height: 100vh;
     position: fixed;
     right: 0;
@@ -139,7 +139,7 @@
 
 /* 오른쪽 정보 박스 */
 .info_wrap {
-    width: 695px;
+    width: 655px;
     height: 100vh;
     background: rgba(36, 34, 30, 0.85);
     box-shadow: 5px 5px 5px 13px rgba(0, 0, 0, 0.2);
@@ -294,7 +294,9 @@
     height: 50%;
     align-items: center;
     text-align: center;
+    justify-content: center;
     margin-top: -1%;
+    position: relative;
 }
 
 .content_appearance {
@@ -336,6 +338,19 @@
     font-weight: 300;
 }
 
+.scroll_box2 {
+    width: 85%;
+    max-height: 88%;
+    overflow-y: auto;
+    margin: 20px auto; 
+    line-height: 1.5;
+    font-size: 16.5px;
+    text-align: left;
+    padding: 1% 1%;
+    font-weight: 300;
+}
+
+
 .cms_wrap {
     display: flex;
     justify-content: left;
@@ -351,4 +366,111 @@
     align-items: center;
 } .cms img {
     margin-right: 2%;
+}
+
+
+
+
+
+.progressbar {
+    width: 40%;
+    position: absolute;
+    top: 5%;
+    left: 30%;
+}
+
+.skill_wrap {
+    width: 100%;
+    position: absolute;
+    top: 45%;
+    left: 0;
+}
+
+.skill_title {
+    text-align: right;
+    margin-right: 10%;
+    margin-top: -1%;
+}
+
+.skill_title span {
+    font-family: 'romantice';
+    font-size: 28px;
+
+}
+
+.skill_title img {
+    margin-bottom: 10px;
+}
+
+
+
+.stat {
+  display: flex;
+  align-items: center;
+  margin: -10px 0;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+}
+
+.stat label {
+  font-size: 16px;
+  font-family: 'hana';
+  color: rgb(224, 223, 217);
+  transform: scaleY(1.05);
+  width: 50px;   /* 라벨 고정 폭 */
+  text-align: left; /* 글자도 왼쪽 정렬 */
+  margin-top: 10px;
+  font-weight: 200;
+}
+
+progress[value] {
+  --color: rgba(163, 154, 122, 0.87);
+  --background: rgba(190, 166, 166, 0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: solid 2px rgba(163, 154, 122, 0.87);
+  width: 220px;
+  height: 24px; /* 높이 지정 */
+  margin-left: 10px;
+  padding: 2px;
+  border-radius: 10em;
+  background: var(--background);
+}
+
+/* 크롬, 사파리 */
+progress[value]::-webkit-progress-bar {
+  height: 16px;   /* 높이 맞추기 */
+  border-radius: 10em;
+  background: var(--background);
+}
+progress[value]::-webkit-progress-value {
+  height: 16px;   /* 높이 맞추기 */
+  border-radius: 10em;
+  background: var(--color);
+}
+
+.skill_info {
+    display: flex;
+    scale: 0.85;
+    justify-content: center;
+    margin-top: -2%;
+    gap: 2%;
+}
+
+.skill_content {
+    background: url("../../img/profile/skillbox.png");
+    width: 191px;
+    height: 214px;
+    font-family: 'hana';
+} .skill_name {
+    font-size: 21px;
+    margin-top: 12%;
+    font-family: 'Times New Roman', Times, serif;
+    transform: scaleY(1.1);
+    font-weight: 500;
+} .skill_ex {
+    margin-top: 3%;
+    padding-left: 9%;
+    padding-right: 9%;
+    text-align: center;
 }

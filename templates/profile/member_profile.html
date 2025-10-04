@@ -124,7 +124,7 @@
                 </div>
             </div>
 
-            <div class="scroll_box">
+            <div class="scroll_box2">
                 <p>
                     {{ char07.charEtc|linebreaksbr|safe }}  
                 </p>
@@ -132,18 +132,53 @@
         </div>
 
         <div class="content_stats">
+            <div class="progressbar">
+                <div class="stat">
+                <label>체력</label>
+                <progress value="4" max="5"></progress>
+                </div>
+                <div class="stat">
+                <label>공격력</label>
+                <progress value="5" max="5"></progress>
+                </div>
+                <div class="stat">
+                <label>방어력</label>
+                <progress value="2" max="5"></progress>
+                </div>
+                <div class="stat">
+                <label>회복력</label>
+                <progress value="1" max="5"></progress>
+                </div>
+                <div class="stat">
+                <label>운</label>
+                <progress value="3" max="5"></progress>
+                </div>
+            </div>
             
-            <div class="keyword_wrap">
-                <div class="keyword">
-
+            <div class="skill_wrap">
+                <div class="skill_title">
+                    <span>SKILL</span>
+                    <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
+                </div>
+                <div class="skill_info">
+                    <div class="skill_content">
+                        <p class="skill_name">방패 밀치기</p>
+                        <p class="skill_ex">범위 내 지정 적 1명 공격력 30%+방어력 80% 피해 + 30% 확률로 기절</p>
+                    </div>
+                    <div class="skill_content">
+                        <p class="skill_name">치유</p>
+                        <p class="skill_ex">아군 1명 HP 30% 회복</p>
+                    </div>
+                    <div class="skill_content">
+                        <p class="skill_name">약점 관통</p>
+                        <p class="skill_ex">적의 방어력을 무시하고 공격력의 150%의 피해를 가한다</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="scroll_box">
-                <p>
-                    {{ char07.charEtc|linebreaksbr|safe }}  
-                </p>
-            </div>
+
+            
+
         </div>
 
 
