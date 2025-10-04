@@ -10,7 +10,7 @@ urlpatterns = [
     path('notice', views.notice, name='notice'),
     path('world', views.world, name='world'),
     path('system', views.system, name='system'),
-    path('system/total', views.totalsystem, name='totalsystem'),
+    path('world/species', views.species, name='species'),
     path('attendance/', views.attendance, name='attendance'),
     # 조사
     path('search/', views.search, name='search'),

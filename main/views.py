@@ -28,8 +28,8 @@ def world(request):
 def system(request):
     return render(request, "notice/system.html")
 
-def totalsystem(request):
-    return render(request, "notice/total_system.html")
+def species(request):
+    return render(request, "notice/species.html")
 
 
 def story_view(request):

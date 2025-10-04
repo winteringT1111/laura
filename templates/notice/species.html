@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/notice/species.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<a href="/" class="goback">RETURN</a>
+
+<div class="tab-container">
+    <div class="tab-buttons">
+      <button id="notice-tab" class="tab-btn active">종족</button>
+      <button id="guide-tab" class="tab-btn">캐릭터 가이드</button>
+    </div>
+  
+    <div class="tab-content">
+      <div id="notice-content" class="content active">     
+        <div class="notice_wrap">
+            <div class="content_box">
+                <img class="notice_head" src="{% static 'img/notice/notice_header.png' %}" alt="header">
+                <h1 class="subheader">01. COMMUNITY</h1>
+
+                <div class="li-content">
+                    <ul>
+                        <li>본 커뮤니티 ‘라오라’는 서양 정통 판타지를 기반으로 한 독자적인 창작 세계관 커뮤니티입니다. 공지사항을 읽지 않아 생기는 불이익에 대해 운영진은 일절 책임지지 않습니다.</li>
+                        <li>04년생 이상의 오너 분들에 한해 신청서 접수를 허용합니다. 빠른 년생은 불가능합니다.</li>
+                        <li>본 커뮤니티는 첫커, 첫 트커, 첫 시리커 러닝이 불가합니다.</li>
+                        <li>총괄계 가동 시간은 10:00-23:59 입니다. 가동 시간이 아닌 시각엔 답변을 하지 않습니다. 모든 문의는 오픈채팅으로만 받고 있으며 질의응답은 QnA 문서를 참고해주세요.</li>
+                        <li>수위 등급 0022 -> 0044 커뮤니티입니다. 일상 후 점층형 시리어스로 진행되는 만큼 ‘전쟁, 사망, 유혈, 무기류 소지, 살해’ 와 같은 요소가 존재합니다. 관련 요소에 민감한 예비 러너분들은 신청서 접수를 재고 바랍니다.</li>
+                        <li>그림 인장 ONLY 커뮤니티입니다.  실사, 분위기, 단색, AI 등의 이미지 사용을 금하고 있으며, 커뮤니티 사용이 허가된 픽크루에 한해 사용이 가능합니다. 본인의 그림이 아닌 이미지(커미션, 지원, 픽크루 등)는 출처를 명확히 밝혀 주시기 바랍니다.</li>
+                        <li>MPC를 포함하여 최소 22명, 최대 30명의 원정대를 꾸릴 예정 하에 있습니다. 캐릭터의 출신지, 종족 등의 비율보다 레이드를 위한 포지션 비율 1:2:1을 우선시하고 있습니다.</li>
+                        <li>레이드 포지션제 커뮤인 만큼 하차, 제명을 극지양하고 있습니다. 러닝 기간 중 총 2회의 휴식기가 존재하오나 일정에도 무리가 가실 것 같은 러너 분께서는 신청서를 제출하기 전 다시 한번 고려해주시기 바랍니다.</li>
+                        <li>2차 홍보지 및 합발폼은 셰나(@syenamer)님의 커미션 작업물입니다.</li>
+                    </ul>
+                </div>
+
+                <div class="fade-line"></div>
+                <h1 class="subheader">02. RUNNING</h1>
+
+                <div class="li-content">
+                    <ul>
+                        <li>러닝 기간은 약 6주(42D) ±a로 예정되어 있으며 러닝 중 일정은 1-2일씩 유동적으로 조정될 가능성이 있습니다.</li>
+                        <li>본 커뮤니티는 트위터 플랫폼 및 자체 제작 홈페이지를 이용합니다. 이에 따른 트위터 계정 생성이 필수이며 PC 사용을 권장하고 있습니다.</li>
+                        <li>신청서 합격제를 차용합니다. 합격자 명단 공개 이후 계정 프로텍트를 활성화한 뒤 폼이 공개되오니 참고 바랍니다. </li>
+                        <li>시리어스 기간 진입 이후 하차를 금하고 있습니다. 엔딩 직후 트윗수가 700트 미만인 러너는 연공이 불가합니다. 러닝 기간이 짧지 않은 만큼 일정을 확인하신 뒤 신청서 접수 바랍니다.</li>
+                    </ul>
+                </div>
+
+                <div class="fade-line"></div>
+                <h1 class="subheader">03. WARNING</h1>
+
+                <div class="li-content">
+                    <ul>
+                        <li>본 커뮤니티는 삼진아웃제를 차용하고 있습니다. 개인 경고 3회 누적 시 이유불문 제명 처리됩니다.</li>
+                        <li>단체경고 3회 누적 시 조기엔딩으로 이어질 수 있음을 사전에 고지합니다. </li>
+                    </ul>
+                </div>
+                
+                <table border="1">
+                    <tr>
+                    <td>경고 사항</td>
+                    <td>
+                        <ul class="liofch">
+                            <li>@tos, @null 사용</li>
+                            <li>48시간 이상 미접속 (언질하지 않은 무통보 잠수가 지속될 경우 제명 처리될 수 있습니다.)</li>
+                            <li>모든 종류의 편파 행위 (글, 그림, 성별 등)</li>
+                            <li>초성 및 이모티콘 사용</li>
+                            <li>과한 메타적 발언</li>
+                            <li>세계관 배경에 맞지 않는 발언</li>
+                            <li>계정 실수 트윗에 반응하는 행위</li>
+                            <li>과도한 타임라인 대화 지속 (20분 이상으로 제한하며, 잦을 경우 전체 경고 부여 가능성이 있습니다.)</li>
+                            <li>운영진 계정을 포함하지 않은 1:1 연락</li>
+                            <li>통금 시간 중 퍼블릭 트윗 작성</li>
+                            <li>러닝 중 계정 및 멘션에 오너 기호 사용 (사정을 바이오에 기재하는 행위 등 불가)</li>
+                            <li>길이 제한이 넘는 위치 대화 및 외부 링크를 사용하는 위치 대화</li>
+                            <li>러너 캐릭터들 간 조율 중 과한 썰 풀이</li>
+                        </ul>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>러닝 중</br>금지 사항</td>
+                    <td>
+                        <ul class="liofch">
+                            <li>메타 발언, 과도한 개그성 발언, 밈 사용</li>
+                            <li>시리어스 기간 이후 개그성 짤 트레</li>
+                            <li>출처를 밝히지 않은 짤 트레 (단, 과열될 시 제제가 들어갈 수 있습니다.)</li>
+                            <li>제명 및 하차 캐릭터에 관한 이야기/언급</li>
+                            <li>공개 계정 내 캐릭터 스포일러 및 러닝 타래</li>
+                            <li>스토리 외부 유출</li>
+                            <li>모든 종류의 지인플</li>
+                            <li>시간순이 아닌 트윗 답변</li>
+                            <li>커뮤니티 수위에 맞지 않는 모든 행위</li>
+                            <li>고백/답변 및 자해/자살 로그 업로드</li>
+                            <li>운영진 측에서 주최하지 않은 러너 캐릭터 간의 미니 게임 주최</li>
+                            <li>러너 캐릭터 간의 약혼 및 결혼 관계</li>
+                            <li>엔딩 이전 연락처 공유</li>
+                        </ul>
+                    </td>
+                    </tr>
+                </table>
+                
+                <p class="info"><span>그 외 타인에게 불쾌감 혹은 소외감을 유발할 수 있는 행위를 모두 금하며, 운영진들의 판단 하에 경고 행위로 구분되는 행위 또한 경고를 부여합니다. 최대한 모니터링에 힘쓸 예정이나, 수위등급에 어긋나는 행위를 목격, 겪을 시 총괄계 측으로 연락 바랍니다.</span></p>
+                
+                <table class="tab2">
+                    <tr>
+                        <td>금지 사항</td>
+                        <td>
+                        <ul class="liofch">
+                            <li>첫커 / 첫시리커 / 첫트커</li>
+                            <li>04년생 미만의 오너 (빠른 년생 불가)</li>
+                            <li>타 커뮤니티 엔딩을 본 캐릭터의 재활용 (엔딩 이후 6개월이 지난 캐릭터는 허용)</li>
+                            <li>하차 및 제명을 당한 캐릭터의 재활용</li>
+                            <li>위 목록 중 하나라도 해당될 경우 신청서 제출이 불가합니다.</li>
+                        </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+      </div>
+  
+      <div id="guide-content" class="content">
+        <div class="notice_wrap">
+            <div class="content_box">
+                <img class="notice_head" src="{% static 'img/notice/notice_header.png' %}" alt="header">
+                <h1 class="subheader">01. ysysm</h1>
+
+                <div class="li-content">
+                    <ul>
+                        <li>본 커뮤니티 ‘라오라’는 서양 정통 판타지를 기반으로 한 독자적인 창작 세계관 커뮤니티입니다. 공지사항을 읽지 않아 생기는 불이익에 대해 운영진은 일절 책임지지 않습니다.</li>
+                        <li>04년생 이상의 오너 분들에 한해 신청서 접수를 허용합니다. 빠른 년생은 불가능합니다.</li>
+                        <li>본 커뮤니티는 첫커, 첫 트커, 첫 시리커 러닝이 불가합니다.</li>
+                        <li>총괄계 가동 시간은 10:00-23:59 입니다. 가동 시간이 아닌 시각엔 답변을 하지 않습니다. 모든 문의는 오픈채팅으로만 받고 있으며 질의응답은 QnA 문서를 참고해주세요.</li>
+                        <li>수위 등급 0022 -> 0044 커뮤니티입니다. 일상 후 점층형 시리어스로 진행되는 만큼 ‘전쟁, 사망, 유혈, 무기류 소지, 살해’ 와 같은 요소가 존재합니다. 관련 요소에 민감한 예비 러너분들은 신청서 접수를 재고 바랍니다.</li>
+                        <li>그림 인장 ONLY 커뮤니티입니다.  실사, 분위기, 단색, AI 등의 이미지 사용을 금하고 있으며, 커뮤니티 사용이 허가된 픽크루에 한해 사용이 가능합니다. 본인의 그림이 아닌 이미지(커미션, 지원, 픽크루 등)는 출처를 명확히 밝혀 주시기 바랍니다.</li>
+                        <li>MPC를 포함하여 최소 22명, 최대 30명의 원정대를 꾸릴 예정 하에 있습니다. 캐릭터의 출신지, 종족 등의 비율보다 레이드를 위한 포지션 비율 1:2:1을 우선시하고 있습니다.</li>
+                        <li>레이드 포지션제 커뮤인 만큼 하차, 제명을 극지양하고 있습니다. 러닝 기간 중 총 2회의 휴식기가 존재하오나 일정에도 무리가 가실 것 같은 러너 분께서는 신청서를 제출하기 전 다시 한번 고려해주시기 바랍니다.</li>
+                        <li>2차 홍보지 및 합발폼은 셰나(@syenamer)님의 커미션 작업물입니다.</li>
+                    </ul>
+                </div>
+
+                <div class="fade-line"></div>
+                <h1 class="subheader">02. RUNNING</h1>
+
+                <div class="li-content">
+                    <ul>
+                        <li>러닝 기간은 약 6주(42D) ±a로 예정되어 있으며 러닝 중 일정은 1-2일씩 유동적으로 조정될 가능성이 있습니다.</li>
+                        <li>본 커뮤니티는 트위터 플랫폼 및 자체 제작 홈페이지를 이용합니다. 이에 따른 트위터 계정 생성이 필수이며 PC 사용을 권장하고 있습니다.</li>
+                        <li>신청서 합격제를 차용합니다. 합격자 명단 공개 이후 계정 프로텍트를 활성화한 뒤 폼이 공개되오니 참고 바랍니다. </li>
+                        <li>시리어스 기간 진입 이후 하차를 금하고 있습니다. 엔딩 직후 트윗수가 700트 미만인 러너는 연공이 불가합니다. 러닝 기간이 짧지 않은 만큼 일정을 확인하신 뒤 신청서 접수 바랍니다.</li>
+                    </ul>
+                </div>
+
+                <div class="fade-line"></div>
+                <h1 class="subheader">03. WARNING</h1>
+
+                <div class="li-content">
+                    <ul>
+                        <li>본 커뮤니티는 삼진아웃제를 차용하고 있습니다. 개인 경고 3회 누적 시 이유불문 제명 처리됩니다.</li>
+                        <li>단체경고 3회 누적 시 조기엔딩으로 이어질 수 있음을 사전에 고지합니다. </li>
+                    </ul>
+                </div>
+                
+                <table border="1">
+                    <tr>
+                    <td>경고 사항</td>
+                    <td>
+                        <ul class="liofch">
+                            <li>@tos, @null 사용</li>
+                            <li>48시간 이상 미접속 (언질하지 않은 무통보 잠수가 지속될 경우 제명 처리될 수 있습니다.)</li>
+                            <li>모든 종류의 편파 행위 (글, 그림, 성별 등)</li>
+                            <li>초성 및 이모티콘 사용</li>
+                            <li>과한 메타적 발언</li>
+                            <li>세계관 배경에 맞지 않는 발언</li>
+                            <li>계정 실수 트윗에 반응하는 행위</li>
+                            <li>과도한 타임라인 대화 지속 (20분 이상으로 제한하며, 잦을 경우 전체 경고 부여 가능성이 있습니다.)</li>
+                            <li>운영진 계정을 포함하지 않은 1:1 연락</li>
+                            <li>통금 시간 중 퍼블릭 트윗 작성</li>
+                            <li>러닝 중 계정 및 멘션에 오너 기호 사용 (사정을 바이오에 기재하는 행위 등 불가)</li>
+                            <li>길이 제한이 넘는 위치 대화 및 외부 링크를 사용하는 위치 대화</li>
+                            <li>러너 캐릭터들 간 조율 중 과한 썰 풀이</li>
+                        </ul>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>러닝 중</br>금지 사항</td>
+                    <td>
+                        <ul class="liofch">
+                            <li>메타 발언, 과도한 개그성 발언, 밈 사용</li>
+                            <li>시리어스 기간 이후 개그성 짤 트레</li>
+                            <li>출처를 밝히지 않은 짤 트레 (단, 과열될 시 제제가 들어갈 수 있습니다.)</li>
+                            <li>제명 및 하차 캐릭터에 관한 이야기/언급</li>
+                            <li>공개 계정 내 캐릭터 스포일러 및 러닝 타래</li>
+                            <li>스토리 외부 유출</li>
+                            <li>모든 종류의 지인플</li>
+                            <li>시간순이 아닌 트윗 답변</li>
+                            <li>커뮤니티 수위에 맞지 않는 모든 행위</li>
+                            <li>고백/답변 및 자해/자살 로그 업로드</li>
+                            <li>운영진 측에서 주최하지 않은 러너 캐릭터 간의 미니 게임 주최</li>
+                            <li>러너 캐릭터 간의 약혼 및 결혼 관계</li>
+                            <li>엔딩 이전 연락처 공유</li>
+                        </ul>
+                    </td>
+                    </tr>
+                </table>
+                
+                <p class="info"><span>그 외 타인에게 불쾌감 혹은 소외감을 유발할 수 있는 행위를 모두 금하며, 운영진들의 판단 하에 경고 행위로 구분되는 행위 또한 경고를 부여합니다. 최대한 모니터링에 힘쓸 예정이나, 수위등급에 어긋나는 행위를 목격, 겪을 시 총괄계 측으로 연락 바랍니다.</span></p>
+                
+                <table class="tab2">
+                    <tr>
+                        <td>금지 사항</td>
+                        <td>
+                        <ul class="liofch">
+                            <li>첫커 / 첫시리커 / 첫트커</li>
+                            <li>04년생 미만의 오너 (빠른 년생 불가)</li>
+                            <li>타 커뮤니티 엔딩을 본 캐릭터의 재활용 (엔딩 이후 6개월이 지난 캐릭터는 허용)</li>
+                            <li>하차 및 제명을 당한 캐릭터의 재활용</li>
+                            <li>위 목록 중 하나라도 해당될 경우 신청서 제출이 불가합니다.</li>
+                        </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<script>
+    document.addEventListener('scroll', function() {
+        const contentBox = document.querySelector('.content_box');
+        const scrollPosition = window.scrollY;
+    
+        console.log('스크롤 위치:', scrollPosition); // 현재 스크롤 위치 출력
+    
+        if (scrollPosition > 100) {
+            contentBox.style.marginTop = '0px'; // 스크롤이 100px 이상일 때 위로 이동
+        } else {
+            contentBox.style.marginTop = '100px'; // 스크롤이 100px 미만일 때 원래 위치로 돌아옴
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const noticeTab = document.getElementById('notice-tab');
+      const guideTab = document.getElementById('guide-tab');
+      const noticeContent = document.getElementById('notice-content');
+      const guideContent = document.getElementById('guide-content');
+    
+      noticeTab.addEventListener('click', () => {
+        noticeTab.classList.add('active');
+        guideTab.classList.remove('active');
+        noticeContent.classList.add('active');
+        guideContent.classList.remove('active');
+      });
+    
+      guideTab.addEventListener('click', () => {
+        guideTab.classList.add('active');
+        guideContent.classList.add('active');
+        noticeTab.classList.remove('active');
+        noticeContent.classList.remove('active');
+      });
+    });
+    </script>
+
+{% endblock %}
