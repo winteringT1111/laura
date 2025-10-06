@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>The Light of Laura</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+        <style>
+            
+/* 버튼 클릭 */
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 245, 186); /* 노란색 테두리 */
+  background: transparent;                  /* 내부는 비움 */
+  transform: scale(0);
+  animation: ripple-effect 0.5s ease-out;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@keyframes ripple-effect {
+  to {
+    transform: scale(1.3); 
+    opacity: 0;          
+  }
+}
+
+
+.goback {
+  position: fixed;
+  bottom: 5%;
+  left: 2%;
+  z-index: 30;
+  background: linear-gradient(to right, rgb(138, 127, 76), rgb(143, 131, 77,0));
+  color: rgb(228, 223, 214);
+  padding: 7px 35px 7px 19px;
+  font-size: large;
+  border-radius: 7px;
+  font-family: 'Hamlet',serif;
+
+  opacity: 0;                
+  transform: translateX(30px);
+  animation: fadeSlideIntoRight 1s ease-out forwards; 
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeSlideIntoRight {
+  to {
+    opacity: 1;              /* 점점 보이게 */
+    transform: translateX(0); /* 제자리로 */
+  }
+}
+
+.goback:hover {
+  text-decoration: none;
+  color: rgb(228, 223, 214);
+  filter: drop-shadow(2px 2px 2px rgb(65, 65, 65));
+}
+
+
+::selection {
+    background-color: #a39f93ea;
+    color: #eeeeee; /* 선택된 텍스트의 색상을 검정으로 설정 */
+}
+
+/* Chrome, Edge, Safari (WebKit) */
+::-webkit-scrollbar {
+  width: 10px;              /* 세로 스크롤바 두께 */
+  height: 10px;             /* 가로 스크롤바 두께 */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05); /* 트랙 배경 */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8f846fc0;   /* 스크롤바 색 */
+  border-radius: 10px;
+  border: 2px solid rgba(48, 45, 41, 0.5); /* 배경색과 어울리는 보더 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8a6f39c0;  /* 호버 시 색 */
+}
+        </style>
+        {% block head %}
+	    {% endblock %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/effect/user.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/effect/navbar.css' %}">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+        
+    </head>
+    <body>
+        <div class="background"></div>
+        {% include "effects/navbar.html" %}
+        {% include "effects/flower.html" %}
+
+        {% if user.is_authenticated %}
+            {% include "effects/user.html" %}
+        {% else %}
+            {% include "effects/non_user.html" %}
+        {% endif %}
+        
+        {% block content %}
+        {% endblock %}
+
+        <script>
+        document.addEventListener("click", function(e) {
+        const ripple = document.createElement("span");
+        ripple.classList.add("ripple");
+
+        // 클릭 좌표
+        ripple.style.left = e.clientX + "px";
+        ripple.style.top = e.clientY + "px";
+
+        document.body.appendChild(ripple);
+
+        // 파장 크기 설정 (50px 기본)
+        ripple.style.width = ripple.style.height = "50px";
+        ripple.style.marginLeft = "-25px";
+        ripple.style.marginTop = "-25px";
+
+        // 애니메이션 끝나면 제거
+        ripple.addEventListener("animationend", () => {
+            ripple.remove();
+        });
+        });
+        </script>
+
+    
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+        
+    </body>
+</html>

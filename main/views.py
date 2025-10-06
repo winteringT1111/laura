@@ -31,6 +31,42 @@ def system(request):
 def species(request):
     return render(request, "notice/species.html")
 
+def war(request):
+    return render(request, "notice/war.html")
+
+def realm(request):
+    return render(request, "notice/realm.html")
+
+def novarium(request):
+    return render(request, "notice/realm/novarium.html")
+
+def belisar(request):
+    return render(request, "notice/realm/belisar.html")
+
+def zerka(request):
+    return render(request, "notice/realm/zerka.html")
+
+def tarvel(request):
+    return render(request, "notice/realm/tarvel.html")
+
+def elysion(request):
+    return render(request, "notice/realm/elysion.html")
+
+def cardin(request):
+    return render(request, "notice/realm/cardin.html")
+
+def drakus(request):
+    return render(request, "notice/realm/drakus.html")
+
+def necros(request):
+    return render(request, "notice/realm/necros.html")
+
+def serapium(request):
+    return render(request, "notice/realm/serapium.html")
+
+
+
+
 
 def story_view(request):
     script = [

@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/notice/realm.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<a href="/world" class="goback">RETURN</a>
+
+<div class="tab-controls">
+    <button class="tab-button active" data-tab="region-tab">
+        <span class="star-icon"></span>지역
+    </button>
+    <button class="tab-button" data-tab="dungeon-tab">
+        <span class="star-icon"></span>던전
+    </button>
+</div>
+
+<div id="region-tab" class="tab-content active" style="position: relative; width: 1520px;">
+    <button class="carousel-button left region-carousel-button">&#10094;</button>
+
+    <div class="carousel-container region-carousel-container">
+        <div class="carousel-track region-carousel-track">
+            <div class="card"><a href="/world/realm/novarium"><img class="notice_head" src="{% static 'img/notice/realm/노바리움.png' %}" alt="header"></a></div>
+            <div class="card"><a href="/world/realm/belisar"><img class="notice_head" src="{% static 'img/notice/realm/벨리사르.png' %}" alt="header"></a></div>
+            <div class="card"><a href="/world/realm/zerka"><img class="notice_head" src="{% static 'img/notice/realm/제르카.png' %}" alt="header"></a></div>
+            <div class="card"><a href="/world/realm/tarvel"><img class="notice_head" src="{% static 'img/notice/realm/타르벨.png' %}" alt="header"></a></div>
+            <div class="card"><a href="/world/realm/elysion"><img class="notice_head" src="{% static 'img/notice/realm/엘리시온.png' %}" alt="header"></a></div>
+            <div class="card"><a href="/world/realm/drakus"><img class="notice_head" src="{% static 'img/notice/realm/드라쿠스.png' %}" alt="header"></a></div>
+            <div class="card"><a href="/world/realm/cardin"><img class="notice_head" src="{% static 'img/notice/realm/카르딘.png' %}" alt="header"></a></div>
+            <div class="card"><a href="/world/realm/necros"><img class="notice_head" src="{% static 'img/notice/realm/네크로스.png' %}" alt="header"></a></div>
+            <div class="card"><a href="/world/realm/serapium"><img class="notice_head" src="{% static 'img/notice/realm/세라피움.png' %}" alt="header"></a></div>
+        </div>
+    </div>
+
+    <button class="carousel-button right region-carousel-button">&#10095;</button>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar region-progress-bar"></div>
+    </div>
+</div>
+
+<div id="dungeon-tab" class="tab-content" style="position: relative; width: 1520px; display: none;">
+    <button class="carousel-button left dungeon-carousel-button">&#10094;</button>
+
+    <div class="carousel-container dungeon-carousel-container">
+        <div class="carousel-track dungeon-carousel-track">
+            <div class="card"><img class="notice_head" src="{% static 'img/notice/realm/타르벨_던전.png' %}" alt="header"></div>
+            <div class="card"><img class="notice_head" src="{% static 'img/notice/realm/벨리사르_던전.png' %}" alt="header"></div>
+            <div class="card"><img class="notice_head" src="{% static 'img/notice/realm/제르카_던전.png' %}" alt="header"></div>
+            <div class="card"><img class="notice_head" src="{% static 'img/notice/realm/엘리시온_던전.png' %}" alt="header"></div>
+            <div class="card"><img class="notice_head" src="{% static 'img/notice/realm/드라쿠스_던전.png' %}" alt="header"></div>
+            <div class="card"><img class="notice_head" src="{% static 'img/notice/realm/카르딘_던전.png' %}" alt="header"></div>
+        </div>
+    </div>
+
+    <button class="carousel-button right dungeon-carousel-button">&#10095;</button>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar dungeon-progress-bar"></div>
+    </div>
+</div>
+
+
+
+<script>
+const carouselIndices = new Map();
+
+/**
+ * 진행 바를 업데이트하는 헬퍼 함수
+ * @param {string} prefix - 'region-' 또는 'dungeon-'
+ * @param {number} currentIndex - 현재 캐러셀 인덱스
+ * @param {number} totalCards - 전체 카드 수
+ * @param {number} visibleCards - 한 번에 보이는 카드 수
+ */
+function updateProgressBar(prefix, currentIndex, totalCards, visibleCards) {
+    const progressBar = document.querySelector(`.${prefix}progress-bar`);
+    if (!progressBar) return;
+
+    // 캐러셀이 움직일 수 있는 총 단계 수
+    const maxIndex = totalCards - visibleCards;
+    
+    // 현재 인덱스를 최대 인덱스로 나눈 비율 (0부터 maxIndex까지)
+    const progress = (currentIndex / maxIndex) * 100;
+
+    // 진행 바 너비 업데이트
+    progressBar.style.width = `${Math.min(100, progress)}%`;
+}
+
+
+function setupCarousel(prefix) {
+    const containerId = prefix + 'tab';
+    
+    const track = document.querySelector(`#${containerId} .${prefix}carousel-track`);
+    const cards = document.querySelectorAll(`#${containerId} .card`);
+    const prevButton = document.querySelector(`#${containerId} .${prefix}carousel-button.left`);
+    const nextButton = document.querySelector(`#${containerId} .${prefix}carousel-button.right`);
+    
+    if (track && track.dataset.listenerSet === 'true') {
+        // 이미 리스너가 설정되었다면, 초기 인덱스만 리셋
+        carouselIndices.set(track, 0); 
+        track.style.transform = 'translateX(0px)';
+        // 진행 바도 초기화
+        updateProgressBar(prefix, 0, cards.length, 4); // 4는 보이는 카드 수 (대략 1520px / 330px)
+        return;
+    }
+
+    if (!track || cards.length === 0) return;
+
+    // 초기화 마크
+    track.dataset.listenerSet = 'true'; // 리스너 설정 플래그 변경
+    carouselIndices.set(track, 0); 
+    
+    const cardWidth = cards[0] ? cards[0].offsetWidth + 30 : 330;
+    
+    // 한 번에 보이는 카드 수 계산 (정수)
+    const visibleCards = Math.floor(track.parentElement.offsetWidth / cardWidth); 
+    // 총 이동 가능한 단계 (인덱스) 수
+    const maxMoveIndex = cards.length - visibleCards;
+
+
+    // 초기 진행 바 설정
+    updateProgressBar(prefix, 0, cards.length, visibleCards); 
+
+
+    // 이전 버튼 리스너
+    prevButton.addEventListener('click', () => {
+        let clickIndex = carouselIndices.get(track) || 0; 
+        
+        if (clickIndex > 0) {
+            clickIndex--;
+            const move = cardWidth * clickIndex;
+            track.style.transform = `translateX(-${move}px)`;
+            carouselIndices.set(track, clickIndex);
+            
+            // 👈 진행 바 업데이트
+            updateProgressBar(prefix, clickIndex, cards.length, visibleCards);
+        }
+    });
+
+    // 다음 버튼 리스너
+    nextButton.addEventListener('click', () => {
+        let clickIndex = carouselIndices.get(track) || 0;
+        
+        const containerWidth = track.parentElement.offsetWidth;
+        const trackWidth = track.scrollWidth;
+        const maxTranslate = trackWidth - containerWidth + 211; 
+        
+        const nextMove = cardWidth * (clickIndex + 1);
+
+        if (nextMove < maxTranslate) { 
+            clickIndex++;
+            track.style.transform = `translateX(-${nextMove}px)`;
+            carouselIndices.set(track, clickIndex);
+        } else if (clickIndex * cardWidth < maxTranslate) {
+            clickIndex++; // 마지막 인덱스로 간주
+            track.style.transform = `translateX(-${maxTranslate}px)`;
+            carouselIndices.set(track, maxMoveIndex); // 마지막 인덱스로 설정
+        }
+
+        // 👈 진행 바 업데이트
+        updateProgressBar(prefix, carouselIndices.get(track), cards.length, visibleCards);
+    });
+}
+
+// 탭 전환 로직 (기존 로직 유지)
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const targetId = button.dataset.tab;
+        const prefix = targetId.split('-')[0] + '-';
+
+        // 1. 모든 탭 버튼 및 콘텐츠 상태 초기화 및 활성화
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        tabContents.forEach(content => content.classList.remove('active'));
+        document.getElementById(targetId).classList.add('active');
+        
+        // 2. 탭이 활성화된 직후에 캐러셀 설정/재설정 함수 호출 (너비 재계산)
+        setupCarousel(prefix);
+
+        // 3. 탭 전환 시 캐러셀 위치를 0으로 리셋 (setupCarousel 내부에서 이미 처리됨)
+        const track = document.querySelector(`#${targetId} .carousel-track`);
+        if (track) {
+            track.style.transform = 'translateX(0px)';
+            carouselIndices.set(track, 0); 
+        }
+    });
+});
+
+// DOM 로드 시 초기 'region-tab' 캐러셀만 설정
+document.addEventListener('DOMContentLoaded', () => {
+    setupCarousel('region-'); 
+    
+    // 던전 탭의 진행 바가 안 보이도록 초기 설정
+    updateProgressBar('dungeon-', 0, 7, 4); // 총 7개 카드 중 4개 보인다고 가정
+});
+</script>
+
+
+{% endblock %}

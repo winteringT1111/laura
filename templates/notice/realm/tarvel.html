@@ -1,0 +1,47 @@
+{% extends "realm_base.html" %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/notice/realm/novarium.css' %}">
+<style>
+    .background {
+    background-image: url('{% static "img/notice/realm/타르벨배경.png" %}') !important;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<a href="/world/realm" class="goback">RETURN</a>
+
+
+<div class="notice_wrap">
+    <div class="content_box">
+
+        <h1 class="header">TARVEL</h1>
+        <h4 class="subheader_info">길드 | 상업지구 | 평야</h4>
+        <h3 class="subheader"><i>[ 대륙의 풍요를 품은 번영의 중심지 ]</i></h3>
+
+        <div class="content">
+            <p> 세계에서 가장 인구가 많은 대도시를 중심으로 한 번영의 땅. 중심지에는 상업지구, 길드 본부, 수많은 상단들이 모여 활기를 띠고 있으며, 외곽으로 갈수록 드넓은 평야와 농지가 펼쳐져 있다. 이곳에서 생산되는 곡물과 자원들은 대륙 전역으로 흘러 들어가며, 타르벨을 ‘풍요의 심장’이라 부르게 한다. 노바리움 다음으로 다양한 종족이 거주하고 있으며, 대륙에서 가장 많은 금전 거래가 일어나는 곳이기도 하다.
+
+ </br></br>타르벨 사람들의 복식은 도시적이고 깔끔한 인상을 준다. 잘 다려진 셔츠와 조끼, 모자로 단정함을 갖추고 옷감은 값비싼 비단이나 모직이 주로 사용된다. 손에는 금화나 길드 문장이 새겨진 반지, 옷에는 보석 장식 단추 같은 장식이 더해져 그들의 부와 신분을 과시한다.
+</p>
+        </div>
+
+        <div class="location"> < 루타니아 상업지구 > </div>
+        <p>타르벨의 심장부라 불리는 루타니아 상업지구. 세계 각국의 상단과 상인들이 모여드는 번영의 중심이다. 거대한 시장과 거래소, 은행, 그리고 수많은 상점들이 끝없이 이어져 있으며, 이곳에서는 희귀한 보석과 진귀한 향신료, 고급 직물과 많은 정보들이 거래된다. 각 길드의 본부와 상단의 저택이 늘어서 있어 정치적 영향력 또한 막강하며 루타니아 상업지구에서 벌어지는 거래 하나가 대륙의 균형을 흔들기도 한다.</p>
+
+        <div class="location"> < 황금사자 길드 > </div>
+        <p> 타르벨 상업지구의 중심에 자리한 이 길드는 번영과 권위의 상징이자, 타르벨의 풍요를 지탱하는 핵심 세력이다. 사자의 용맹을 표상으로 삼아 광대한 무역망과 정보망을 구축했으며, 대륙 전역으로 물자를 흘려보내 도시의 맥박을 뛰게 한다. 길드 소속 상단은 공적 신뢰를 인정받아 어디서든 당당히 교역할 수 있고, 황금사자의 문장을 단 이들은 신뢰와 권위의 보증으로 존중받는다.</p>
+
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

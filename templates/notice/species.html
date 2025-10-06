@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<a href="/" class="goback">RETURN</a>
+<a href="/world" class="goback">RETURN</a>
 
 <div class="tab-container">
     <div class="tab-buttons">
@@ -20,104 +20,243 @@
       <div id="notice-content" class="content active">     
         <div class="notice_wrap">
             <div class="content_box">
-                <img class="notice_head" src="{% static 'img/notice/notice_header.png' %}" alt="header">
-                <h1 class="subheader">01. COMMUNITY</h1>
+                <img class="notice_head" src="{% static 'img/notice/species_header.png' %}" alt="header">
 
-                <div class="li-content">
-                    <ul>
-                        <li>본 커뮤니티 ‘라오라’는 서양 정통 판타지를 기반으로 한 독자적인 창작 세계관 커뮤니티입니다. 공지사항을 읽지 않아 생기는 불이익에 대해 운영진은 일절 책임지지 않습니다.</li>
-                        <li>04년생 이상의 오너 분들에 한해 신청서 접수를 허용합니다. 빠른 년생은 불가능합니다.</li>
-                        <li>본 커뮤니티는 첫커, 첫 트커, 첫 시리커 러닝이 불가합니다.</li>
-                        <li>총괄계 가동 시간은 10:00-23:59 입니다. 가동 시간이 아닌 시각엔 답변을 하지 않습니다. 모든 문의는 오픈채팅으로만 받고 있으며 질의응답은 QnA 문서를 참고해주세요.</li>
-                        <li>수위 등급 0022 -> 0044 커뮤니티입니다. 일상 후 점층형 시리어스로 진행되는 만큼 ‘전쟁, 사망, 유혈, 무기류 소지, 살해’ 와 같은 요소가 존재합니다. 관련 요소에 민감한 예비 러너분들은 신청서 접수를 재고 바랍니다.</li>
-                        <li>그림 인장 ONLY 커뮤니티입니다.  실사, 분위기, 단색, AI 등의 이미지 사용을 금하고 있으며, 커뮤니티 사용이 허가된 픽크루에 한해 사용이 가능합니다. 본인의 그림이 아닌 이미지(커미션, 지원, 픽크루 등)는 출처를 명확히 밝혀 주시기 바랍니다.</li>
-                        <li>MPC를 포함하여 최소 22명, 최대 30명의 원정대를 꾸릴 예정 하에 있습니다. 캐릭터의 출신지, 종족 등의 비율보다 레이드를 위한 포지션 비율 1:2:1을 우선시하고 있습니다.</li>
-                        <li>레이드 포지션제 커뮤인 만큼 하차, 제명을 극지양하고 있습니다. 러닝 기간 중 총 2회의 휴식기가 존재하오나 일정에도 무리가 가실 것 같은 러너 분께서는 신청서를 제출하기 전 다시 한번 고려해주시기 바랍니다.</li>
-                        <li>2차 홍보지 및 합발폼은 셰나(@syenamer)님의 커미션 작업물입니다.</li>
-                    </ul>
+                <div class="species_notice">
+                    <p><b>본 커뮤니티는  다양한 개성을 지닌 예비 용사님들을 적극 환영합니다.</b></p>
+                    <p>레이드 커뮤니티인 만큼, 포지션 비율을 더 중요시하고 있으나 </br>특정 종족에 과도하게 몰릴 시 종족 비율 또한 합발에 영향을 미칠 수 있음을 사전에 고지합니다.</p>
+                </div>
+
+                
+                <div class="species_wrap">
+                    <div class="species_header">
+                        <img class="species_img" src="{% static 'img/notice/인간.png' %}" alt="header">
+                        <div class="species_info">
+                            <div class="species_info_major">
+                                <p>인간</p>
+                                <p>HUMAN</p>
+                            </div>
+                            <div class="species_info_minor">
+                                <ul class="impo">
+                                    <li>평균 수명: 80년 / 성인 나이 기준: 18세</li>
+                                    <li>특징: 다양한 외모와 피부색을 지니며 여러 형태의 의상을 착용</li>
+                                    <li>주 거주지: 노바리움, 타르벨, 벨리사르, 제르카</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="species_content">
+                        <p>창의적이고 적응력이 뛰어나며 지식과 지능이 높다. 타 종족과의 협력과 설득, 회유에 능하고 이들은 마법을 이해하고 분석하여 비교적 잘 다루는 편에 속한다. 또한 기술과 무기를 개발하여 전투에서 주로 우위를 점한다. 상업 활동을 통해 다양한 종족과 교류하며 문화와 기술을 퍼뜨린다.</p>
+                        <p><b>엘프와 친화적, 드워프와 수인과 불화 관계</b></p>
+                    </div>
                 </div>
 
                 <div class="fade-line"></div>
-                <h1 class="subheader">02. RUNNING</h1>
 
-                <div class="li-content">
-                    <ul>
-                        <li>러닝 기간은 약 6주(42D) ±a로 예정되어 있으며 러닝 중 일정은 1-2일씩 유동적으로 조정될 가능성이 있습니다.</li>
-                        <li>본 커뮤니티는 트위터 플랫폼 및 자체 제작 홈페이지를 이용합니다. 이에 따른 트위터 계정 생성이 필수이며 PC 사용을 권장하고 있습니다.</li>
-                        <li>신청서 합격제를 차용합니다. 합격자 명단 공개 이후 계정 프로텍트를 활성화한 뒤 폼이 공개되오니 참고 바랍니다. </li>
-                        <li>시리어스 기간 진입 이후 하차를 금하고 있습니다. 엔딩 직후 트윗수가 700트 미만인 러너는 연공이 불가합니다. 러닝 기간이 짧지 않은 만큼 일정을 확인하신 뒤 신청서 접수 바랍니다.</li>
-                    </ul>
+                <div class="species_wrap">
+                    <div class="species_header">
+                        <img class="species_img" src="{% static 'img/notice/엘프.png' %}" alt="header">
+                        <div class="species_info">
+                            <div class="species_info_major">
+                                <p>엘프</p>
+                                <p>ELF</p>
+                            </div>
+                            <div class="species_info_minor">
+                                <ul class="impo">
+                                    <li>평균 수명: 400년 / 성인 나이 기준: 50세</li>
+                                    <li>특징: 인간보다 비교적 가느다란 몸체와 길고 뾰족한 귀를 지님</li>
+                                    <li>주 거주지: 노바리움, 타르벨, 엘리시온</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="species_content">
+                        <p>예리한 감각과 강력한 마법 능력을 가진 숲과 자연의 수호자이다. 원소 계열 마법을 다루고 부족 단위로 생활하며, 고대 마법의 지식을 이어받아 막강한 힘을 발휘한다. 모든 종족 중 가장 평화와 평등을 중시한다. 본인의 의지로 숲에서 나오려는 자들은 드물며, 무엇보다 자연과의 조화를 중시하지만 필요할 때에는 강력한 동맹을 맺기도 한다.</p>
+                        <p><b>인간과 페어리에게 친화적, 마족과 불화 관계 </b></p>
+                    </div>
                 </div>
 
                 <div class="fade-line"></div>
-                <h1 class="subheader">03. WARNING</h1>
 
-                <div class="li-content">
-                    <ul>
-                        <li>본 커뮤니티는 삼진아웃제를 차용하고 있습니다. 개인 경고 3회 누적 시 이유불문 제명 처리됩니다.</li>
-                        <li>단체경고 3회 누적 시 조기엔딩으로 이어질 수 있음을 사전에 고지합니다. </li>
-                    </ul>
+                <div class="species_wrap">
+                    <div class="species_header">
+                        <img class="species_img" src="{% static 'img/notice/하프_엘프.png' %}" alt="header">
+                        <div class="species_info">
+                            <div class="species_info_major">
+                                <p>하프 엘프</p>
+                                <p>HALF-ELF</p>
+                            </div>
+                            <div class="species_info_minor">
+                                <ul class="impo">
+                                    <li>평균 수명: 150년 / 성인 나이 기준: 25세</li>
+                                    <li>특징: 인간과 엘프의 혼혈. 길고 뾰족한 귀와 인간의 다양한 외모를 동시에 지님</li>
+                                    <li>주 거주지: 노바리움, 타르벨, 엘리시온</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="species_content">
+                        <p>인간의 창의성과 적응력, 엘프의 예리한 감각과 마법 능력을 동시에 보유한다. 종종 두 세계 사이의 중재자로서 협력과 설득에 뛰어나며, 인간의 기술과 엘프의 지식을 결합해 강력한 전투 능력을 발휘한다. 유독 종족 간의 갈등을 중재하는 경우가 많아 다른 종족들로부터도 신뢰를 얻고 있으며, 다양한 교류를 통해 평화를 유지하고 있다.</p>
+                        <p><b>인간과 엘프 모두와 친화적, 불화 관계 없음</b></p>
+                    </div>
                 </div>
-                
-                <table border="1">
-                    <tr>
-                    <td>경고 사항</td>
-                    <td>
-                        <ul class="liofch">
-                            <li>@tos, @null 사용</li>
-                            <li>48시간 이상 미접속 (언질하지 않은 무통보 잠수가 지속될 경우 제명 처리될 수 있습니다.)</li>
-                            <li>모든 종류의 편파 행위 (글, 그림, 성별 등)</li>
-                            <li>초성 및 이모티콘 사용</li>
-                            <li>과한 메타적 발언</li>
-                            <li>세계관 배경에 맞지 않는 발언</li>
-                            <li>계정 실수 트윗에 반응하는 행위</li>
-                            <li>과도한 타임라인 대화 지속 (20분 이상으로 제한하며, 잦을 경우 전체 경고 부여 가능성이 있습니다.)</li>
-                            <li>운영진 계정을 포함하지 않은 1:1 연락</li>
-                            <li>통금 시간 중 퍼블릭 트윗 작성</li>
-                            <li>러닝 중 계정 및 멘션에 오너 기호 사용 (사정을 바이오에 기재하는 행위 등 불가)</li>
-                            <li>길이 제한이 넘는 위치 대화 및 외부 링크를 사용하는 위치 대화</li>
-                            <li>러너 캐릭터들 간 조율 중 과한 썰 풀이</li>
-                        </ul>
-                    </td>
-                    </tr>
-                    <tr>
-                    <td>러닝 중</br>금지 사항</td>
-                    <td>
-                        <ul class="liofch">
-                            <li>메타 발언, 과도한 개그성 발언, 밈 사용</li>
-                            <li>시리어스 기간 이후 개그성 짤 트레</li>
-                            <li>출처를 밝히지 않은 짤 트레 (단, 과열될 시 제제가 들어갈 수 있습니다.)</li>
-                            <li>제명 및 하차 캐릭터에 관한 이야기/언급</li>
-                            <li>공개 계정 내 캐릭터 스포일러 및 러닝 타래</li>
-                            <li>스토리 외부 유출</li>
-                            <li>모든 종류의 지인플</li>
-                            <li>시간순이 아닌 트윗 답변</li>
-                            <li>커뮤니티 수위에 맞지 않는 모든 행위</li>
-                            <li>고백/답변 및 자해/자살 로그 업로드</li>
-                            <li>운영진 측에서 주최하지 않은 러너 캐릭터 간의 미니 게임 주최</li>
-                            <li>러너 캐릭터 간의 약혼 및 결혼 관계</li>
-                            <li>엔딩 이전 연락처 공유</li>
-                        </ul>
-                    </td>
-                    </tr>
-                </table>
-                
-                <p class="info"><span>그 외 타인에게 불쾌감 혹은 소외감을 유발할 수 있는 행위를 모두 금하며, 운영진들의 판단 하에 경고 행위로 구분되는 행위 또한 경고를 부여합니다. 최대한 모니터링에 힘쓸 예정이나, 수위등급에 어긋나는 행위를 목격, 겪을 시 총괄계 측으로 연락 바랍니다.</span></p>
-                
-                <table class="tab2">
-                    <tr>
-                        <td>금지 사항</td>
+
+                <div class="fade-line"></div>
+
+                <div class="species_wrap">
+                    <div class="species_header">
+                        <img class="species_img" src="{% static 'img/notice/다크_엘프.png' %}" alt="header">
+                        <div class="species_info">
+                            <div class="species_info_major">
+                                <p>다크 엘프</p>
+                                <p>DARK-ELF</p>
+                            </div>
+                            <div class="species_info_minor">
+                                <ul class="impo">
+                                    <li>평균 수명: 300년 / 성인 나이 기준: 40세</li>
+                                    <li>특징: 엘프와 마족의 혼혈. 어둡거나 보라빛의 피부를 지녀 마족과 구분하기 어려움</li>
+                                    <li>주 거주지: 카르딘, 엘리시온, 네크로스</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="species_content">
+                        <p>엘프의 지혜와 마족의 어두운 속성을 결합하여 창의적이고 전략적인 사고를 지닌다. 어둠의 마법과 엘프의 고대 마법을 함께 다루며, 암흑 마법과 자연의 힘을 결합해 전투에서 뛰어난 능력을 발휘한다. 주로 깊은 숲이나 동굴 같은 어둡고 고요한 장소에서 활동하며, 독자적인 사회를 유지해 문화와 기술을 선택적으로 퍼뜨리는 데에 능하다. 과거에는 ‘반쪽짜리 엘프’라는 호칭을 얻었을 정도로 입지가 썩 좋지 않았다. 그만큼 마족의 특징인 뿔이 난 개체 수는 적다.</p>
+                        <p><b>마족과 친화적, 엘프와 불화 관계</b></p>
+                    </div>
+                </div>
+
+                <div class="fade-line"></div>
+
+                <div class="species_wrap">
+                    <div class="species_header">
+                        <img class="species_img" src="{% static 'img/notice/페어리.png' %}" alt="header">
+                        <div class="species_info">
+                            <div class="species_info_major">
+                                <p>페어리</p>
+                                <p>FAIRY</p>
+                            </div>
+                            <div class="species_info_minor">
+                                <ul class="impo">
+                                    <li>평균 수명: 200년 / 성인 나이 기준: 50세</li>
+                                    <li>특징: 작은 몸체와 비행이 가능한 날개, 다양한 색의 피부를 지님</li>
+                                    <li>주 거주지: 노바리움, 엘리시온</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="species_content">
+                        <p>독과 치유 계열 마법을 주로 다루며 숲과 동화된 삶을 산다. 자연의 힘을 빌려 누구보다 뛰어나게 치유를 수행할 수 있는 수호자이다. 창의적이고 민첩하며 자연과 조화를 이루는 능력이 뛰어나다. 타 종족과의 상호작용에서 장난과 호기심을 활용하여 상황을 유리하게 만들며, 자연의 법칙과 정령 마법을 이해하고 활용하는 데 능하다. 작은 몸집에도 불구하고 지능과 기민함으로 위험을 회피하거나 정보를 수집하며, 자신들의 영역과 문화를 은밀하게 지킨다.</p>
+                        <p><b>엘프와 친화적, 불화 관계 없음</b></p>
+                    </div>
+                </div>
+
+                <div class="fade-line"></div>
+
+                <div class="species_wrap">
+                    <div class="species_header">
+                        <img class="species_img" src="{% static 'img/notice/드워프.png' %}" alt="header">
+                        <div class="species_info">
+                            <div class="species_info_major">
+                                <p>드워프</p>
+                                <p>DWARF</p>
+                            </div>
+                            <div class="species_info_minor">
+                                <ul class="impo">
+                                    <li>평균 수명: 120년 / 성인 나이 기준: 30세</li>
+                                    <li>특징: 강건한 체격과 강직한 얼굴, 굵은 체모를 지님</li>
+                                    <li>주 거주지: 드라쿠스, 타르벨, 제르카</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="species_content">
+                        <p>광산과 대장간에서 손재주와 신체 능력이 뛰어나며, 탁월한 기술력과 높은 자존심을 지닌다. 전투에서는 물리적인 힘과 기술적 도구를 활용한다. 산악 지대에서 독립적 문화를 유지하며, 기술과 무기를 다른 종족에게 제공해 경제적 이익을 얻는다. 기술과 문화를 전파하고 동맹을 구축하는 데에 있어 전략적으로 행동한다. 대게 조직적이다.</p>
+                        <p><b>친화 관계 없음, 인간과 협력 관계</b></p>
+                    </div>
+                </div>
+
+                <div class="fade-line"></div>
+
+                <div class="species_wrap">
+                    <div class="species_header">
+                        <img class="species_img" src="{% static 'img/notice/수인.png' %}" alt="header">
+                        <div class="species_info">
+                            <div class="species_info_major">
+                                <p>수인</p>
+                                <p>BEASTFOLK</p>
+                            </div>
+                            <div class="species_info_minor">
+                                <ul class="impo">
+                                    <li>평균 수명: 개체 별로 상이함 / 성인 나이 기준: 개체 별로 상이함</li>
+                                    <li>특징: 인간과 동물이 결합된 모습. 개체마다 다른 동물의 특징을 지님</li>
+                                    <li>주 거주지: 네크로스 제외 모든 지역</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table border="1">
+                        <tr>
+                        <td>포유류</td>
                         <td>
-                        <ul class="liofch">
-                            <li>첫커 / 첫시리커 / 첫트커</li>
-                            <li>04년생 미만의 오너 (빠른 년생 불가)</li>
-                            <li>타 커뮤니티 엔딩을 본 캐릭터의 재활용 (엔딩 이후 6개월이 지난 캐릭터는 허용)</li>
-                            <li>하차 및 제명을 당한 캐릭터의 재활용</li>
-                            <li>위 목록 중 하나라도 해당될 경우 신청서 제출이 불가합니다.</li>
-                        </ul>
+                            40~200년
                         </td>
-                    </tr>
-                </table>
+                        <td>15~40세</td>
+                        </tr>
+                        <tr>
+                        <td>조류</td>
+                        <td>
+                            50~150년
+                        </td>
+                        <td>10~20세</td>
+                        </tr>
+                        <tr>
+                        <td>파충류·양서류</td>
+                        <td>
+                            150~300년
+                        </td>
+                        <td>15~40세</td>
+                        </tr>
+                        <tr>
+                        <td>어류·해양</td>
+                        <td>
+                            80~250년
+                        </td>
+                        <td>15~40세</td>
+                        </tr>
+                    </table>
+
+                    <div class="species_content">
+                        <p>야성적인 매력을 지녔으며 자연과 깊은 유대를 형성한다. 동물 종류에 따라 지능과 체력이 다르고, 게릴라 전술을 통해 전투에서 우위를 점하기도 한다. 수인은 대체로 독립적인 성향이 강하여 무리를 짓기보다는 개체로 다니는 편에 속한다.</p>
+                        <p><b>인간과 불화 관계, 친화 관계 상이함</b></p>
+                    </div>
+                </div>
+
+                <div class="fade-line"></div>
+
+                <div class="species_wrap">
+                    <div class="species_header">
+                        <img class="species_img" src="{% static 'img/notice/마족.png' %}" alt="header">
+                        <div class="species_info">
+                            <div class="species_info_major">
+                                <p>마족</p>
+                                <p>DEMONKIN</p>
+                            </div>
+                            <div class="species_info_minor">
+                                <ul class="impo">
+                                    <li>평균 수명: 500년(추정) / 성인 나이 기준: 50세(추정)</li>
+                                    <li>특징: 뾰족한 뿔과 귀, 어둡거나 보라빛의 피부, 강력한 마력을 지님</li>
+                                    <li>주 거주지: 네크로스, 카르딘</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="species_content">
+                        <p>보름달이 뜨는 밤 마력이 더욱 강력해진다. 어둠과 마법의 힘을 중시하며, 주로 어두운 장소에서 활동한다. 강력한 암흑 마법과 괴물을 소환할 수 있는 능력을 지녔다. 이들은 대체로 야망이 강하며 권력과 영향력을 추구한다. 전략과 설득, 회유에 능하며 자신들의 힘과 지식을 활용해 타 종족을 조종하거나 충돌을 유리하게 이끈다. 마법과 전투 기술 모두 비교적 우위를 점하고 있으며, 자신의 목표 달성을 위해 사회와 자원을 효과적으로 활용한다.</p>
+                        <p><b>다크 엘프 외 대부분의 종족과 불화 관계</b></p>
+                    </div>
+                </div>
             </div>
         </div>
       </div>
@@ -125,100 +264,75 @@
       <div id="guide-content" class="content">
         <div class="notice_wrap">
             <div class="content_box">
-                <img class="notice_head" src="{% static 'img/notice/notice_header.png' %}" alt="header">
-                <h1 class="subheader">01. ysysm</h1>
+                <img class="notice_head" src="{% static 'img/notice/guide_header.png' %}" alt="header">
+                <h1 class="subheader">01. CHARACTER GUIDE</h1>
 
                 <div class="li-content">
                     <ul>
-                        <li>본 커뮤니티 ‘라오라’는 서양 정통 판타지를 기반으로 한 독자적인 창작 세계관 커뮤니티입니다. 공지사항을 읽지 않아 생기는 불이익에 대해 운영진은 일절 책임지지 않습니다.</li>
-                        <li>04년생 이상의 오너 분들에 한해 신청서 접수를 허용합니다. 빠른 년생은 불가능합니다.</li>
-                        <li>본 커뮤니티는 첫커, 첫 트커, 첫 시리커 러닝이 불가합니다.</li>
-                        <li>총괄계 가동 시간은 10:00-23:59 입니다. 가동 시간이 아닌 시각엔 답변을 하지 않습니다. 모든 문의는 오픈채팅으로만 받고 있으며 질의응답은 QnA 문서를 참고해주세요.</li>
-                        <li>수위 등급 0022 -> 0044 커뮤니티입니다. 일상 후 점층형 시리어스로 진행되는 만큼 ‘전쟁, 사망, 유혈, 무기류 소지, 살해’ 와 같은 요소가 존재합니다. 관련 요소에 민감한 예비 러너분들은 신청서 접수를 재고 바랍니다.</li>
-                        <li>그림 인장 ONLY 커뮤니티입니다.  실사, 분위기, 단색, AI 등의 이미지 사용을 금하고 있으며, 커뮤니티 사용이 허가된 픽크루에 한해 사용이 가능합니다. 본인의 그림이 아닌 이미지(커미션, 지원, 픽크루 등)는 출처를 명확히 밝혀 주시기 바랍니다.</li>
-                        <li>MPC를 포함하여 최소 22명, 최대 30명의 원정대를 꾸릴 예정 하에 있습니다. 캐릭터의 출신지, 종족 등의 비율보다 레이드를 위한 포지션 비율 1:2:1을 우선시하고 있습니다.</li>
-                        <li>레이드 포지션제 커뮤인 만큼 하차, 제명을 극지양하고 있습니다. 러닝 기간 중 총 2회의 휴식기가 존재하오나 일정에도 무리가 가실 것 같은 러너 분께서는 신청서를 제출하기 전 다시 한번 고려해주시기 바랍니다.</li>
-                        <li>2차 홍보지 및 합발폼은 셰나(@syenamer)님의 커미션 작업물입니다.</li>
+                        <li>현재 6개의 던전 중 3곳 (벨리사르, 타르벨, 제르카) 은 이미 토벌을 완료했으며, 러너 캐릭터들은 남은 3곳의 던전을 정복하기 위해 재정비를 겸해 집결지인 노바리움에 모입니다. 이후 위그드라실에 가장 가까운 던전, 엘리시온에서 첫 여정을 시작하게 됩니다.</li>
+                        <li>중세 판타지 배경을 채택하고 있으며, 그에 맞는 복식만 허용하고 있습니다. 과한 노출, 현대적인 복장 등의 외관은 모두 불허합니다.</li>
+                        <li>에라딘Eradin 대륙의 대표적인 직업은 아래와 같습니다.</br>
+                        <b>[ 용병 / 전사 / 성기사 /  마법사 / 주술사 / 음유시인 / 광대 / 어쌔신 / 연금술사 / 대장장이 / 상인 ]</b></br>
+                        이는 오로지 캐릭터 제작에 도움을 주기 위해 작성되었으며 세계관 내 크게 어긋나지 않는 한 창작 직업을 
+                        허용합니다.</li>
+                        <li>던전 토벌을 기점으로, 캐릭터들의 시간선은 다르게 이해해주세요. </br>
+                        (러너 기준) 토벌 일주일 → (캐릭터 기준) 6개월 가량이란 설정입니다.
+                        </li>
+                        <li>모든 러너 캐릭터들은 각기 다른 이유로 용사가 되어야만 합니다.</br>
+                        커뮤니티 배경상 공통적으로 원로회의 심사를 통해 ‘위그드라실 원정대’에 들어왔습니다. </br>합류 시점은 각자 다를 수 있으나, 현 시점 러너 캐릭터들은 모두 ‘선택받은 이’로 불립니다.</li>
+                        <li>YE3, 1500년 처음 위그드라실 원정대가 결성된 이후, 일부 용사들이 부상 및 사망으로 원정대를 이탈하게 되면서 그 공석을 메우기 위해 원로회에선 까다로운 심사를 통과한 자격에 맞는 용사들을 추가적으로 모집하였습니다.</br>
+
+                        따라서 모든 용사들의 원정대 합류 시기는 '위그드라실 원정대 첫 결성~ 재정비 이후 노바리움 집결 전' 사이로 자유롭게 설정이 가능합니다.
+                        </li>
                     </ul>
                 </div>
 
                 <div class="fade-line"></div>
-                <h1 class="subheader">02. RUNNING</h1>
+                <h1 class="subheader">02. SPECIES GUIDE</h1>
 
                 <div class="li-content">
                     <ul>
-                        <li>러닝 기간은 약 6주(42D) ±a로 예정되어 있으며 러닝 중 일정은 1-2일씩 유동적으로 조정될 가능성이 있습니다.</li>
-                        <li>본 커뮤니티는 트위터 플랫폼 및 자체 제작 홈페이지를 이용합니다. 이에 따른 트위터 계정 생성이 필수이며 PC 사용을 권장하고 있습니다.</li>
-                        <li>신청서 합격제를 차용합니다. 합격자 명단 공개 이후 계정 프로텍트를 활성화한 뒤 폼이 공개되오니 참고 바랍니다. </li>
-                        <li>시리어스 기간 진입 이후 하차를 금하고 있습니다. 엔딩 직후 트윗수가 700트 미만인 러너는 연공이 불가합니다. 러닝 기간이 짧지 않은 만큼 일정을 확인하신 뒤 신청서 접수 바랍니다.</li>
+                        <li>종족 페이지에 작성된 것 이외의 창작 종족은 불가능합니다.</li>
+                        <li>페어리, 수인의 경우 인간형 외관만 접수 받고 있으며 (폴리모프 / 소형 페어리 / 동물 형태의 수인 불가) </br>본체 외관 설정은 특징 란에 자유롭게 기재해주시기 바랍니다.</li>
+                        <li>수인은 1단계 ~ 3단계를 인간형으로, 4단계 ~ 5단계를 본체로 제한하고 있습니다.</li>
                     </ul>
                 </div>
+
+                <img class="species_guide" src="{% static 'img/notice/species_guide.png' %}" alt="header">
 
                 <div class="fade-line"></div>
-                <h1 class="subheader">03. WARNING</h1>
 
-                <div class="li-content">
-                    <ul>
-                        <li>본 커뮤니티는 삼진아웃제를 차용하고 있습니다. 개인 경고 3회 누적 시 이유불문 제명 처리됩니다.</li>
-                        <li>단체경고 3회 누적 시 조기엔딩으로 이어질 수 있음을 사전에 고지합니다. </li>
-                    </ul>
-                </div>
-                
-                <table border="1">
-                    <tr>
-                    <td>경고 사항</td>
-                    <td>
-                        <ul class="liofch">
-                            <li>@tos, @null 사용</li>
-                            <li>48시간 이상 미접속 (언질하지 않은 무통보 잠수가 지속될 경우 제명 처리될 수 있습니다.)</li>
-                            <li>모든 종류의 편파 행위 (글, 그림, 성별 등)</li>
-                            <li>초성 및 이모티콘 사용</li>
-                            <li>과한 메타적 발언</li>
-                            <li>세계관 배경에 맞지 않는 발언</li>
-                            <li>계정 실수 트윗에 반응하는 행위</li>
-                            <li>과도한 타임라인 대화 지속 (20분 이상으로 제한하며, 잦을 경우 전체 경고 부여 가능성이 있습니다.)</li>
-                            <li>운영진 계정을 포함하지 않은 1:1 연락</li>
-                            <li>통금 시간 중 퍼블릭 트윗 작성</li>
-                            <li>러닝 중 계정 및 멘션에 오너 기호 사용 (사정을 바이오에 기재하는 행위 등 불가)</li>
-                            <li>길이 제한이 넘는 위치 대화 및 외부 링크를 사용하는 위치 대화</li>
-                            <li>러너 캐릭터들 간 조율 중 과한 썰 풀이</li>
-                        </ul>
-                    </td>
-                    </tr>
-                    <tr>
-                    <td>러닝 중</br>금지 사항</td>
-                    <td>
-                        <ul class="liofch">
-                            <li>메타 발언, 과도한 개그성 발언, 밈 사용</li>
-                            <li>시리어스 기간 이후 개그성 짤 트레</li>
-                            <li>출처를 밝히지 않은 짤 트레 (단, 과열될 시 제제가 들어갈 수 있습니다.)</li>
-                            <li>제명 및 하차 캐릭터에 관한 이야기/언급</li>
-                            <li>공개 계정 내 캐릭터 스포일러 및 러닝 타래</li>
-                            <li>스토리 외부 유출</li>
-                            <li>모든 종류의 지인플</li>
-                            <li>시간순이 아닌 트윗 답변</li>
-                            <li>커뮤니티 수위에 맞지 않는 모든 행위</li>
-                            <li>고백/답변 및 자해/자살 로그 업로드</li>
-                            <li>운영진 측에서 주최하지 않은 러너 캐릭터 간의 미니 게임 주최</li>
-                            <li>러너 캐릭터 간의 약혼 및 결혼 관계</li>
-                            <li>엔딩 이전 연락처 공유</li>
-                        </ul>
-                    </td>
-                    </tr>
-                </table>
-                
-                <p class="info"><span>그 외 타인에게 불쾌감 혹은 소외감을 유발할 수 있는 행위를 모두 금하며, 운영진들의 판단 하에 경고 행위로 구분되는 행위 또한 경고를 부여합니다. 최대한 모니터링에 힘쓸 예정이나, 수위등급에 어긋나는 행위를 목격, 겪을 시 총괄계 측으로 연락 바랍니다.</span></p>
-                
                 <table class="tab2">
                     <tr>
-                        <td>금지 사항</td>
+                        <td>소수 합격</td>
                         <td>
                         <ul class="liofch">
-                            <li>첫커 / 첫시리커 / 첫트커</li>
-                            <li>04년생 미만의 오너 (빠른 년생 불가)</li>
-                            <li>타 커뮤니티 엔딩을 본 캐릭터의 재활용 (엔딩 이후 6개월이 지난 캐릭터는 허용)</li>
-                            <li>하차 및 제명을 당한 캐릭터의 재활용</li>
-                            <li>위 목록 중 하나라도 해당될 경우 신청서 제출이 불가합니다.</li>
+                            <li>천재</li>
+                            <li>사이비 종교</li>
+                            <li>다중 이능력</li>
+                            <li>그 외 다수 접수되는 설정</li>
+                        </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>극소합</td>
+                        <td>
+                        <ul class="liofch">
+                            <li>마족 캐릭터</li>
+                            <li>네크로스 지역 출신</li>
+                            <li>반사회성 인격 장애 (사이코패스, 소시오패스)</li>
+                        </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>불합</td>
+                        <td>
+                        <ul class="liofch">
+                            <li>과한 전시성 불행 서사</li>
+                            <li>종족 안내에 작성된 것 외 창작 종족</li>
+                            <li>원로회 관련 캐릭터</li>
+                            <li>이중인격자/다중인격자</li>
+                            <li>리스크 없는 이능력 (먼치킨)</li>
                         </ul>
                         </td>
                     </tr>
@@ -231,20 +345,6 @@
 
 
 
-<script>
-    document.addEventListener('scroll', function() {
-        const contentBox = document.querySelector('.content_box');
-        const scrollPosition = window.scrollY;
-    
-        console.log('스크롤 위치:', scrollPosition); // 현재 스크롤 위치 출력
-    
-        if (scrollPosition > 100) {
-            contentBox.style.marginTop = '0px'; // 스크롤이 100px 이상일 때 위로 이동
-        } else {
-            contentBox.style.marginTop = '100px'; // 스크롤이 100px 미만일 때 원래 위치로 돌아옴
-        }
-    });
-</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {

@@ -11,6 +11,20 @@ urlpatterns = [
     path('world', views.world, name='world'),
     path('system', views.system, name='system'),
     path('world/species', views.species, name='species'),
+    path('world/war', views.war, name='war'),
+    path('world/realm', views.realm, name='realm'),
+
+    path('world/realm/novarium', views.novarium, name='novarium'),
+    path('world/realm/belisar', views.belisar, name='belisar'),
+    path('world/realm/zerka', views.zerka, name='zerka'),
+    path('world/realm/tarvel', views.tarvel, name='tarvel'),
+    path('world/realm/elysion', views.elysion, name='elysion'),
+    path('world/realm/cardin', views.cardin, name='cardin'),
+    path('world/realm/drakus', views.drakus, name='drakus'),
+    path('world/realm/necros', views.necros, name='necros'),
+    path('world/realm/serapium', views.serapium, name='serapium'),
+    
+
     path('attendance/', views.attendance, name='attendance'),
     # 조사
     path('search/', views.search, name='search'),
@@ -18,10 +32,7 @@ urlpatterns = [
     # 수업
     path('class/', views.class_main, name='class'),
     path('class/herbology', views.herb, name='herb'),
-    path('class/creature', views.creature, name='creature'),
-    path('class/flying', views.shifter, name='shifter'),
-    path('class/teleport', views.teleport, name='teleport'),
-    path('class/potion/', views.potion, name='potion'),
+
     path('check_combination/', views.check_combination, name='check_combination'),
     
     path('test/', views.story_view, name='story_view'),

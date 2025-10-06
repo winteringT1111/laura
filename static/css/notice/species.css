@@ -18,7 +18,7 @@ html, body {
     left: 50%;
     transform: translateX(-50%);
     padding: 80px 100px;
-    margin-top: 70px;
+    margin-top: 50px;
     transition: margin-top 0.3s ease;
     animation: slideIn 1.5s ease forwards;
     background-color: rgba(48, 45, 41, 0.5);
@@ -49,20 +49,10 @@ html, body {
 }
 
 
-.subheader {
-    margin: none;
-    margin-bottom: 40px;
-    font-family: 'sageyl';
-    font-size: 50px;
-    color: #ecda9d;
-    filter: drop-shadow(4px 4px 4px rgb(17, 16, 15));
-}
-
 .notice_head {
     margin-left: 325px;
     margin-bottom: 70px;
 }
-
 .fade-line {
     width: 100%;
     height: 2px; 
@@ -78,68 +68,6 @@ html, body {
 }
 
 
-.li-content ul li {
-    margin-bottom: 8px;
-    font-weight: 300;
-    line-height: 2;
-    font-size: 16px;
-}
-
-.li-content ul li::marker {
-    content: "✶  ";
-}
-
-.blue {
-    background-color: #3D485A;
-    color: #dbdbdb;
-    font-weight: bold;
-}
-
-.info {
-    font-weight: 400;
-    text-align: center;
-    margin-bottom: 80px;
-}
-
-
-
-/* 테이블 중앙 정렬 */
-table {
-    margin: 30px auto; /* 수평 중앙 정렬과 상하 여백 */
-    border-collapse: collapse; /* 중첩된 테두리 제거 */
-    width: 90%; /* 필요에 따라 너비 조절 */
-    text-align: left; 
-    margin-bottom: 50px;
-    margin-top: -20px;
-}
-
-/* 테이블 내부 패딩 */
-table td {
-    border: 3px solid #6b5f45ea;
-    padding: 25px; /* 셀 내부 패딩 */
-}
-
-table td:first-child {
-    width: 160px; /* Set the desired width for the first column */
-    text-align: center;
-    background-color:  #6b5f45ea;
-}
-
-.liofch li {
-    margin-bottom: 8px;
-    font-weight: 300;
-    line-height: 2;
-    font-size: 16px;
-} .liofch li::marker {
-    content: " ";
-}
-
-table {
-    margin-top: 50px;
-    margin-bottom: 70px;
-}
-
-
 .tab-container {
     width: 20%;
     margin: 0 auto;
@@ -147,23 +75,26 @@ table {
   
   .tab-buttons {
     display: flex;
-    margin-bottom: 10px;
+    gap: 25px;
+    margin-top: 50px;
   }
   
   .tab-btn {
-    width: 100px;
+    width: 120px;
     flex: 1;
     padding: 10px;
-    background-color: #ddd;
+    background-color: #504d46;
     border: none;
     cursor: pointer;
     transition: 0.2s;
-    font-weight: bold;
+    font-family: 'Hamlet', serif;
+    font-weight: 500;
+    border-radius: 10px;
   }
   
   .tab-btn.active {
-    background-color: #333;
-    color: white;
+    background-color: #6d6245;
+    color: rgb(228, 227, 221);
   }
   
   .content {
@@ -173,3 +104,138 @@ table {
   .content.active {
     display: block;
   }
+
+
+@font-face {
+    font-family: 'hana'; /* 원하는 폰트 이름 */
+    src: url('../../Hana2-Medium.ttf') format('truetype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
+@font-face {
+    font-family: 'romantice'; /* 원하는 폰트 이름 */
+    src: url('../../romantice.otf') format('opentype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
+
+
+.species_wrap {
+    color: #e2dcca;
+}
+
+  .species_header {
+    display: flex;
+  } .species_header img {
+    height: 190px;
+  }
+
+  .species_info_major {
+    display: flex;
+    font-size: 28px;
+    margin-left: 38px;
+  } .species_info_major p:first-child {
+    font-family: 'Hamlet', serif;
+    margin-top: 3px;
+  } .species_info_major p:last-child {
+    font-family: 'sageyl';
+    font-size: 34px;
+    font-weight: bold;
+    margin-left: 10px
+  } .species_info_minor ul li::marker {
+    content: " ";
+}
+
+.species_content{
+    margin-top: 22px;
+}
+
+.species_notice {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+table {
+    margin: 30px auto; /* 수평 중앙 정렬과 상하 여백 */
+    border-collapse: collapse; /* 중첩된 테두리 제거 */
+    width: 50%; /* 필요에 따라 너비 조절 */
+    text-align: center; 
+    margin-bottom: 50px;
+    margin-top: -20px;
+}
+
+/* 테이블 내부 패딩 */
+table td {
+    border: 2px solid #6b5f45ea;
+    padding: 25px; /* 셀 내부 패딩 */
+}
+
+table td:first-child {
+    width: 150px; /* Set the desired width for the first column */
+    text-align: center;
+    background-color:  #6b5f45ea;
+}
+
+
+table {
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+
+.subheader {
+    margin: none;
+    margin-bottom: 40px;
+    font-family: 'sageyl';
+    font-size: 50px;
+    color: #ecda9d;
+    filter: drop-shadow(4px 4px 4px rgb(17, 16, 15));
+}
+
+
+.content ul li {
+    margin-bottom: 8px;
+    font-weight: 300;
+    line-height: 2;
+    font-size: 16px;
+}
+
+.content ul li::marker {
+    content: "✶  ";
+}
+
+.minor {
+    margin-bottom: 8px !important;
+    font-weight: 300 !important;
+    line-height: 1.5 !important;
+    font-size: 16px !important;
+}
+
+.minor::marker {
+    content: "⭑  " !important;
+}
+
+.impo li::marker{
+    content: " " !important;
+}
+
+.species_guide {
+    width: 80%;
+    margin-left: 90px;
+    margin-top: 30px;
+}
+
+.tab2 {
+    width: 70%;
+}
+.liofch li {
+    margin-bottom: 8px;
+    font-weight: 300;
+    line-height: 2;
+    font-size: 16px;
+    text-align: left;
+} .liofch li::marker {
+    content: " " !important;
+}

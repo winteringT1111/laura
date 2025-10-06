@@ -1,0 +1,191 @@
+  body {
+    margin: 0;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .carousel-container {
+    position: relative;
+    width: 1520px;
+    overflow: hidden;
+    padding: 20px 0;
+    margin-top: 100px;
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+
+  .card {
+    width: 300px;
+    margin: 0 15px;
+    box-shadow: 0 0 10px rgb(218, 218, 218);
+    overflow: hidden;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    border: none;
+    text-align: center;
+    transition: all 0.3s ease;
+  } .card:hover{
+    scale: 1.02;
+  }
+
+  .card img {
+    width: 100%;
+    display: block;
+  }
+
+  .card h3 {
+    margin: 10px 0 5px;
+    font-size: 18px;
+  }
+
+  .card p {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-bottom: 10px;
+  }
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0);
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 20;
+}
+
+.carousel-button.left {
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 760px - 50px); /* 컨테이너 기준 좌측 밖 */
+}
+
+.carousel-button.right {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 790px); /* 컨테이너 기준 우측 밖 */
+}
+
+
+
+
+
+/* 탭 컨트롤 전반적인 스타일 */
+.tab-controls {
+    display: flex;
+    justify-content: flex-start;
+    width: 1520px;
+    margin-bottom: 20px;
+    position: absolute;
+    top: 173px;
+    /* 탭 컨트롤 컨테이너를 중앙이 아닌, 1520px 컨테이너의 왼쪽에 정확히 맞춥니다. */
+    left: 50.8%;
+    transform: translateX(-760px); /* 1520px의 절반을 왼쪽으로 이동 */
+    z-index: 10;
+    font-family: 'Hamlet', serif;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+/* 개별 탭 버튼 스타일 */
+.tab-button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5); /* 비활성 탭 텍스트 색상 */
+    padding: 8px 20px;
+    font-size: 22px;
+    cursor: pointer;
+    transition: color 0.3s, background-image 0.3s;
+    position: relative;
+    overflow: hidden;
+    
+    /* 별 아이콘을 포함한 모든 내용을 버튼의 맨 왼쪽에 정렬 */
+    display: flex;
+    align-items: center; 
+    justify-content: center; /* 👈 내용을 왼쪽(star-icon)에서 시작하도록 정렬 */
+    
+    /* min-width를 제거하고 패딩을 늘려 텍스트 길이에 유연하게 대응하거나, 고정된 너비를 사용합니다. */
+    /* 현재는 기존 설정을 유지하고, 별 아이콘과 텍스트가 왼쪽으로 붙도록 합니다. */
+    min-width: 150px; 
+    height: 50px; 
+}
+
+/* 활성화된 탭 버튼 스타일 */
+.tab-button.active {
+    color: white; /* 활성 탭 텍스트 색상 */
+    /* 밑에서 위로 올라오는 그라데이션 */
+    justify-content: flex-start; 
+    background-image: linear-gradient(to top, rgba(197, 193, 181, 0.5) 2%, rgba(197, 193, 181, 0) 100%);
+    border-bottom: 3px solid rgb(197, 193, 181); /* 활성 탭 아래 줄 유지 */
+}
+
+/* 별 아이콘 스타일 */
+.star-icon {
+    display: none; /* 기본적으로 숨김 */
+    width: 24px; /* 별 이미지 너비 */
+    height: 24px; /* 별 이미지 높이 */
+    background: url('../../img/notice/realm/star.png') no-repeat center center / contain;
+    
+    /* 별과 텍스트 사이 간격은 유지, 별 아이콘은 버튼의 패딩 안에서 맨 왼쪽에 위치 */
+    margin-right: 10px; /* 20px에서 10px로 줄여 별과 '지역' 텍스트 간의 거리를 조정 */
+    margin-top: 4px; /* 별 아이콘의 왼쪽 정렬을 명확히 함 */
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* 활성화된 탭 버튼의 별 아이콘 스타일 */
+.tab-button.active .star-icon {
+    display: inline-block; /* 활성화되면 보이도록 */
+}
+
+/* 탭 콘텐츠 및 캐러셀 관련 기존 스타일은 유지 */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block !important;
+}
+
+/* 캐러셀 버튼 위치 조정 */
+/* 이 버튼들은 탭 컨트롤 컨테이너가 아닌 메인 div (width: 1520px)에 상대적으로 위치합니다. */
+.carousel-button.left {
+    margin-top: 40px;
+    left: calc(50% - 760px - 50px);
+}
+
+.carousel-button.right {
+    margin-top: 40px;
+    left: calc(50% + 790px);
+}
+
+
+/* 진행 바 컨테이너 */
+.progress-bar-container {
+    position: absolute;
+    bottom: -50px; /* 캐러셀 카드 아래쪽에 위치 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px; /* 진행 바의 너비 설정 */
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.2); /* 배경색 (비활성 부분) */
+    z-index: 5;
+    overflow: hidden;
+}
+
+/* 실제 진행을 표시할 바 */
+.progress-bar {
+    width: 0%; /* JavaScript가 이 값을 업데이트합니다. */
+    height: 100%;
+    background-color: rgb(158, 154, 142); /* 활성 부분 색상 */
+    transition: width 0.3s ease-out; /* 부드러운 애니메이션 */
+}
