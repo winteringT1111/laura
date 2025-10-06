@@ -34,6 +34,9 @@ def species(request):
 def war(request):
     return render(request, "notice/war.html")
 
+def worldstory(request):
+    return render(request, "notice/story.html")
+
 def realm(request):
     return render(request, "notice/realm.html")
 

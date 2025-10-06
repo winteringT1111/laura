@@ -82,20 +82,7 @@
     gap: 10px; 
 } 
 
-.transbtn {
-    background: url("../../img/프로필띠.png");
-    border: none;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 125px;
-    height: 37px;
-    font-family: "Hahmlet", serif;
-    text-align: right;
-    padding-right: 20px;
-    padding-bottom: 3px;
-    color: #dbdbdb;
-    user-select: none;
-}
+
 
 /* fade-in 애니메이션 */
 @keyframes fadeInRight {
@@ -213,7 +200,7 @@
 }
 
 .position {
-    width: 200px;
+    height: 200px;
 }
 
 .star {
@@ -231,7 +218,7 @@
     font-family: "Hahmlet", serif;
     width: 80%;
     margin: 0 auto;
-    margin-top: -3.5%;
+    margin-top: -1%;
 }
 
 .lines p {
@@ -257,7 +244,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2.5% auto;  /* 위아래는 2.5%, 좌우는 자동 */
+    margin:  -0.5% auto 2.5% auto;  /* 위아래는 2.5%, 좌우는 자동 */
     width: 85%;
 }
 

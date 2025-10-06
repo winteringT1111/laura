@@ -13,6 +13,7 @@ urlpatterns = [
     path('world/species', views.species, name='species'),
     path('world/war', views.war, name='war'),
     path('world/realm', views.realm, name='realm'),
+    path('world/story', views.worldstory, name='worldstory'),
 
     path('world/realm/novarium', views.novarium, name='novarium'),
     path('world/realm/belisar', views.belisar, name='belisar'),

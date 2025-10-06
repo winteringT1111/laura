@@ -9,25 +9,33 @@
 
 <a href="/" class="goback">RETURN</a>
 
-<img src="{% static 'img/profile/star.png' %}">
+<div class="header_wrap">
+    <img class="header_star" src="{% static 'img/profile/star.png' %}" alt="Star Decoration">
+    
+    <h1 class="header_title">YGGDRASIL EXPEDITION</h1>
+    <h3 class="header_subtitle">위그드라실 원정대</h3>
+</div>
 
 <div class="member_content_wrap fade-in-left-to-right">
     <div class="member_content">
-        {% for char04 in chars %}
+        {% for char in chars %}
+        <a href="/member/{{char.charEngName}}">
         <div class="member_card">
             <div class="member_card_up">               
                 <div class="frame">
                     <img src="{% static 'img/profile/frame' %}.png">
                 </div>  
-                <div class="member_overlay"></div>                            
-                <img class="member_img" src="{% static 'img/charac/narvia_crop' %}.png">
+                <div class="member_overlay"></div> </a>                           
+                <img class="member_img" src="{% static 'img/charac/' %}{{ char.charEngName|add:'_crop.png' }}" alt="{{ char.charName }} Image">
                 <div class="member_info">
-
+                    <h3 class="char_name">{{char.charName}}</h3>
+                    <p class="char_origin">{{char.charRealm}}</p>
                 </div>
                 <img class="member_back" src={% static 'img/profile/frame_back.png' %}>
             </div>
 
         </div>
+        </a>
         {% endfor %}
     </div>
 </div>

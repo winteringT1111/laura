@@ -1,20 +1,27 @@
+/* --- 기존 스타일 정리 및 조정 --- */
+
 /* Centralized container */
 .member_content_wrap {
     position: fixed;
     left: 50%;
-    bottom: 0%;
-    transform: translateX(-50%);  /* 중앙 정렬 */
+    /* 카드가 헤더 아래에서 시작하도록 top 또는 bottom을 조정 */
+    bottom: 0%; 
+    /* 여기서 height를 줄이거나 bottom을 올려서 헤더와 겹치지 않게 할 수 있습니다. */
+    
+    transform: translateX(-50%);
     width: 1600px;
-    height: 850px;
-    visibility: hidden;  /* 숨겨놓고 애니메이션 시작 시 나타나게 */
+    height: 1000px;
+    visibility: hidden;
+    /* ... (나머지 유지) ... */
 }
+
 
 
 /* Content inside the container */
 .member_content {
     position: absolute;
     width: 1475px;
-    height: 700px;
+    height: 670px;
     display: flex;
     flex-wrap: wrap;
     overflow-y: auto;
@@ -75,6 +82,46 @@
     z-index: 4;
 }
 
+@font-face {
+    font-family: 'hana'; /* 원하는 폰트 이름 */
+    src: url('../../Hana2-Medium.ttf') format('truetype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
+/* --- 캐릭터 정보 컨테이너 위치 조정 --- */
+.member_info {
+    position: absolute;
+    width: 100%;
+    bottom: 50px; /* 카드 하단으로부터의 간격 */
+    left: 0;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    z-index: 5; /* 프레임 뒤, 오버레이 위에 배치 (z-index: 4인 overlay보다 높게) */
+    pointer-events: none; /* 클릭 이벤트가 캐릭터 이미지로 전달되도록 */
+}
+
+/* --- 캐릭터 이름 스타일 --- */
+.char_name {
+    font-size: 22px;
+    font-family: 'hana';
+    font-weight: bold;
+    color: rgb(61, 59, 49); /* 텍스트 색상 */
+    margin: 0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); /* 가독성을 위한 그림자 */
+}
+
+/* --- 캐릭터 출신지 스타일 --- */
+.char_origin {
+    font-size: 14px;
+    font-family: 'hana';
+    font-weight: bold;
+    color: rgba(58, 56, 49, 0.7); /* 흐린 흰색 */
+    margin: 2px 0 0 0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+
+
 
 .member_content_wrap.fade-in-left-to-right {
     visibility: visible;  /* 애니메이션 시작 후 보이게 */
@@ -102,4 +149,61 @@
 .member_content::-webkit-scrollbar {
     display: none;
 }
+
+
+.header_wrap {
+    /* 중앙 상단에 고정 */
+    position: fixed;
+    top: 50px; /* 상단 여백 조정 */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
+    justify-content: center;
+    
+    color: white; /* 텍스트 색상 */
+    font-family: serif; /* 적절한 폰트 사용 */
+    text-align: center;
+    z-index: 100; /* 다른 요소 위에 표시 */
+}
+
+/* --- 2. 별 이미지 스타일 --- */
+.header_star {
+    width: 40px; /* 별 크기 조정 */
+    margin-bottom: 5px;
+}
+
+@font-face {
+    font-family: 'sageyl'; /* 원하는 폰트 이름 */
+    src: url('../../sageyl.ttf') format('truetype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
+
+/* --- 3. 제목 스타일 --- */
+.header_title {
+    font-size: 60px;
+    font-weight: BOLD;
+    margin: 0;
+    font-family: 'sageyl';
+
+    filter: drop-shadow(6px 6px 6px rgb(24, 21, 9));
+    letter-spacing: 2px; /* 간격 조정 */
+
+    background: linear-gradient(to bottom, #ffffff, #cfb459);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- 4. 부제목 스타일 --- */
+.header_subtitle {
+    font-size: 19px;
+    font-weight: bold;
+    margin-top: 5px;
+    color: rgba(219, 210, 178, 0.7); /* 흐린 색상 */
+}
+
 

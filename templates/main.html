@@ -37,32 +37,32 @@
 
         <div class="main_content_wrap">
             <div class="main_content_1">
-                <a href="/notice" class="sheen_wrap">
+                <a class="sheen_wrap">
                     <img src="{% static 'img/main/story.png' %}" alt="story">
                     <span class="sheen"></span>
                 </a>
 
                 <div class="c1_wrap">
-                    <a href="/giftbox">
+                    <a href="">
                         <span class="hover_wrap">
                             <img src="{% static 'img/main/message.png' %}" alt="message">
                         </span>
                     </a>
-                    <a href="/store">
+                    <a href="">
                         <span class="hover_wrap">
                             <img src="{% static 'img/main/store.png' %}"  alt="store">
                         </span>
                     </a>
                 </div>
 
-                <a class="sheen_wrap">
+                <a href="https://docs.google.com/document/d/17veB4koLEPGud1zPaveRfHW216wGpUNp2fQmN9rnUqI/edit?tab=t.4s3kdnstmvvq" class="sheen_wrap" target="_blank">
                     <img src="{% static 'img/main/qna.png' %}" alt="qna">
                     <span class="sheen"></span>
                 </a>
             </div>
 
             <div class="main_content_2">
-                <a><img src="{% static 'img/main/application.png' %}" class="app" alt="Login"></a>
+                <a href="https://docs.google.com/document/d/17veB4koLEPGud1zPaveRfHW216wGpUNp2fQmN9rnUqI/edit?tab=t.k1b7z5jepjli" target="_blank"><img src="{% static 'img/main/application.png' %}" class="app" alt="Login"></a>
                 <img src="{% static 'img/main/calender.png' %}" class="cal cal_default" alt="Login">
             </div>
 
@@ -72,7 +72,7 @@
                     <span class="sheen2"></span>
                 </a>
                 <div class="loginbox">
-                    <form method="post" action="{% url 'users:users_login' %}">
+                    <form method="post" action="{% url 'main:main_page' %}">
                         {% csrf_token %}
                         <div class="inputarea">
                             <div class="inputbox">

@@ -16,7 +16,7 @@
 
 <div class="character_wrap fade-in-left" id="grade7">
     <div class="cha">
-        <img class="character" src="{% static 'img/charac/07/01/' %}{{ char07.charImageA }}.png"></img>
+        <img class="character" src="{% static 'img/charac/' %}{{char.charEngName}}.png"></img>
     </div>
 </div>
 
@@ -27,31 +27,30 @@
 
 <div class="wrap fade-in-right">
     <div class="inven">
-        <button class="transbtn" onclick="show7grade()">Grade 7</button>
-        <button class="transbtn" onclick="showInventory()">인벤토리</button>
+
     </div>
 
 
     <div class="info_wrap" id="profile-section7">
         <div class="content1">
             <div class="catchphrase">
-                <p>일찍 일어나는 고양이가 쥐를 잡는다</p>
+                <p>{{char.charPhrase}}</p>
             </div>
             <div class="name_wrap">
-                <img class="position" src="{% static 'img/profile/tank.png' %}" alt="position">
+                <img class="position" src="{% static 'img/profile/'%}{{char.charPosition}}.png" alt="position">
                 <div class="name_info">
-                    <p>카르디엘 실베스터</p>
-                    <p>Cardiell Sylvester</p>
-                    <p>Dark Elf</p>
+                    <p>{{char.charName}}</p>
+                    <p>{{char.charEngName}}</p>
+                    <p>{{char.charSpecies}}</p>
                 </div>
                 <img class="star" src="{% static 'img/profile/star.png' %}" alt="star">
             </div>
             <div class="sub_wrap">
                 <div class="lines">
-                    <p>" 믿고 맡겨보시죠<br>장사 수완의 기본, '신뢰'아니겠나요? "</p>
+                    <p>{{char.charPhrase}}</p>
                 </div>
                 <div class="sub_info">
-                    MALE | 378세 | 179cm | 76kg
+                    {{char.charSex}} | {{char.charAge}}세 | {{char.charHeight}}cm | {{char.charWeight}}kg
                 </div>
             </div>
         </div>
@@ -77,21 +76,21 @@
             <div class="keyword_wrap">
                 <div class="keyword">
                     <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
-                    {{char07.charKeyword1}}
+                    {{char.charKeyword1}}
                 </div>
                 <div class="keyword">
                     <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
-                    {{char07.charKeyword2}}
+                    {{char.charKeyword2}}
                 </div>
                 <div class="keyword">
                     <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
-                    {{char07.charKeyword3}}
+                    {{char.charKeyword3}}
                 </div>
             </div>
 
             <div class="scroll_box">
                 <p>
-                    {{char07.charPersonality|linebreaksbr|safe}}
+                    {{char.charPersonality|linebreaksbr|safe}}
                 </p>
             </div>
         </div>
@@ -108,9 +107,9 @@
             </div>
 
             <div class="scroll_box">
-                {% if char07.charImageInfo %}
+                {% if char.charImageInfo %}
                 <p>
-                    {{ char07.charImageInfo|linebreaksbr|safe }}  
+                    {{ char.charImageInfo|linebreaksbr|safe }}  
                 </p>
                 {% endif %}
             </div>
@@ -126,7 +125,7 @@
 
             <div class="scroll_box2">
                 <p>
-                    {{ char07.charEtc|linebreaksbr|safe }}  
+                    {{ char.charEtc|linebreaksbr|safe }}  
                 </p>
             </div>
         </div>
@@ -135,23 +134,23 @@
             <div class="progressbar">
                 <div class="stat">
                 <label>체력</label>
-                <progress value="4" max="5"></progress>
+                <progress value="{{char.charHP}}" max="5"></progress>
                 </div>
                 <div class="stat">
                 <label>공격력</label>
-                <progress value="5" max="5"></progress>
+                <progress value="{{char.charATK}}" max="5"></progress>
                 </div>
                 <div class="stat">
                 <label>방어력</label>
-                <progress value="2" max="5"></progress>
+                <progress value="{{char.charDEF}}" max="5"></progress>
                 </div>
                 <div class="stat">
                 <label>회복력</label>
-                <progress value="1" max="5"></progress>
+                <progress value="{{char.chaRES}}" max="5"></progress>
                 </div>
                 <div class="stat">
                 <label>운</label>
-                <progress value="3" max="5"></progress>
+                <progress value="{{char.charLUK}}" max="5"></progress>
                 </div>
             </div>
             
@@ -162,16 +161,16 @@
                 </div>
                 <div class="skill_info">
                     <div class="skill_content">
-                        <p class="skill_name">방패 밀치기</p>
-                        <p class="skill_ex">범위 내 지정 적 1명 공격력 30%+방어력 80% 피해 + 30% 확률로 기절</p>
+                        <p class="skill_name">{{char.charSkill1}}</p>
+                        <p class="skill_ex">{{char.charSkill1info}}</p>
                     </div>
                     <div class="skill_content">
-                        <p class="skill_name">치유</p>
-                        <p class="skill_ex">아군 1명 HP 30% 회복</p>
+                        <p class="skill_name">{{char.charSkill2}}</p>
+                        <p class="skill_ex">{{char.charSkill2info}}</p>
                     </div>
                     <div class="skill_content">
-                        <p class="skill_name">약점 관통</p>
-                        <p class="skill_ex">적의 방어력을 무시하고 공격력의 150%의 피해를 가한다</p>
+                        <p class="skill_name">{{char.charSkill3}}</p>
+                        <p class="skill_ex">{{char.charSkill3info}}</p>
                     </div>
                 </div>
             </div>
