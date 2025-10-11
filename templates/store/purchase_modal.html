@@ -23,7 +23,7 @@
     
                         <input type="hidden" id="modalTotalPrice" name="totalPrice" value="10" readonly>
     
-                        <button type="button" id="liveToastBtn" data-toggle="popover" data-placement="top" data-content="갈레온이 부족합니다.">
+                        <button type="button" id="liveToastBtn" data-toggle="popover" data-placement="top" data-content="골드가 부족합니다.">
                             구매
                         </button>
                     </div>
@@ -73,7 +73,7 @@
         // 제출 버튼 클릭 이벤트
         $('#liveToastBtn').on('click', function () {
             var totalPrice = parseInt(document.getElementById('modalTotalPrice').value, 10);
-            var userGaleon = parseInt('{{ user2.galeon }}', 10); // 서버에서 user.galeon 값 가져오기
+            var userGaleon = parseInt('{{ user2.gold }}', 10); // 서버에서 user.gold 값 가져오기
 
             if (totalPrice > userGaleon) {
                 // popover 표시

@@ -9,21 +9,21 @@ from django.contrib.auth.decorators import login_required
 
 
 def signup(request):
-    all_charac = Characters.objects.values_list('charFirstName', flat=True)
+    all_charac = Characters.objects.values_list('charEngName', flat=True)
 
     if request.method == "POST":
         commucode = request.POST['commucode']
 
-        if request.POST['password1']==request.POST['password2'] and commucode == "WTH" and request.POST['username'] in all_charac:
+        if request.POST['password1']==request.POST['password2'] and commucode == "yggdrasil" and request.POST['username'] in all_charac:
             Newuser = User.objects.create_user(request.POST['username'], password=request.POST['password1'])            
             auth.login(request,Newuser)
 
             user = request.user
-            char = CharInfo(user=user,
-                            char=Characters.objects.get(charFirstName=request.POST['username'], charGrade='1'),
-                            galeon=5,
-                            classToken=0,
-                            searchDone=0,)
+            char = CharInfo(char=Characters.objects.get(charEngName=request.POST['username']),
+                            user=user,
+                            gold=100,
+                            exp=0,
+                            quest=1,)
             char.save()
             
             return redirect('main:main_page')

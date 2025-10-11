@@ -4,11 +4,11 @@
 
     <div class="profile_section">
         <div class="profile_image">
-            <img src="{% static 'img/charac/07/03/' %}{{ user.username }}07-1.png" alt="User Profile Image">
+            <img src="{% static 'img/charac/' %}test.png" alt="User Profile Image">
         </div>
 
         <div class="profile_name">
-            <p>나르비아</p>
+            <p>캐릭터 이름</p>
             <p>{{ user.username }}</p>
         </div>
     </div>
@@ -16,11 +16,11 @@
     <div class="active_content">
         <div class="token">
             <img src="{% static 'img/갈레온.png' %}" alt="Galleon">
-            <span>{{charInfo.galeon}} G</span>
+            <span>{{charInfo.gold}} G</span>
         </div>
         <div class="token">
             <img class="token_img" src="{% static 'img/토큰.png' %}" alt="Token">
-            <span>{{charInfo.classToken}} EXP</span>
+            <span>{{charInfo.exp}} EXP</span>
         </div>
     </div>
 

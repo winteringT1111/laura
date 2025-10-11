@@ -89,8 +89,8 @@ def room(request, room_name):
 @login_required(login_url='/login')
 def attendance(request):
     getUser = request.user
-    char = CharInfo.objects.get(user=getUser)
-    userinfo = Characters.objects.get(charID=char.char_id)
+    charinfo = CharInfo.objects.get(user=getUser)
+    userinfo = Characters.objects.get(charID=charinfo.char_id)
     
     # 현재 시간 확인
     current_time = timezone.localtime(timezone.now())
@@ -99,40 +99,41 @@ def attendance(request):
     
     if request.method == "POST":
         # 출석 가능한 시간 7시 ~ 17시
-        if 7 <= current_hour < 17:
+        if 6 <= current_hour < 20:
             # 오늘 이미 출석한 기록이 있으면 출석 불가
-            if char.attendance_date == today_date:
+            if charinfo.attendance_date == today_date:
                 show_modal = "modal2"
-                modal_message = "오늘은 이미 출석을 했습니다."
+                modal_message = "이미 오늘의 보급을 수령했습니다."
             else:
                 # 출석이 가능하면 출석 처리
-                char.galeon += 1  # 갈레온 추가
-                char.classToken += 3 # 수업토큰
-                char.attendance_date = today_date  # 출석일 업데이트
-                char.today_attended = True  # 금일 출석 여부 업데이트
+                charinfo.gold += 100  # 갈레온 추가
+                charinfo.exp += 1000 # 수업토큰
+                charinfo.quest = 1 # 일일퀘스트 한도 초기화
+                charinfo.attendance_date = today_date  # 출석일 업데이트
+                charinfo.today_attended = True  # 금일 출석 여부 업데이트
                 
                 # 누적 출석 일 수 업데이트
-                char.attendance_count += 1
-                char.save()
+                charinfo.attendance_count += 1
+                charinfo.save()
                 
                 show_modal = "modal1"
-                modal_message = "출석이 완료되었습니다."
+                modal_message = "보급을 수령했습니다."
         else:
             # 출석 시간이 아닌 경우
             show_modal = "modal2"
-            modal_message = "출석 가능한 시간이 아닙니다."
+            modal_message = "보급 신청이 가능한 시간이 아닙니다."
         
         return JsonResponse({
             'show_modal': show_modal, 
             'modal_message': modal_message,
-            'attendance_count': char.attendance_count,  # 누적 출석 일 수
-            'today_attended': char.today_attended  # 금일 출석 현황
+            'attendance_count': charinfo.attendance_count,  # 누적 출석 일 수
+            'today_attended': charinfo.today_attended  # 금일 출석 현황
         })
     
     context = {
         'character': userinfo,
-        'attendance_count': char.attendance_count,  # 템플릿에 누적 출석 일 수 전달
-        'today_attended': char.today_attended  # 템플릿에 금일 출석 여부 전달
+        'attendance_count': charinfo.attendance_count,  # 템플릿에 누적 출석 일 수 전달
+        'today_attended': charinfo.today_attended  # 템플릿에 금일 출석 여부 전달
     }
     
     return render(request, "class/attendance.html", context)
@@ -517,7 +518,7 @@ def shifter(request):
     return render(request, "class/flying.html", context)
     
     
-# 순간이동
+# 순간이동ㅔ
 @login_required(login_url='/login')
 def teleport(request):
     user = CharInfo.objects.get(user=request.user)

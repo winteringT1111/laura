@@ -76,7 +76,7 @@ html, body {
 
 
 ::selection {
-    background-color: #a39f93ea;
+    background-color: #a39f93ea !important;
     color: #eeeeee; /* 선택된 텍스트의 색상을 검정으로 설정 */
 }
 

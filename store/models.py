@@ -6,15 +6,24 @@ from django.conf import settings
 class Item(models.Model):
     itemID = models.AutoField(primary_key=True)  
     itemName = models.TextField()
-    itemEngName = models.TextField()
-    itemImage = models.TextField()
     itemCategory= models.TextField()
     itemInfo = models.TextField()
     itemPrice = models.IntegerField()
-    show = models.BooleanField()
 
     class Meta:
         db_table = "items"
+        
+
+class Ingredient(models.Model):
+    itemID = models.AutoField(primary_key=True)  
+    itemName = models.TextField()
+    itemCategory= models.TextField()
+    itemInfo = models.TextField()
+    itemPrice = models.IntegerField()
+    itemShow = models.BooleanField()
+
+    class Meta:
+        db_table = "ingredients"
         
 
 class Item_magic(models.Model):

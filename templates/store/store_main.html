@@ -16,168 +16,132 @@
 
 
 <div class="store-content">
-    <div class="store-items-wrap">
-
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <div class="d-block" id="blocks">
-                    <div class="item-row-wrap"> 
-                        <div class="item-row">
-                            {% for item in page1_row1 %}
-                            <div class="card" id="card_wrap">
-                                <div class="item-image-area">
-                                    <img src="{% static 'img/store/' %}{{ item.itemImage|escapejs }}.png" class="card-img-top" id="item-image">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title" id="card_name" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}', '{{ item.itemImage|escapejs }}','{{ item.itemEngName|escapejs }}')">{{item.itemName}}</p>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                               
-                        <div class="item-row">
-                            {% for item in page1_row2 %}
-                            <div class="card" id="card_wrap">
-                                <div class="item-image-area">
-                                    <img src="{% static 'img/store/' %}{{ item.itemImage|escapejs }}.png" class="card-img-top" id="item-image">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title" id="card_name" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}','{{ item.itemImage|escapejs }}','{{ item.itemEngName|escapejs }}')">{{item.itemName}}</p>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="d-block" id="blocks">
-                    <div class="item-row-wrap"> 
-                        <div class="item-row">
-                            {% for item in page2_row1 %}
-                            <div class="card" id="card_wrap">
-                                <div class="item-image-area">
-                                    <img src="{% static 'img/store/' %}{{ item.itemImage|escapejs }}.png" class="card-img-top" id="item-image">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title" id="card_name" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}', '{{ item.itemImage|escapejs }}','{{ item.itemEngName|escapejs }}')">{{item.itemName}}</p>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                               
-                        <div class="item-row">
-                            {% for item in page2_row2 %}
-                            <div class="card" id="card_wrap">
-                                <div class="item-image-area">
-                                    <img src="{% static 'img/store/' %}{{ item.itemImage|escapejs }}.png" class="card-img-top" id="item-image">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title" id="card_name" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}','{{ item.itemImage|escapejs }}','{{ item.itemEngName|escapejs }}')">{{item.itemName}}</p>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-              </div>
-              
-            </div>
-            <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
-            </button>
+    <div class="store_spec_wrap">
+        
+        <div class="spec-image-content">
+            <img id="spec_image" src="{% static 'img/store/선물상자.png' %}"> 
         </div>
-    
-    </div>
-    
-    <div class="store-items-specify-wrap">
-        <div class="item-spec-content">
-            <div class="spec-image">
-                <div class="spec-image-content">
-                    <img id="spec_image" src={% static "img/store/선물상자.png" %}>
-                </div>
-            </div>
-            <div class="spec-info">
-                <div class="hidden">
-                    <p id="spec_engname">Fortune Cookie</p>
-                </div>
-                <div class="spec_info_name">
-                    <p id="spec_name">포춘쿠키</p>
-                </div>
-                <div class="spec_info_category">
-                    <p id="item_category">소모품</p>
-                </div>
-                <div class="spec_info_information">
-                    <p id="information">유명한 주술사가 만든 쿠키.</p>
-                </div>
-                <div class="spec_info_purchase">
-                    <div class="spec_info_price">
-                        <img src={% static "img/갈레온.png" %}>
-                        <p id="item_price">1</p>
-                    </div>
-                    <div class="spec_info_func">
-                        <img src={% static "img/카트.png" %} data-toggle="modal" data-target="#exampleModal1">
-                        <img src={% static "img/선물.png" %} data-toggle="modal" data-target="#exampleModal2">
-                    </div> 
-                </div>                
-            </div>
+        
+        <div class="spec_info_name">
+            <p id="spec_name">감자빵</p>
         </div>
+
+        <div class="spec_info_category">
+            <p id="spec_category">음식</p>
+        </div>
+        
+        <div class="spec_info_information">
+            <p id="information">감자처럼 생긴 빵. 고구마 맛이 난다.</p>
+        </div>
+        
+        <div class="spec_info_purchase_bar">
+            <div class="spec_info_price">
+                <img src="{% static 'img/갈레온.png' %}" class="price-currency-icon">
+                <p id="item_price">100 G</p>
+            </div>
+            <div class="spec_info_func">
+                <img src="{% static 'img/카트.png' %}" class="purchase-icon">
+                <img src="{% static 'img/선물.png' %}" class="gift-icon">
+            </div> 
+        </div>
+        
     </div>
-</div>
 
-{% include "store/purchase_modal.html" %}
-{% include "store/gift_modal.html" %}
+    <div class="store_info_wrap">
+        <div class="tab_btns">
+            <button id="store_btn" class="active" onclick="showItemList('store')">상점</button>
+            <button id="ingredient_btn" onclick="showItemList('ingredient')">재료</button>
+        </div>
+
+        <div class="item_list_container">
+            <div class="item_header"></div>
+
+            <div class="item_list" id="store_list">
+                {% for item in items %}
+                <div class="item_card" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}')">
+                    <div class="item_content_wrap">
+                        <div class="item_card_image_area">
+                            <img src="{% static 'img/store/포춘쿠키' %}.png" class="item_card_image">
+                        </div>
+                        
+                        <p class="item_card_name">{{ item.itemName }}</p>
+                    </div>
+
+                    <div class="item_card_price_bar">
+                        <p class="item_card_price">{{ item.itemPrice }} G</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="item_list" id="ingredient_list">
+                {% for item in ingredients %}
+                <div class="item_card" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}')">
+                    <div class="item_content_wrap">
+                        <div class="item_card_image_area">
+                            <img src="{% static 'img/store/포춘쿠키' %}.png" class="item_card_image">
+                        </div>
+                        
+                        <p class="item_card_name">{{ item.itemName }}</p>
+                    </div>
+
+                    <div class="item_card_price_bar">
+                        <p class="item_card_price">{{ item.itemPrice }} G</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+<div>
 
 
+<div class=""></div>
+<div class=""></div>
+<div class=""></div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
 <script>
-    function updateItemSpec(name, category, info, price, imagePath, itemEngName) {
-        // 아이템 정보를 업데이트하는 함수
+
+    function updateItemSpec(name, category, info, price, imagePath) {
+        document.getElementById('spec_image').src = `{% static 'img/store/' %}${name}.png`;
         document.getElementById('spec_name').textContent = name;
-        document.getElementById('spec_engname').textContent = itemEngName;
-        document.getElementById('item_category').textContent = category;
+        document.getElementById('spec_category').textContent = category;
         document.getElementById('information').textContent = info;
-        document.getElementById('item_price').textContent = price;
-        document.getElementById('spec_image').src = `{% static 'img/store/' %}${imagePath}.png`;    }
+        document.getElementById('item_price').textContent = `${price} G`;
+    }
 
-    document.querySelector('img[src="{% static "img/카트.png" %}"]').addEventListener('click', function() {
-      // spec_name에서 텍스트를 가져와서 모달의 제목으로 설정
-      var itemName = document.getElementById('spec_name').textContent;
-      var itemEngName = document.getElementById('spec_engname').textContent;
-      var itemPrice = document.getElementById('item_price').textContent;
+    function showItemList(listType) {
+        const storeList = document.getElementById('store_list');
+        const ingredientList = document.getElementById('ingredient_list');
+        const storeBtn = document.getElementById('store_btn');
+        const ingredientBtn = document.getElementById('ingredient_btn');
 
-      document.getElementById('modalTitle').textContent = itemName;
-      document.getElementById('modalTitleEng').textContent = itemEngName;
-      document.getElementById('modalPrice').textContent = itemPrice;
-      // input 요소의 value 속성에 itemName 값을 설정
-      document.getElementById('itemName').value = itemName;
-
-      
-  });
-
-  document.querySelector('img[src="{% static "img/선물.png" %}"]').addEventListener('click', function() {
-      // spec_name에서 텍스트를 가져와서 모달의 제목으로 설정
-      var itemName = document.getElementById('spec_name').textContent;
-      var itemEngName = document.getElementById('spec_engname').textContent;
-      var itemPrice = document.getElementById('item_price').textContent;
-
-      document.getElementById('modalTitle2').textContent = itemName;
-      document.getElementById('modalTitleEng2').textContent = itemEngName;
-      document.getElementById('modalPrice2').textContent = itemPrice;
-      // input 요소의 value 속성에 itemName 값을 설정
-      document.getElementById('itemName2').value = itemName;
-  });
+        if (listType === 'store') {
+            storeList.style.display = 'grid'; 
+            ingredientList.style.display = 'none'; 
+            
+            // 버튼 활성화 클래스 전환
+            storeBtn.classList.add('active');
+            ingredientBtn.classList.remove('active');
+        } else if (listType === 'ingredient') {
+            storeList.style.display = 'none'; // 상점 목록 숨기기
+            ingredientList.style.display = 'grid'; // 재료 목록 보이기
+            
+            // 버튼 활성화 클래스 전환
+            storeBtn.classList.remove('active');
+            ingredientBtn.classList.add('active');
+        }
+    }
 
 </script>
+
+
 
 {% endblock %}
