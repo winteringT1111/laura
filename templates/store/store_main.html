@@ -19,7 +19,7 @@
     <div class="store_spec_wrap">
         
         <div class="spec-image-content">
-            <img id="spec_image" src="{% static 'img/store/선물상자.png' %}"> 
+            <img id="spec_image" src="{% static 'img/store/감자.png' %}"> 
         </div>
         
         <div class="spec_info_name">
@@ -54,14 +54,16 @@
         </div>
 
         <div class="item_list_container">
-            <div class="item_header"></div>
+            <div class="item_header">
+                <img src="{% static 'img/store/store_header.png' %}" alt="">
+            </div>
 
             <div class="item_list" id="store_list">
                 {% for item in items %}
                 <div class="item_card" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}')">
                     <div class="item_content_wrap">
                         <div class="item_card_image_area">
-                            <img src="{% static 'img/store/포춘쿠키' %}.png" class="item_card_image">
+                            <img src="{% static 'img/store/' %}{{item.itemName}}.png" class="item_card_image">
                         </div>
                         
                         <p class="item_card_name">{{ item.itemName }}</p>
@@ -79,7 +81,7 @@
                 <div class="item_card" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}')">
                     <div class="item_content_wrap">
                         <div class="item_card_image_area">
-                            <img src="{% static 'img/store/포춘쿠키' %}.png" class="item_card_image">
+                            <img src="{% static 'img/store/' %}{{item.itemName}}.png" class="item_card_image">
                         </div>
                         
                         <p class="item_card_name">{{ item.itemName }}</p>
