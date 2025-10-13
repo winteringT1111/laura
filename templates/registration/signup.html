@@ -4,22 +4,21 @@
 <html lang="ko">
     <head>
         <meta charset="utf-8">
-        <title>계정생성 | Wintering Theory</title>
+        <title>계정생성 | The Light of Laura</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&display=swap" rel="stylesheet">
         <script src="https://kit.fontawesome.com/7076248453.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <link rel="stylesheet" type="text/css" href="{% static 'css/registration/signup.css' %}">
     </head>
     <body>
         <div class="background"></div> <!-- 흐림 효과를 위한 배경 -->
-
-        {% include "effects/flower.html" %}
+        
 
         <div class="loginarea">
             <div class="logoarea">
-                
-                <img class="logo" src="{% static 'img/로고2.png' %}"></img>
+                <img class="logo" src="{% static 'img/main/signup_header.png' %}">
             </div>
 
 
@@ -44,7 +43,7 @@
                                     <input placeholder="커뮤니티 코드" type="text" name="commucode" id="commucode">
                                 </div>
                             </div>
-                            <button class="loginbtn" type="submit">Sign Up</button>
+                            <button class="loginbtn" type="submit">계정 생성</button>
                         </div>
                     </form>
                     <a href="/" class="tomain">메인화면으로</a>
@@ -54,5 +53,31 @@
             
             </div>  
         </div>
+
+
+        <script>
+        document.addEventListener("click", function(e) {
+        const ripple = document.createElement("span");
+        ripple.classList.add("ripple");
+
+        // 클릭 좌표
+        ripple.style.left = e.clientX + "px";
+        ripple.style.top = e.clientY + "px";
+
+        document.body.appendChild(ripple);
+
+        // 파장 크기 설정 (50px 기본)
+        ripple.style.width = ripple.style.height = "50px";
+        ripple.style.marginLeft = "-25px";
+        ripple.style.marginTop = "-25px";
+
+        // 애니메이션 끝나면 제거
+        ripple.addEventListener("animationend", () => {
+            ripple.remove();
+        });
+        });
+        </script>
+
+        
     </body>
 </html>

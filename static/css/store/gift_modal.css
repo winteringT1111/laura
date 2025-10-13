@@ -1,54 +1,58 @@
 #gm {
-    position: fixed;
+    position: absolute;
     top: 50%;
-    left: 50%;
+    left: 48%;
     transform: translate(-50%, -50%);
-    width: 910px;
-    height: 759px;
-    background: url("../../img/gift_modal.png");
+    width: 1000px;
+    height: auto;
+    background: url("../../img/modal2.png");
     background-size: cover;
-    background-repeat: no-repeat;
     border: none;
     user-select: none;
     filter: drop-shadow(8px 8px 8px #232425);
 }
 
 #giftForm {
-    width: 910px;
+    width: 1000px;
     height: 759px;
     user-select: none;
 }
+
+
+
 
 .quantity-spinner2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Adjust this to control spacing between buttons and input */
+    gap: 13px; /* Adjust this to control spacing between buttons and input */
 }
 
 /* 수량 칸 */
 .quantity-spinner2 input {
-    width: 165px;
-    height: 40.7px;
-    background-color: #f7ebdb;
+    width: 150px;
+    height:50px;
+    background-color: rgb(154,147,138);
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     text-align: center;
-    color: rgb(50, 53, 78);
-    font-size: 20px;
+    color: rgb(43, 42, 40);
+    padding-left: 18px;
+    font-size: 25px;
     font-weight: bold;
 }
 
 /* +- 버튼 */
 .quantity-spinner2 button {
-    background-color: #938980;
-    width: 33px;
-    height: 33px;
+    background-color: rgb(145,133,118);
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    color: aliceblue;
+    color: rgb(206,201,195);
     text-align: center;
     font-weight: bold;
-    font-size: 22px;
+    padding-bottom: 11px;
+    font-size: 40px;
     border: none;
     display: flex;
     align-items: center;
@@ -57,55 +61,37 @@
 
 /* 구매버튼 */
 #liveToastBtn2 {
-    width: 82.5px;
-    height: 40.7px;
-    background-color: #f7ebdb;
+    padding: 9px 30px;
+    background-color: rgb(154,147,138);
+    color: rgb(43, 42, 40);
     border: none;
-    border-radius: 5px;
-    color: rgb(50, 53, 78);
-    font-size: 17px;
+    border-radius: 10px;
+    font-size: 22px;
     margin-left: 20px;
-    font-family: "Hahmlet", serif;
 }
 
 .lastline2 {
     position: absolute;
-    bottom: 12%;
-    left: 50%;
+    bottom: 11%;
+    left: 51%;
     transform: translate(-50%, -50%);
     display: flex;
 }
 
-.priceline2 {
-    display: flex;
-}
 
-
-#modalTitle2, #modalTitleEng2 {
+#modalTitle2{
     width: 100%; /* Make sure the titles take up the full width of their container */
     margin: 0 auto; /* Centering the titles */
     text-align: center;
-    color: #B0B8CB;
-}
-
-#modalTitle2 {
+    color: #cbc6b0;
+    font-weight: bold;
+    font-size: 47px;
     position: absolute; 
-    top: 11%;
-    left: 50%;
+    top: 17%;
+    left: 52%;
     transform: translate(-50%, -50%);
-    font-size: 40px;
-    font-family: "Hahmlet", serif;
 }
 
-#modalTitleEng2 {
-    position: absolute;
-    top: 18%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 65px;
-    font-family: "Oleo Script", system-ui;
-    font-style: normal;
-}
 
 .priceline2 {
     display: flex;
@@ -113,24 +99,19 @@
     justify-content: center;
     position: absolute;
     top: 26%;
-    left: 50%;
+    left: 52%;
     transform: translate(-50%, -50%);
-    color: #3d352c;
-    font-family: "Arima", system-ui;
-    width: 270px;
-    height: 65px;
-    background-image: url("../../img/가격띠.png");
-    background-size: cover;
-    background-repeat: no-repeat;
+    
 }
 
 .priceline2 h5 {
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 20px;
+    background-color: #a4957e; 
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-weight: 400;
     margin: 0px 0px 9px; /* Removes any default margin that may be affecting alignment */
 }
-
-
 
 
 
@@ -139,15 +120,17 @@
     border-radius: 4px; 
     padding: 10px 30px;
     display: flex;
-    background-color: #171a24;
+    background-color: #6b6152; 
     position: absolute;
-    top: 37%;
-    left: 50%;
+    top: 35%;
+    left: 52%;
     transform: translate(-50%, -50%);
     justify-content: space-between;
     align-items: center;
+    
+    border-radius: 20px;
 } .charselect_label {
-    color: #f7ebdb;
+    color: #e6dbce;
     font-size: 17px; 
 }
 
@@ -155,12 +138,11 @@ select {
     width: 220px; 
     padding: 8px; 
     border: none;
-    border-radius: 4px; 
-    background-color:  #f7ebdb;
+    border-radius: 12px; 
+    background-color:  #f1e4d3;
     font-size: 16px; 
     color: #707070; 
-    outline: none;
-    font-family: "Hahmlet", serif;
+    outline: none;  
     transition: border-color 0.3s; /* Smooth transition effect */
 }
 
@@ -172,25 +154,21 @@ select:focus {
 /* Style the options (optional) */
 option {
     padding: 8px; /* Add padding inside each option */
-    color: #555; /* Text color */
-    font-family: "Hahmlet", serif;
-    border-radius: 4px; 
-    background-color: #f7ebdb; /* White background for options */
+    color: #555; 
+    background-color: #f1e4d3; /* White background for options */
 }
 
-/* Hover effect for options (only works in some browsers) */
 .option:hover {
-    background-color: #f1f1f1 !important;
+    background-color: #91866b !important;
 }
 
 
 .message_box {
     width: 576px;
     position: absolute;
-    top: 60%;
-    left: 50%;
+    top: 58%;
+    left: 52%;
     transform: translate(-50%, -50%);
-    font-family: "Hahmlet", serif;
 }
 
 .message_box_info {
@@ -211,37 +189,109 @@ option {
 
 .message-input {
     width: 576px;
-    height: 203px;
+    height: 220px;
     background: none;
     padding: 15px;
     overflow: hidden;
-    background: url("../../img/message_box.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    font-size: 18px
+    border-radius: 15px;
+    color: #f2f0ed;
+    background: linear-gradient(to bottom, #6b6152, rgb(181, 172, 147));
+    border: 1px solid #ad9a75;
+    font-size: 19px
+}
+
+.message-input::placeholder {
+  color: #f2f0ed; /* Change this to your desired color */
+  opacity: 0.8;    /* Optional: Makes the color slightly transparent */
 }
 
 .message-input:focus {
     outline: none; 
 }
 
-::selection {
-    background-color: #9FA3B1; /* 하늘색 배경 */
-    color: #eeeeee; /* 선택된 텍스트의 색상을 검정으로 설정 */
+
+/* 1. The container for our custom checkbox */
+.custom-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* 익명 text and checkbox space */
+    position: relative;
+    cursor: pointer;
 }
 
+/* 2. Hide the original browser checkbox */
+.custom-checkbox-container input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
 
-
-input[type="checkbox"]{
+/* 3. Create the custom checkbox's box (the unchecked state) */
+.custom-checkbox-container label::before {
+    content: '';
+    display: inline-block;
     width: 20px;
     height: 20px;
-    margin: 5px 10px 0px 10px;
-    background: #dbdbdb;
+    background-color: #dbdbdb; /* Unchecked color */
+    border-radius: 3px;
+    transition: background-color 0.2s; /* Smooth color change */
+    vertical-align: middle;
+    margin-right: 13px; /* Adjust if needed */
+    margin-top: -5px;
 }
 
-input[type="checkbox"]:checked {
-    content:'✔';
-    color: #938980;
-    background-color: #DCC599;
+/* 4. ✅ Change the background color and add the checkmark WHEN CHECKED */
+.custom-checkbox-container input[type="checkbox"]:checked + label::before {
+    background-color: #DCC599; /* Your desired checked color */
+    content: '✔'; /* The checkmark symbol */
+    color: #4A3A25; /* Color of the checkmark symbol */
+    text-align: center;
+    line-height: 20px; /* Vertically center the checkmark */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Optional: Style the label text */
+.custom-checkbox-container label {
+    font-size: 18px;
+    color: #dbdbdb;
+}
+
+
+
+
+/* 구매 완료 모달의 스타일 */
+#giftCompleteModal .modal-content {
+    background-color: #282828; /* 현재 모달의 어두운 배경색과 유사하게 설정 */
+    border: 2px solid rgb(145,133,118);/* 테두리도 어두운 톤으로 맞춤 */
+    border-radius: 8px; /* 모서리를 살짝 둥글게 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
+}
+
+#giftCompleteModal .modal-body {
+    text-align: center;
+    padding: 40px;
+    color: #e0e0e0 !important; /* 텍스트 색상을 밝은 회색으로 변경 */
+    font-size: 1.3rem;
+}
+
+#giftCompleteModal .modal-body p {
+    margin-bottom: 25px; /* 메시지와 버튼 사이 간격 */
+    font-weight: 600; /* 텍스트 굵기 조절 */
+}
+
+#giftCompleteModal .modal-body .btn-primary {
+    background-color: rgb(145,133,118); /* 현재 디자인의 버튼 색상과 유사하게 설정 */
+    border-color: #8C704F; /* 버튼 테두리 색상 */
+    color: #ecece7; /* 버튼 텍스트 색상 */
+    padding: 8px 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+#giftCompleteModal .modal-body .btn-primary:hover {
+    background-color: #B5A489; /* 호버 시 색상 변경 */
+    border-color: #A18359;
 }

@@ -3,9 +3,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 641px;
-    height: 281px;
-    background: url("../../img/purchase_modal.png");
+    width: 798px;
+    height: 458px;
+    background: url("../../img/modal.png");
     background-size: contain;
     border: none;
     user-select: none;
@@ -16,32 +16,34 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Adjust this to control spacing between buttons and input */
+    gap: 13px; /* Adjust this to control spacing between buttons and input */
 }
 
 /* 수량 칸 */
 .quantity-spinner input {
     width: 150px;
-    height: 37px;
-    background-color: #f7ebdb;
+    height:50px;
+    background-color: rgb(154,147,138);
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     text-align: center;
-    color: rgb(50, 53, 78);
-    font-size: 20px;
+    color: rgb(43, 42, 40);
+    padding-left: 18px;
+    font-size: 25px;
     font-weight: bold;
 }
 
 /* +- 버튼 */
 .quantity-spinner button {
-    background-color: #938980;
-    width: 30px;
-    height: 30px;
+    background-color: rgb(145,133,118);
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    color: aliceblue;
+    color: rgb(206,201,195);
     text-align: center;
     font-weight: bold;
-    font-size: 20px;
+    padding-bottom: 11px;
+    font-size: 40px;
     border: none;
     display: flex;
     align-items: center;
@@ -50,19 +52,18 @@
 
 /* 구매버튼 */
 #liveToastBtn {
-    width: 75px;
-    height: 37px;
-    background-color: #f7ebdb;
+    padding: 9px 30px;
+    background-color: rgb(154,147,138);
+    color: rgb(43, 42, 40);
     border: none;
-    border-radius: 5px;
-    color: rgb(50, 53, 78);
-    font-size: 17px;
+    border-radius: 10px;
+    font-size: 22px;
     margin-left: 20px;
 }
 
 .lastline {
     position: absolute;
-    bottom: 10%;
+    bottom: 4%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
@@ -73,45 +74,99 @@
 }
 
 
-#modalTitle, #modalTitleEng {
+#modalTitle{
     width: 100%; /* Make sure the titles take up the full width of their container */
     margin: 0 auto; /* Centering the titles */
     text-align: center;
-    color: #B0B8CB;
+    color: #cbc6b0;
+    position: absolute;
+    font-weight: bold;
+    top: 53%;
+    left: 50%;
+    font-size: 43px;
+    transform: translate(-50%, -50%);
 }
 
-#modalTitle {
-    margin-top: 20px;
-    font-size: 30px;
-    font-family: "Hahmlet", serif;
-}
-
-#modalTitleEng {
-    font-size: 55px;
-    font-family: "Oleo Script", system-ui;
-    font-style: normal;
-    margin-top: -5px;
-}
 
 .priceline {
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    bottom: 21%;
+    bottom: 23%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #3d352c;
-    font-family: "Arima", system-ui;
-    width: 270px;
-    height: 65px;
-    background-image: url("../../img/가격띠.png");
-    background-size: cover;
-    background-repeat: no-repeat;
+    
 }
 
 .priceline h5 {
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 20px;
+    background-color: #a4957e; 
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-weight: 400;
     margin: 0px 0px 9px; /* Removes any default margin that may be affecting alignment */
+}
+
+.hidden {
+    display: none;
+}
+
+.item_img_wrap {
+    position: absolute;
+    top: 27%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 156px;
+    height: 157px;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    display: flex;
+    background: url('../../img/item_box.png');
+}
+
+.item_img {
+    width: 50%;
+    height: auto;
+    z-index: 3;
+    object-fit: contain;
+    image-rendering: pixelated; 
+}
+
+
+/* 구매 완료 모달의 스타일 */
+#purchaseCompleteModal .modal-content {
+    background-color: #282828; /* 현재 모달의 어두운 배경색과 유사하게 설정 */
+    border: 2px solid rgb(145,133,118);/* 테두리도 어두운 톤으로 맞춤 */
+    border-radius: 8px; /* 모서리를 살짝 둥글게 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
+}
+
+#purchaseCompleteModal .modal-body {
+    text-align: center;
+    padding: 40px;
+    color: #e0e0e0 !important; /* 텍스트 색상을 밝은 회색으로 변경 */
+    font-size: 1.3rem;
+}
+
+#purchaseCompleteModal .modal-body p {
+    margin-bottom: 25px; /* 메시지와 버튼 사이 간격 */
+    font-weight: 600; /* 텍스트 굵기 조절 */
+}
+
+#purchaseCompleteModal .modal-body .btn-primary {
+    background-color: rgb(145,133,118); /* 현재 디자인의 버튼 색상과 유사하게 설정 */
+    border-color: #8C704F; /* 버튼 테두리 색상 */
+    color: #ecece7; /* 버튼 텍스트 색상 */
+    padding: 8px 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+#purchaseCompleteModal .modal-body .btn-primary:hover {
+    background-color: #B5A489; /* 호버 시 색상 변경 */
+    border-color: #A18359;
 }

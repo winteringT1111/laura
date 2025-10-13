@@ -40,8 +40,8 @@
                 <p id="item_price">100 G</p>
             </div>
             <div class="spec_info_func">
-                <img src="{% static 'img/카트.png' %}" class="purchase-icon">
-                <img src="{% static 'img/선물.png' %}" class="gift-icon">
+                <img src="{% static 'img/카트.png' %}" class="purchase-icon"  data-toggle="modal" data-target="#exampleModal1">
+                <img src="{% static 'img/선물.png' %}" class="gift-icon"  data-toggle="modal" data-target="#exampleModal2">
             </div> 
         </div>
         
@@ -78,7 +78,7 @@
 
             <div class="item_list" id="ingredient_list">
                 {% for item in ingredients %}
-                <div class="item_card" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}')">
+                <div class="item_card" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs|linebreaksbr|safe }}', '{{ item.itemPrice }}')">
                     <div class="item_content_wrap">
                         <div class="item_card_image_area">
                             <img src="{% static 'img/store/' %}{{item.itemName}}.png" class="item_card_image">
@@ -101,14 +101,33 @@
 <div>
 
 
-<div class=""></div>
-<div class=""></div>
-<div class=""></div>
+{% include "store/purchase_modal.html" %}
+{% include "store/gift_modal.html" %}
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+<div class="modal fade" id="purchaseCompleteModal" tabindex="-1" aria-labelledby="purchaseCompleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body" style="text-align: center; padding: 40px; color: #333; font-size: 1.2rem;">
+        <p>구매가 완료되었습니다.</p>
+        <button type="button" class="btn btn-primary" id="confirmAndRefreshBtn">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="modal fade" id="giftCompleteModal" tabindex="-1" aria-labelledby="giftCompleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body" style="text-align: center; padding: 40px; color: color: #333; font-size: 1.2rem;">
+        <p>선물이 전달되었습니다.</p>
+        <button type="button" class="btn btn-primary" id="giftConfirmBtn">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
 
     function updateItemSpec(name, category, info, price, imagePath) {
@@ -141,6 +160,42 @@
             ingredientBtn.classList.add('active');
         }
     }
+
+    document.querySelector('img[src="{% static "img/카트.png" %}"]').addEventListener('click', function() {
+      // spec_name에서 텍스트를 가져와서 모달의 제목으로 설정
+      var itemName = document.getElementById('spec_name').textContent;
+      var itemPrice = document.getElementById('item_price').textContent;
+      document.getElementById('modalTitle').textContent = itemName;
+      document.getElementById('modalPrice').textContent = itemPrice;
+      // input 요소의 value 속성에 itemName 값을 설정
+      document.getElementById('itemName').value = itemName;    
+      document.getElementById('modal_item_image').src = `{% static 'img/store/' %}${itemName}.png`; 
+  });
+
+    document.querySelector('img[src="{% static "img/선물.png" %}"]').addEventListener('click', function() {
+      var itemName = document.getElementById('spec_name').textContent;
+      var itemPrice = document.getElementById('item_price').textContent;
+
+      document.getElementById('modalTitle2').textContent = itemName;
+      document.getElementById('modalPrice2').textContent = itemPrice;
+      // input 요소의 value 속성에 itemName 값을 설정
+      document.getElementById('itemName2').value = itemName;
+      document.getElementById('modal_item_image').src = `{% static 'img/store/' %}${itemName}.png`; 
+  });
+
+  window.onload = function() {
+        // Find the elements by their class names
+        const specWrap = document.querySelector('.store_spec_wrap');
+        const infoWrap = document.querySelector('.store_info_wrap');
+
+        // Add the 'visible' class to trigger the CSS transition
+        if (specWrap) {
+            specWrap.classList.add('visible');
+        }
+        if (infoWrap) {
+            infoWrap.classList.add('visible');
+        }
+    };
 
 </script>
 

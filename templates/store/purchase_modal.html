@@ -5,25 +5,30 @@
         <div class="modal-content" id="pm">
             <div class="modal-body">    
 
-                <form method="post" id="purchaseForm">
-                    {% csrf_token %}
+                <form method="post" id="purchaseForm" action="/store/">
+                {% csrf_token %}
+
                     <input class="hidden" value="purchase" type="text" name="assort" id="assort">
                     <input class="hidden" value="" type="text" name="itemName" id="itemName">
+                    
+                    <div class="item_img_wrap">
+                        <img class="item_img" id="modal_item_image" src="{% static 'img/store/감자.png' %}">
+                    </div>
+                    
                     <h5 id="modalTitle">title</h5>
-                    <h5 id="modalTitleEng">Howler</h5>
 
-                    <div class="priceline"><h5 id="modalPrice">10</h5><h5>G</h5></div>
+                    <div class="priceline"><h5 id="modalPrice"></h5></div>
 
                     <div class="lastline">
                         <div class="quantity-spinner">
-                            <button type="button" onclick="decreaseValue()">-</button>
+                            <button type="button" onclick="decreaseValue()">–</button>
                             <input type="number" name="quantity" id="quantity" value="1" min="1" readonly>
                             <button type="button" onclick="increaseValue()">+</button>
                         </div>
     
                         <input type="hidden" id="modalTotalPrice" name="totalPrice" value="10" readonly>
     
-                        <button type="button" id="liveToastBtn" data-toggle="popover" data-placement="top" data-content="골드가 부족합니다.">
+                        <button type="submit" id="liveToastBtn" data-toggle="popover" data-placement="top" data-content="골드가 부족합니다.">
                             구매
                         </button>
                     </div>
@@ -37,6 +42,30 @@
 
 
 <script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     function updateTotalPrice() {
         var quantity = parseInt(document.getElementById('quantity').value, 10);
         var price = parseInt(document.getElementById('modalPrice').textContent, 10);
@@ -64,29 +93,55 @@
 
     // 모달이 열릴 때 기본값으로 초기화
     $(document).ready(function () {
+
+        $('#confirmAndRefreshBtn').on('click', function () {
+        location.reload(); // 즉시 페이지를 새로고침합니다.
+    });
+
         $('#exampleModal1').on('show.bs.modal', function () {
             document.getElementById('quantity').value = 1;
             var initialPrice = document.getElementById('modalPrice').textContent;
             document.getElementById('modalTotalPrice').value = initialPrice;
         });
 
-        // 제출 버튼 클릭 이벤트
-        $('#liveToastBtn').on('click', function () {
-            var totalPrice = parseInt(document.getElementById('modalTotalPrice').value, 10);
-            var userGaleon = parseInt('{{ user2.gold }}', 10); // 서버에서 user.gold 값 가져오기
+        $('#purchaseForm').on('submit', function (event) {
+        // 1. 기본 폼 제출(페이지 새로고침) 동작을 막습니다.
+        event.preventDefault(); 
 
-            if (totalPrice > userGaleon) {
-                // popover 표시
-                $(this).popover('show');
-                console.log("no!!");
-            } else {
-                // 폼 제출
-                $('#purchaseForm').submit();
-                console.log(totalPrice > userGaleon);
-                // 모달 닫기
+        var form = $(this);
+        var totalPrice = parseInt(form.find('#modalTotalPrice').val(), 10);
+        var userGaleon = parseInt('{{ user2.gold }}', 10);
+
+        if (totalPrice > userGaleon) {
+            // 골드가 부족하면 popover를 표시합니다.
+            $('#liveToastBtn').popover('show');
+            return; // 여기서 함수를 중단합니다.
+        }
+
+        // 2. AJAX를 사용해 폼 데이터를 서버로 전송합니다.
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'), // form의 action 속성에 지정된 URL
+            data: form.serialize(),   // form 안의 모든 데이터를 전송
+            
+            // 3. 서버에서 성공적으로 응답을 받으면 이 함수가 실행됩니다.
+            success: function (response) {
+                // 구매 모달을 닫습니다.
                 $('#exampleModal1').modal('hide');
+
+                // '구매 완료' 모달을 띄웁니다.
+                // 참고: 여기서는 페이지가 리로드되지 않으므로 setTimeout이 필수는 아닙니다.
+                $('#purchaseCompleteModal').modal('show');
+                
+                // (선택사항) 유저의 골드 표시를 업데이트하는 로직을 추가할 수 있습니다.
+            },
+            
+            // 4. 에러가 발생했을 경우 (선택사항)
+            error: function (response) {
+                alert('오류가 발생했습니다. 다시 시도해주세요.');
             }
         });
+    });
         
 
         // popover 초기화

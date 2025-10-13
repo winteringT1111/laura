@@ -5,14 +5,16 @@
       <div class="modal-content" id="gm">
         <div class="modal-body">
 
-          <form method="post" id="giftForm">
+          <form method="post" id="giftForm" action="/store/">
             {% csrf_token %}
             <input class="hidden" value="gift" type="text" name="assort" id="assort">
             <input class="hidden" value="" type="text" name="itemName2" id="itemName2">
-            <h5 id="modalTitle2">title</h5>
-            <h5 id="modalTitleEng2">Howler</h5>
 
-            <div class="priceline2"><h5 id="modalPrice2">10</h5><h5>G</h5></div>
+                    
+                    <h5 id="modalTitle2">title</h5>
+                    <div class="priceline2"><h5 id="modalPrice2"></h5></div>
+
+
 
             <div class="charselect">
                 <div class="charselect_label">선물을 전달할 대상을 선택해주세요</div>
@@ -34,12 +36,15 @@
                 </div>
                 
                 <div class="message_box_info_right">
-                  <label for="anonymous">익명</label>
-                  <input type="checkbox" id="anonymous" name="anonymous">
+                    <div class="custom-checkbox-container">
+                        
+                        <input type="checkbox" id="anonymous" name="anonymous">
+                        <label for="anonymous">익명</label> 
+                    </div>
                 </div>
               </div>
 
-              <textarea id="message" name="message" placeholder="메시지를 입력하세요" class="message-input" maxlength="100"></textarea>
+              <textarea id="message" name="message" placeholder="메시지를 입력하세요" class="message-input" maxlength="200"></textarea>
               
             </div>
 
@@ -52,7 +57,7 @@
 
                 <input type="hidden" id="modalTotalPrice2" name="totalPrice2" value="10" readonly>
 
-                <button type="button" id="liveToastBtn2" data-toggle="popover" data-placement="top" data-content="갈레온이 부족합니다.">
+                <button type="submit" id="liveToastBtn2" data-toggle="popover" data-placement="top" data-content="갈레온이 부족합니다.">
                     선물
                 </button>
             </div>
@@ -65,8 +70,6 @@
   </div>
 
 
-
-  
 
 <script>
   function updateTotalPrice2() {
@@ -105,31 +108,54 @@
         $('#message').val('');
     });
 
-    // 제출 버튼 클릭 이벤트
-    $('#liveToastBtn2').on('click', function () {
-        var totalPrice2 = parseInt(document.getElementById('modalTotalPrice2').value, 10);
-        var userGaleon = parseInt('{{ user2.gold }}', 10); // 서버에서 user.galeon 값 가져오기
-        var receiver = $('.receiver_input').val(); // 선택된 캐릭터 이름
+    $(document).ready(function () {
+    // --- ✅ REPLACE your old '#liveToastBtn2' click event with this ---
+    $('#giftForm').on('submit', function (event) {
+        // 1. Prevent the default page reload
+        event.preventDefault();
 
+        var form = $(this);
+        var totalPrice2 = parseInt(form.find('#modalTotalPrice2').val(), 10);
+        var userGaleon = parseInt('{{ user2.gold }}', 10);
+        var receiver = form.find('.receiver_input').val();
 
+        // --- Validation Checks ---
         if (!receiver) {
-          // 캐릭터 이름이 선택되지 않은 경우 popover 표시
-          $(this).popover('dispose'); // 이전 popover를 제거
-          $(this).attr('data-content', "선물 대상을 지정하지 않았습니다.");
-          $(this).popover('show');
+            $('#liveToastBtn2').attr('data-content', "선물 대상을 지정하지 않았습니다.").popover('show');
+            return;
         }
-        else if (totalPrice2 > userGaleon) {
-          // 갈레온이 부족한 경우 popover 표시
-          $(this).popover('dispose'); // 이전 popover를 제거
-          $(this).attr('data-content', "갈레온이 부족합니다.");
-          $(this).popover('show');   
-        } else {
-            // 폼 제출
-            $('#giftForm').submit();
-            // 모달 닫기
-            $('#exampleModal2').modal('hide');
+        if (totalPrice2 > userGaleon) {
+            $('#liveToastBtn2').attr('data-content', "골드가 부족합니다.").popover('show');
+            return;
         }
+
+        // 2. Send form data using AJAX
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'), // The URL specified in the form's action attribute
+            data: form.serialize(),   // Send all form data
+
+            // 3. On success, hide the old modal and show the new one
+            success: function (response) {
+                $('#exampleModal2').modal('hide');
+                $('#giftCompleteModal').modal('show');
+            },
+
+            // 4. On error, show an alert
+            error: function (response) {
+                alert('오류가 발생했습니다. 다시 시도해주세요.');
+                console.error("Gift AJAX Error:", response);
+            }
+        });
     });
+
+    // --- ✅ Add this click handler for the new confirmation button ---
+    $('#giftConfirmBtn').on('click', function() {
+        location.reload(); // Reload the page when the user clicks "확인"
+    });
+
+    // ... your other $(document).ready() code remains the same ...
+});
 
     // popover 초기화
     $('[data-toggle="popover"]').popover({

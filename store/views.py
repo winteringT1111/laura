@@ -24,7 +24,7 @@ def store_main(request):
             count = int(request.POST['quantity'])
             
             # 갈레온 차감
-            userinfo.gold = int(userinfo.gold) - int(itemPrice)
+            userinfo.gold = int(userinfo.gold) - int(itemPrice.split(' ')[0]) 
             userinfo.save()
             
             # 구매내역 저장
@@ -50,13 +50,13 @@ def store_main(request):
                 
                 
         elif assort == "gift":
-            item_name = request.POST['itemName2']
+            item_name = request.POST['itemName2']   
             itemPrice = request.POST['totalPrice2']
             count = int(request.POST['quantity2'])
             
             if_anonymous = request.POST.get('anonymous') == 'on'
             receiver = request.POST['receiver']
-            receiver_char = Characters.objects.get(charName=receiver, charGrade=1)
+            receiver_char = Characters.objects.get(charName=receiver)
             item_message = request.POST.get('message')
             
             print(item_name,itemPrice,count,if_anonymous,receiver,item_message,datetime.today())
@@ -72,7 +72,7 @@ def store_main(request):
             char.save()
             
             # 갈레온 차감
-            userinfo.gold = int(userinfo.gold) - int(itemPrice)
+            userinfo.gold = int(userinfo.gold) - int(itemPrice.split(' ')[0]) 
             userinfo.save()            
             
     charnames = Characters.objects.all().values_list('charName', flat=True)   

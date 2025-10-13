@@ -33,10 +33,10 @@
 /* -------------------- 아이템 이미지와 배경 영역 -------------------- */
 
 .spec-image-content {
-    width: 280px; /* 이미지 배경 프레임 크기 */
+    width: 280px; 
     height: 280px !important;
     margin-top: 15px;
-    
+    background-color: rgb(225, 223, 217,0.3);
     border: solid 2px #B5A489;
     
     display: flex;
@@ -149,7 +149,7 @@
 
 
 .store_info_wrap {
-    width: 850px;
+    width: 830px;
     height: 100%;
     position: absolute;
     right: 0;
@@ -159,38 +159,38 @@
 }
 
 .item_list_container {
-    width: 85%;
+    width: 88%;
     height: 100%; /* 부모 높이에 따라 조정됩니다. */
     display: flex; /* 자식 요소들을 정렬하기 위해 flex 사용 */
     flex-direction: column; /* header와 list를 세로로 배치 */
-    background-color: rgb(74, 72, 70);
+    background: linear-gradient(to bottom, rgba(124, 121, 113, 0.85), rgba(56, 54, 51, 0.7));
     align-items: center;
+    box-shadow: -5px 0 7px rgba(56, 54, 51, 0.45);
     overflow: hidden;
 }
 
 
 .tab_btns {
-    width: 15%;
+    width: 12%;
     height: 100px;
 }
 
 .item_header {
     width: 100%;
-    height: 18%;
+    height: 22%;
 
     display: flex;
 } .item_header img{
     display: flex;
     margin: auto;
-    margin-bottom: -13px;
 }
 
 .item_list {
     /* 기존 속성 유지 */
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 13px;
-    padding: 40px;
+    column-gap: 13px; /* Only apply gap between columns */
+    padding: 0 40px 40px 40px; /* Remove top padding */
     
     /* 강화된 설정 */
     width: 100% !important;
@@ -224,6 +224,15 @@
     padding: 5px; /* 내부 여백 */
     box-sizing: border-box;
     cursor: pointer;
+    margin-top: 13px;
+}
+
+.item_card:first-child{
+    margin-top: 0;
+} .item_card:nth-child(2){
+    margin-top: 0;
+} .item_card:nth-child(3){
+    margin-top: 0;
 }
 
 .item_content_wrap {
@@ -361,4 +370,41 @@
 .tab_btns button:hover:not(.active) {
     /* 마우스 오버 시 미묘하게 밝아지는 효과 */
     background-color: #887E76;
+}
+
+
+
+
+
+/* --- Animation Start States --- */
+
+/* Initially centered, then moved UP and made transparent */
+.store_spec_wrap {
+    opacity: 0;
+    /* Combines original centering with the upward animation start */
+    transform: translate(-50%, -50%) translateY(-18px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Initially vertically centered, then moved RIGHT and made transparent */
+.store_info_wrap {
+    opacity: 0;
+    /* Combines original vertical centering with the rightward animation start */
+    transform: translateY(-50%) translateX(18px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+
+/* --- Animation End State --- */
+
+/* This class returns the element to its final, centered position */
+.store_spec_wrap.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%); /* The original centering position */
+}
+
+/* This class returns the element to its final, vertically centered position */
+.store_info_wrap.visible {
+    opacity: 1;
+    transform: translateY(-50%); /* The original vertical centering position */
 }
