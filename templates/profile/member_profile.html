@@ -22,7 +22,7 @@
 </div>
 
 {% if char.charProfileMusic %}
-<div id="profile_music" class="hidden" data-music="{{char.charProfileMusic}}.mp3"></div>
+<div id="profile_music" class="hidden" data-music="{{char.charEngName}}.mp3"></div>
 {% else %}
 {% endif %}
 
@@ -62,7 +62,7 @@
             <button class="sub_section">
                 <span>PERSONALITY</span>
             </button>
-            {% if char07.charCommission  or char07.charImageInfo %}
+            {% if char.charCommission  or char.charImageInfo %}
             <button class="sub_section">
                 <span>APPEARANCE</span>
             </button>
@@ -93,7 +93,11 @@
 
             <div class="scroll_box">
                 <p>
+                    {% if char.charName == '나오이즈' or char.charName == '라그나르의 힐다' or char.charName == '라타 레네타'  or char.charName == '샤이탄'  or char.charName == '양치기'  or char.charName == '제르투르'  or char.charName == '하바'  or char.charName == '렌리' or char.charName == '린제이 슐츠'%}
+                    {{char.charPersonality|safe}}
+                    {% else %}
                     {{char.charPersonality|linebreaksbr|safe}}
+                    {% endif %}
                 </p>
             </div>
         </div>
@@ -101,9 +105,9 @@
         <div class="content_appearance">
             <div class="keyword_wrap">
                 <div class="keyword">
-                    {% if char07.charCommission %}
+                    {% if char.charCommissionInfo or char.charCommission %}
                     <img class="prof_star" src="{% static 'img/profile/personality.png' %}" alt="position">
-                    vvr325_3
+                    @ {{char.charCommissionInfo}}
                     {% endif %}
                 </div>
             </div>
@@ -111,7 +115,12 @@
             <div class="scroll_box">
                 {% if char.charImageInfo %}
                 <p>
-                    {{ char.charImageInfo|linebreaksbr|safe }}  
+                    {% if char.charName == '샤이탄' or char.charName == '제르투르' or char.charName == '하바' or char.charName == '린제이 슐츠' %}
+                    {{ char.charImageInfo|safe }} 
+                    {% else %}
+                    {{ char.charImageInfo|linebreaksbr|safe }} 
+                    {% endif %}
+                     
                 </p>
                 {% endif %}
             </div>
@@ -125,7 +134,11 @@
 
             <div class="scroll_box2">
                 <p>
-                    {{ char.charEtc|linebreaksbr|safe }}  
+                    {% if char.charName == '나오이즈' or char.charName == '라그나르의 힐다' or char.charName == '라타 레네타'  or char.charName == '샤이탄'  or char.charName == '양치기' or char.charName == '제르투르' or char.charName == '하바' or char.charName == '렌리' or char.charName == '린제이 슐츠'%}
+                    {{char.charEtc|safe}}
+                    {% else %}
+                    {{char.charEtc|linebreaksbr|safe}}
+                    {% endif %}
                 </p>
             </div>
         </div>
@@ -249,9 +262,9 @@ document.addEventListener('DOMContentLoaded', function() {
     //const relationSection = document.getElementById('relation-section');
     const invenSection = document.getElementById('inven-section');
 
-    profileSection.style.display = 'none';
+    profileSection.style.display = 'block';
     //relationSection.style.display = 'none';
-    invenSection.style.display = 'block';
+    invenSection.style.display = 'none';
 
     houseIcon.addEventListener('click', () => {
         profileSection.style.display = 'block';

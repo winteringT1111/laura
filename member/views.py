@@ -41,12 +41,12 @@ def member_profile(request, charEngName):
 
 @login_required
 def member_main(request):
-    all_characters = Characters.objects.all()
+    all_characters = Characters.objects.all().order_by('charName')  # 이름 오름차순
     print(len(all_characters))
     context = {
         'chars': all_characters
     }
-    return render(request, "profile/member_main.html",context)
+    return render(request, "profile/member_main.html", context)
 
 
             

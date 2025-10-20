@@ -36,6 +36,7 @@ class Characters(models.Model):
     charSkill1info = models.TextField()
     charSkill2info = models.TextField()
     charSkill3info = models.TextField()
+    charProfileMusic = models.TextField(null=True, blank=True)  
     
     class Meta:
         db_table = "character"

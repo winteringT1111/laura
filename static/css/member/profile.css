@@ -335,6 +335,7 @@
     font-size: 16.5px;
     text-align: left;
     padding: 1% 1%;
+    color: rgb(224, 223, 217) !important;
     font-weight: 300;
 }
 
@@ -346,6 +347,7 @@
     line-height: 1.5;
     font-size: 16.5px;
     text-align: left;
+    color: rgb(224, 223, 217);
     padding: 1% 1%;
     font-weight: 300;
 }
@@ -474,3 +476,8 @@ progress[value]::-webkit-progress-value {
     padding-right: 9%;
     text-align: center;
 }
+
+.scroll_box li {
+    margin-bottom: 40px;
+    padding: 0;
+} 

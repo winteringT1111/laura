@@ -16,15 +16,15 @@ def signup(request):
         commucode = request.POST['commucode']
         print(request.POST['username'])
 
-        if request.POST['password1']==request.POST['password2'] and commucode == "laura" and request.POST['username'] in all_charac:
+        if request.POST['password1']==request.POST['password2'] and commucode == "yggdrasil" and request.POST['username'] in all_charac:
             Newuser = User.objects.create_user(request.POST['username'], password=request.POST['password1'])            
             auth.login(request,Newuser)
 
             user = request.user
             char = CharInfo(char=Characters.objects.get(charEngName=request.POST['username']),
                             user=user,
-                            gold=3000,
-                            exp=3000,
+                            gold=0,
+                            exp=0,
                             quest=1,)
             char.save()
             
