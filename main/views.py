@@ -1,18 +1,18 @@
 from django.shortcuts import render,redirect
-from member.models import Characters,Inventory_magic,Attendance,Inventory,Inventory_potion
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from member.models import *
 from users.models import CharInfo
 from main.models import *
-from store.models import Item_magic,Potion,Item,PotionStatus
+from store.models import *
 from django.utils import timezone
-from datetime import datetime
-from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-import random
-import ast
-import json
+import random,ast,json
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from .models import Quest, QuestLog, LogComment
+from .forms import QuestLogForm
+from django.db.models import F, ExpressionWrapper, DateField # Ensure ExpressionWrapper and DateField are imported
+from datetime import date, timedelta
 # Create your views here.
 
 
@@ -68,26 +68,97 @@ def serapium(request):
     return render(request, "notice/realm/serapium.html")
 
 
+from django.templatetags.static import static
+import json
+@login_required
+def story_view(request, room_name):
+    try:
+        chapter = Chapter.objects.get(id=room_name)
+        dialogue_lines = chapter.dialogue_lines.all()
+        
+        script = []
+        for line in dialogue_lines:
+            character_name = line.character_name
+            formatted_text = line.text
+            
+            script.append({
+                "name": character_name,
+                "text": formatted_text,
+            })
+        background_url = chapter.background_image.url if chapter.background_image else static('img/default_background.png')
+    except Chapter.DoesNotExist:
+        script = [{"name": "시스템", "text": "해당 스토리를 찾을 수 없습니다."}]
+        background_url = static('img/default_background.png') # 에러 발생 시 기본 배경
+
+    context = {'script': script, 'background_image_url': background_url} 
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'story_partial.html', context)
+    
+    return render(request, 'story.html', context)
 
 
+@login_required 
+@require_POST   
+def claim_story_reward(request):
+    try:
+        # 1. JavaScript가 보낸 chapter_id를 받습니다.
+        data = json.loads(request.body)
+        chapter_id = data.get('chapter_id')
+        
+        if not chapter_id:
+            return JsonResponse({'status': 'error', 'message': 'Chapter ID not provided'}, status=400)
 
-def story_view(request):
-    script = [
-        {"name": "", "text": "소개팅 중인 유벨(1200세)과 미모의 여인"},
-        {"name": "유벨(1200세)", "text": "안녕하세요. 혹시 이리나 길드는 좀 아세요?"},
-        {"name": "미모의 여인", "text": "...네? 뭐라고요?"},
-        {"name": "유벨(1200세)", "text": "(큰일났다... 이리나 길드를 모르다니... 그렇다면 이것밖에...!)"},
-        {"name": "유벨(1200세)", "text": "피냐 삼종 세트는 아세요?"},
-    ]
-    return render(request, "story.html", {"script": script})
+        charinfo = CharInfo.objects.get(user=request.user)
+        chapter_to_complete = Chapter.objects.get(id=chapter_id)
 
+        # 2. ✨ 핵심 로직: 이미 완료한 챕터인지 확인합니다.
+        if chapter_to_complete in charinfo.completed_chapters.all():
+            # 이미 완료했다면, 보상을 주지 않고 "이미 받음" 상태를 반환합니다.
+            return JsonResponse({'status': 'already_claimed', 'message': 'Reward already claimed.'})
 
-def room(request, room_name):
-    return render(request, "room.html", {"room_name": room_name})
+        # 3. 최초 완료라면, 보상을 지급하고 완료 목록에 추가합니다.
+        charinfo.gold += 50
+        charinfo.completed_chapters.add(chapter_to_complete) # 완료 목록에 추가
+        charinfo.save() # gold와 many-to-many 관계 모두 저장
+        
+        return JsonResponse({'status': 'success', 'message': 'Reward claimed!'})
+    except Chapter.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Chapter not found.'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@login_required
+def room(request):
+    main_stories = []
+    sub_stories = []
+    completed_chapter_ids = []
+
+    # 2. 로그인된 유저인지 확인합니다. (오류 방지를 위해 중요!)
+    if request.user.is_authenticated:
+        # 'story_type' 필드를 기준으로 메인/서브 스토리를 각각 가져옵니다.
+        main_stories = Chapter.objects.filter(story_type='main').order_by('chapter_number')
+        sub_stories = Chapter.objects.filter(story_type='sub').order_by('chapter_number')
+
+        # 현재 유저가 완료한 챕터 ID 목록을 가져옵니다.
+        # 'character'는 User 모델과 연결된 이름에 따라 다를 수 있습니다.
+        if hasattr(request.user, 'character'):
+            character = request.user.character
+            completed_chapter_ids = list(character.completed_chapters.values_list('id', flat=True))
+
+    # 3. 조회한 모든 데이터를 context 딕셔너리에 담습니다.
+    context = {
+        'main_stories': main_stories,
+        'sub_stories': sub_stories,
+        'completed_chapter_ids': completed_chapter_ids,
+    }
+    
+    # 4. context와 함께 템플릿을 렌더링합니다.
+    return render(request, "room.html", context)
 
 
 @login_required(login_url='/login')
-def attendance(request):
+def supply(request):
     getUser = request.user
     charinfo = CharInfo.objects.get(user=getUser)
     userinfo = Characters.objects.get(charID=charinfo.char_id)
@@ -98,7 +169,7 @@ def attendance(request):
     today_date = current_time.date()
     
     if request.method == "POST":
-        # 출석 가능한 시간 7시 ~ 17시
+        # 출석 가능한 시간 6시 ~ 20시
         if 6 <= current_hour < 20:
             # 오늘 이미 출석한 기록이 있으면 출석 불가
             if charinfo.attendance_date == today_date:
@@ -121,7 +192,7 @@ def attendance(request):
         else:
             # 출석 시간이 아닌 경우
             show_modal = "modal2"
-            modal_message = "보급 신청이 가능한 시간이 아닙니다."
+            modal_message = "보급 신청이 가능한 시각이 아닙니다."
         
         return JsonResponse({
             'show_modal': show_modal, 
@@ -136,130 +207,120 @@ def attendance(request):
         'today_attended': charinfo.today_attended  # 템플릿에 금일 출석 여부 전달
     }
     
-    return render(request, "class/attendance.html", context)
+    return render(request, "class/supply.html", context)
 
 
-# 조사 페이지
-@login_required(login_url='/login')
-def search(request):
-    postlist = Article.objects.all().order_by('-id')
-    context = {'postlist':postlist}
-    return render(request, "class/search_main.html",context)
+@login_required
+def quest_board(request):
+    today = date.today()
 
+    # 1. Get all potentially active quests from the database
+    potential_quests = Quest.objects.filter(start_date__lte=today).order_by('-start_date')
 
-@login_required(login_url='/login')
-def search_create(request):
-    getUser = request.user
-    char = CharInfo.objects.get(user=getUser)
-    current_time = timezone.localtime(timezone.now())
-    today_date = current_time.date()
+    # 2. Create the final list of data in a single, efficient loop
+    active_quests_data = []
+    for quest in potential_quests:
+        expiration_date = quest.start_date + timedelta(days=quest.duration_days)
+
+        # Check if the quest is currently active
+        if quest.start_date <= today < expiration_date:
+            remaining_days = (expiration_date - today).days
+
+            # --- Build the JSON data for rewards ---
+            rewards_list = []
+            for reward in quest.questrewarditem_set.all():
+                rewards_list.append({
+                    'name': reward.ingredient.itemName,
+                    'quantity': reward.quantity,
+                })
+
+            # --- Append the final dictionary to our list ---
+            active_quests_data.append({
+                'quest': quest,
+                'remaining_days': remaining_days,
+                'rewards_json': json.dumps(rewards_list)
+            })
+
+    # The rest of your view logic is correct
+    quest_logs = QuestLog.objects.all().select_related('author', 'quest')
+    try:
+        char_info = CharInfo.objects.get(user=request.user)
+        can_perform_quest = char_info.quest > 0
+    except CharInfo.DoesNotExist:
+        char_info = None
+        can_perform_quest = False
     
-    comment = random.choice(Comment.objects.all())
-    
+    context = {
+        'active_quests': active_quests_data,
+        'quest_logs': quest_logs,
+        'can_perform_quest': can_perform_quest,
+        'char_info': char_info,
+    }
+    return render(request, 'quest/quest_board.html', context)
+
+
+@login_required
+def create_quest_log(request):
+    char_info = CharInfo.objects.get(user=request.user)
+
+    if char_info.quest <= 0:
+        return redirect('main:quest_board')
+
     if request.method == 'POST':
-        # 업로드된 파일을 가져오기 위해 request.FILES 사용
-        if 'mainphoto' in request.FILES:
-            image = request.FILES['mainphoto']
-            new_article = Article.objects.create(
-                title=request.POST['postname'],
-                content=request.POST['contents'],
-                image=image,  # 업로드된 파일을 저장
-                user=getUser,
-                date=today_date,
-                comment=comment
-            )
-            
-            if comment.category == '갈레온':
-                random_number = random.randint(1, 3)
-                info = CharInfo.objects.get(user=request.user)
-                info.galeon += random_number
-                info.save()
+        form = QuestLogForm(request.POST, request.FILES)
+        if form.is_valid():
+            quest = form.cleaned_data['quest']
+            if char_info.completed_quests.filter(id=quest.id).exists():
+                form.add_error(None, "이미 완료하여 보상을 받은 퀘스트입니다.")
+            else:
+                char_info.quest -= 1
                 
-            elif comment.category == '상점':
-                if comment.itemName == '마법 재료':
-                    target = random.choice(Item_magic.objects.all())
+                new_log = form.save(commit=False)
+                new_log.author = char_info.char
+                new_log.save()
 
-                    all_items = Inventory_magic.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
-                    
-                    if target.itemID in all_items:
-                        update_item = Inventory_magic.objects.get(itemInfo=target, user=getUser)
-                        update_item.itemCount += 1
-                        update_item.save()
-                    else:
-                        inven = Inventory_magic(itemCount=1,
-                                        itemInfo=target,
-                                        user=getUser)
-                        inven.save()
-                else:
-                    target = Item.objects.get(itemName=comment.itemName)
-
-                    all_items = Inventory.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
-                    
-                    if target.itemID in all_items:
-                        update_item = Inventory.objects.get(itemInfo=target, user=getUser)
-                        update_item.itemCount += 1
-                        update_item.save()
-                    else:
-                        inven = Inventory(itemCount=1,
-                                        itemInfo=target,
-                                        user=getUser)
-                        inven.save()
-        else:
-            new_article = Article.objects.create(
-                title=request.POST['postname'],
-                content=request.POST['contents'],
-                image=None,  # 이미지가 없는 경우
-                user=getUser,
-                date=today_date,
-                comment=comment
-            )
-            
-            if comment.category == '갈레온':
-                random_number = random.randint(1, 3)
-                info = CharInfo.objects.get(user=request.user)
-                info.galeon += random_number
-                info.save()
+                # --- ✨ 보상 지급 로직 수정 ✨ ---
                 
-            if comment.category == '상점':
-                if comment.itemName == '마법 재료':
-                    target = random.choice(Item_magic.objects.all())
+                # 1. 골드 지급
+                char_info.gold += quest.reward_gold
+                
+                # 2. 재료 지급 (여러 개 처리)
+                # 퀘스트에 연결된 모든 보상 재료 정보를 가져옵니다.
+                rewards_to_give = quest.questrewarditem_set.all()
+                
+                for reward in rewards_to_give:
+                    # 유저의 인벤토리에서 해당 재료를 찾거나, 없으면 새로 만듭니다.
+                    inventory_slot, created = Inventory_ingredient.objects.get_or_create(
+                        user=request.user,
+                        itemInfo=reward.ingredient,
+                        defaults={'itemCount': 0} # 새로 만들 경우 itemCount의 초기값
+                    )
+                    # 수량을 더해줍니다.
+                    inventory_slot.itemCount += reward.quantity
+                    inventory_slot.save()
 
-                    all_items = Inventory_magic.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
-                    
-                    if target.itemID in all_items:
-                        update_item = Inventory_magic.objects.get(itemInfo=target, user=getUser)
-                        update_item.itemCount += 1
-                        update_item.save()
-                    else:
-                        inven = Inventory_magic(itemCount=1,
-                                        itemInfo=target,
-                                        user=getUser)
-                        inven.save()
-                else:
-                    target = Item.objects.get(itemName=comment.itemName)
+                # 3. 퀘스트 완료 처리 및 유저 정보 저장
+                char_info.completed_quests.add(quest)
+                char_info.save()
 
-                    all_items = Inventory.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
-                    
-                    if target.itemID in all_items:
-                        update_item = Inventory.objects.get(itemInfo=target, user=getUser)
-                        update_item.itemCount += 1
-                        update_item.save()
-                    else:
-                        inven = Inventory(itemCount=1,
-                                        itemInfo=target,
-                                        user=getUser)
-                        inven.save()
-        return redirect('/search')
-    
-    return render(request, "class/search_create.html")
+                # 4. 자동 댓글 생성
+                reward_texts = []
+                if quest.reward_gold > 0:
+                    reward_texts.append(f"골드: {quest.reward_gold}")
+                for reward in rewards_to_give:
+                    reward_texts.append(f"{reward.ingredient.itemName} x{reward.quantity}")
+                
+                comment_text = f"퀘스트를 완료하여 보상을 획득했습니다! ({', '.join(reward_texts)})"
+                LogComment.objects.create(log=new_log, comment_text=comment_text)
+
+                return redirect('main:quest_board')
+    else:
+        form = QuestLogForm()
+    return render(request, 'quest/create_quest_log.html', {'form': form})
+
 
 
     
-# 수업 페이지
-@login_required(login_url='/login')
-def class_main(request):
-    return render(request, "class/class_main.html")
-
 
 # 마법의 약
 @login_required(login_url='/login')
@@ -422,160 +483,117 @@ def herb(request):
     return render(request, "class/herbology.html", context)
 
 
-# 신비한 동물 다루기
-@login_required(login_url='/login')
-def creature(request):
-    random_creature_item = Item_magic.objects.filter(itemCategory2='신비한 동물').order_by('?').first()
-    random_number = random.randint(1, 3)
-    getUser = request.user
-    user = CharInfo.objects.get(user=getUser)
-    
-    if request.method == "POST":
-        itemname = request.POST['herbname']
-        count = int(request.POST['count'])
-        print(itemname,count)
-        
-        target = Item_magic.objects.get(itemName=itemname)
+from django.db import transaction
 
-        all_items = Inventory_magic.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
-        
-        if target.itemID in all_items:
-            update_item = Inventory_magic.objects.get(itemInfo=target, user=getUser)
-            update_item.itemCount += count
-            update_item.save()
-        else:
-            inven = Inventory_magic(itemCount=count,
-                            itemInfo=target,
-                            user=getUser)
-            inven.save()
-            
-        user.classToken -= 1
-        user.save()
-    
-    
-    context = {'herb': random_creature_item,
-               'count': random_number,
-               'token':user.classToken}
-    
-    return render(request, "class/creature.html", context)
-
-    
-# 비행
 @login_required(login_url='/login')
-def shifter(request):
-    user = CharInfo.objects.get(user=request.user)
+def recipe(request):
+    inven = Inventory_ingredient.objects.filter(user=request.user, itemCount__gt=0)
     
     try:
-        attendance = Attendance.objects.get(user=request.user)
-    except Attendance.DoesNotExist:
-        attendance = Attendance(user=request.user, attendance_date=None, total_attendance=0, broom_item_received=False)
-        attendance.save()
+        token = CharInfo.objects.get(user=request.user).gold
+    except CharInfo.DoesNotExist:
+        token = 0
         
-    # 현재 시간 확인
-    current_time = timezone.localtime(timezone.now())
-    today_date = current_time.date()
-        
-    if request.method == "POST":
-        if attendance.attendance_date == today_date:
-            show_modal = "modal2"
-            modal_message = "오늘은 이미 수업을 이수했습니다."
-        else:
-            attendance.attendance_date = today_date  # 출석일 업데이트
-            attendance.total_attendance += 1
-            attendance.save()
-                
-            show_modal = "modal1"
-            modal_message = "비행 수업이 완료되었습니다."
-            user.classToken -= 1
-            user.save()
-            
-            if attendance.total_attendance == 7 and not attendance.broom_item_received:
-                broom = Item.objects.get(itemName="빗자루")
-                inven = Inventory(itemCount=1,
-                            itemInfo=broom,
-                            user=request.user)
-                inven.save()
-                attendance.broom_item_received = True
-                attendance.save()
-                show_modal = "modal1"
-                modal_message = "빗자루 아이템이 인벤토리에 수령되었습니다."
-            
-        return JsonResponse({
-        'show_modal': show_modal, 
-        'modal_message': modal_message,
-        'attendance_count': attendance.total_attendance,  # 누적 출석 일 수
-        'got_broom': attendance.broom_item_received,
-        'token':user.classToken
+    # --- ✨ 레시피 북을 위한 데이터 가공 ---
+    all_recipes_data = []
+    # 모든 레시피를 가져옵니다.
+    for recipe in Recipe.objects.all().order_by('itemName'):
+        try:
+            ingredients = ast.literal_eval(recipe.recipe)
+        except (ValueError, SyntaxError):
+            ingredients = []
+
+        # ✅ Split the discoverer's name here
+        discoverer_first_name = ""
+        if recipe.discoverer:
+            # Get the full name, split by space, and take the first part
+            discoverer_first_name = recipe.discoverer.split(' ')[0]
+
+        all_recipes_data.append({
+            'recipe': recipe,
+            'ingredients': ingredients,
+            'discoverer_first_name': discoverer_first_name 
         })
-    
+        
     context = {
-        'attendance_count': attendance.total_attendance,  # 템플릿에 누적 출석 일 수 전달
-        'got_broom': attendance.broom_item_received,  # 템플릿에 금일 출석 여부 전달
-        'token':user.classToken,
-        'got_broom': attendance.broom_item_received,
+        'inventory_items': inven,
+        'token': token,
+        'all_recipes': all_recipes_data, # 👈 가공된 레시피 데이터를 context에 추가
     }
-    
-    return render(request, "class/flying.html", context)
-    
-    
-# 순간이동ㅔ
-@login_required(login_url='/login')
-def teleport(request):
-    user = CharInfo.objects.get(user=request.user)
-    
+    return render(request, "class/recipe.html", context)
+
+
+@require_POST
+@login_required
+@transaction.atomic  # 👈 이 함수 내의 모든 DB 작업이 전부 성공하거나 전부 실패하도록 보장
+def combine(request):
     try:
-        attendance = Attendance.objects.get(user=request.user)
-    except Attendance.DoesNotExist:
-        attendance = Attendance(user=request.user, attendance_date=None, total_attendance=0, broom_item_received=False)
-        attendance.save()
+        data = json.loads(request.body)
+        selected_items = data.get('selected_items', [])
+        selected_items_set = set(selected_items)
+        user = request.user
+        char_info = CharInfo.objects.get(user=user)
+
+        # 1. 토큰 및 재료 보유 여부 사전 확인
+        if char_info.exp <= 0:
+            return JsonResponse({'error': '경험치가 부족합니다.'}, status=400)
         
-    # 현재 시간 확인
-    current_time = timezone.localtime(timezone.now())
-    today_date = current_time.date()
-        
-    if request.method == "POST":
-        if attendance.attendance_date == today_date:
-            show_modal = "modal2"
-            modal_message = "오늘은 이미 수업을 이수했습니다."
+        for item_name in selected_items:
+            if not Inventory_ingredient.objects.filter(user=user, itemInfo__itemName=item_name, itemCount__gt=0).exists():
+                return JsonResponse({'error': f"'{item_name}' 재료가 부족합니다."}, status=400)
+
+        # 2. 조합법 확인
+        found_recipe = None
+        for recipe in Recipe.objects.all():
+            recipe_ingredients = set(ast.literal_eval(recipe.recipe))
+            if selected_items_set == recipe_ingredients:
+                found_recipe = recipe
+                break
+
+        # --- 재료 및 토큰 차감 (성공/실패 공통) ---
+        char_info.exp -= 100
+        char_info.save()
+
+        for item_name in selected_items:
+            inv = Inventory_ingredient.objects.get(user=user, itemInfo__itemName=item_name)
+            inv.itemCount -= 1
+
+            if inv.itemCount == 0:
+                inv.delete()
+            else:
+                inv.save()
+
+        # 3. 결과 처리
+        if found_recipe:
+            # 성공 로직
+            is_first_discovery = not found_recipe.discovered
+            if is_first_discovery:
+                message = f"'{found_recipe.itemName}' 조합에 최초로 성공했습니다!"
+                found_recipe.discovered = True
+                found_recipe.discoverer = user.username
+                found_recipe.save()
+            else:
+                message = f"'{found_recipe.itemName}' 조합에 성공했습니다!"
+            
+            # 성공 아이템 지급
+            inv_slot, created = Inventory_recipe.objects.get_or_create(user=user, itemInfo=found_recipe, defaults={'itemCount': 0})
+            inv_slot.itemCount += 1
+            inv_slot.save()
+            
+            result_image = f"{found_recipe.itemName}.png"
+            result_status = "success"
         else:
-            attendance.attendance_date = today_date  # 출석일 업데이트
-            attendance.total_attendance += 1
-            attendance.save()
-            
-            if attendance.total_attendance == 1:
-                user.galeon -= 12
-                user.save()
-                
-            show_modal = "modal1"
-            modal_message = "순간이동 수업이 완료되었습니다."
-            user.classToken -= 1
-            user.save()
-            
-            if attendance.total_attendance == 7 and not attendance.broom_item_received:
-                broom = Item.objects.get(itemName="면허증")
-                inven = Inventory(itemCount=1,
-                            itemInfo=broom,
-                            user=request.user)
-                inven.save()
-                attendance.broom_item_received = True
-                attendance.save()
-                show_modal = "modal1"
-                modal_message = "면허증 아이템이 인벤토리에 수령되었습니다."
-            
-        return JsonResponse({
-        'show_modal': show_modal, 
-        'modal_message': modal_message,
-        'attendance_count': attendance.total_attendance,  # 누적 출석 일 수
-        'got_broom': attendance.broom_item_received,
-        'token':user.classToken
-        })
-    
-    context = {
-        'attendance_count': attendance.total_attendance,  # 템플릿에 누적 출석 일 수 전달
-        'got_broom': attendance.broom_item_received,  # 템플릿에 금일 출석 여부 전달
-        'token':user.classToken,
-        'got_broom': attendance.broom_item_received,
-    }
-    
-    return render(request, "class/teleport.html", context)
-    
+            # 실패 로직 (실패 시 아이템 지급은 제거)
+            message = "아무 일도 일어나지 않았습니다..."
+            result_image = "망한 아이템.png" # 실패 시 보여줄 기본 이미지
+            result_status = "failure"
+
+            failed_item_recipe = Recipe.objects.get(itemName="망한 아이템")
+            inv_slot, created = Inventory_recipe.objects.get_or_create(user=user, itemInfo=failed_item_recipe, defaults={'itemCount': 0})
+            inv_slot.itemCount += 1
+            inv_slot.save()
+
+        return JsonResponse({'result': result_status, 'image': result_image, 'message': message})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

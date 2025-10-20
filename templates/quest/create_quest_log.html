@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/quest/quest_create.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<a href="/quests" class="goback">RETURN</a>
+
+
+<div class="form-container">
+    <div class="form-frame"></div> 
+    <img src="{% static 'img/event/quest_header' %}.png" clas="quest-icon" alt="quest_img">
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% csrf_token %}
+
+        {# ✨ Display general form errors at the top #}
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">제목</label>
+            {{ form.title }}
+            {# ✨ Display errors for the 'title' field #}
+            {{ form.title.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.quest.id_for_label }}">퀘스트</label>
+            {{ form.quest }}
+            {# ✨ Display errors for the 'quest' field #}
+            {{ form.quest.errors }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.image.id_for_label }}">로그 첨부</label>
+            <label for="{{ form.image.id_for_label }}" class="custom-file-upload">파일 선택</label>
+            {{ form.image }}
+            <span id="file-name-display" class="file-name-display">선택된 파일 없음</span>
+            {# ✨ Display errors for the 'image' field #}
+            {{ form.image.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.content.id_for_label }}">로그 작성</label>
+            {{ form.content }}
+            {# ✨ Display errors for the 'content' field #}
+            {{ form.content.errors }}
+        </div>
+
+        <button type="submit" class="submit-btn">수행하기</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector('.form-container');
+    if (container) {
+        setTimeout(() => {
+            container.classList.add('show');
+        }, 100);
+    }
+
+    // --- ✅ 파일 이름 표시 로직 (이 부분을 추가) ---
+    
+    // 1. 실제 파일 input과 파일 이름을 표시할 span 요소를 가져옵니다.
+    // Django가 생성해주는 input의 id를 동적으로 사용합니다.
+    const fileInput = document.getElementById("{{ form.image.id_for_label }}");
+    const fileNameDisplay = document.getElementById("file-name-display");
+
+    // 2. 파일 input에 'change' 이벤트 리스너를 추가합니다.
+    if (fileInput && fileNameDisplay) {
+        fileInput.addEventListener('change', () => {
+            // 3. 파일이 선택되었는지 확인합니다.
+            if (fileInput.files.length > 0) {
+                // 파일이 선택된 경우, 첫 번째 파일의 이름을 span에 표시합니다.
+                fileNameDisplay.textContent = fileInput.files[0].name;
+            } else {
+                // 파일 선택이 취소된 경우, 기본 텍스트로 되돌립니다.
+                fileNameDisplay.textContent = '선택된 파일 없음';
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

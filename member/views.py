@@ -1,33 +1,51 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render
 from member.models import *
 from users.models import CharInfo
+from django.http import JsonResponse
 from store.models import *
 import random
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
+from itertools import chain
 
-
+@login_required
 def member_profile(request, charEngName):
-
     target_char = get_object_or_404(Characters, charEngName=charEngName)
-    
-    context = {
-        'charname': charEngName,
-        'char': target_char
-    }
-    
+
+    try:
+
+        char_info = CharInfo.objects.get(char=target_char)
+        user = char_info.user
+        inven_items = Inventory.objects.filter(user=user)
+        ingred_items = Inventory_ingredient.objects.filter(user=user)
+        recipe_items = Inventory_recipe.objects.filter(user=user)
+
+        inven = list(chain(inven_items, ingred_items, recipe_items))  # 안전하게 합침
+        context = {
+            'charname': charEngName,
+            'charinfo':char_info,
+            'char': target_char,
+            'items':inven
+        }
+
+    except:
+
+        context = {
+            'charname': charEngName,
+            'char': target_char,
+        }
+
     return render(request, "profile/member_profile.html", context)
 
-
+@login_required
 def member_main(request):
     all_characters = Characters.objects.all()
     print(len(all_characters))
     context = {
         'chars': all_characters
     }
-    
     return render(request, "profile/member_main.html",context)
 
 
@@ -237,92 +255,82 @@ def transfer_item(request):
 @login_required(login_url='/')
 def giftbox(request):
     getUser = request.user
-    gachagift_list = GachaGift.objects.filter(receiver_user=request.user).order_by('orderDate')
-    gift_list = Gift.objects.filter(receiver_user=request.user).order_by('orderDate')
-    magicgift_list = MagicGift.objects.filter(receiver_user=request.user).order_by('orderDate')
+    getChar = CharInfo.objects.filter(user=request.user)[0]
+    gift_list = Gift.objects.filter(receiver_user=getChar).order_by('orderDate')
+    ingredientgift_list = IngredientGift.objects.filter(receiver_user=getChar).order_by('orderDate')
+    recipegift_list = RecipeGift.objects.filter(receiver_user=getChar).order_by('orderDate')
 
-    combined_gifts = list(gachagift_list) + list(gift_list) + list(magicgift_list)
+    combined_gifts = list(gift_list) + list(ingredientgift_list) + list(recipegift_list)
     combined_gifts.sort(key=lambda x: x.orderDate, reverse=True)
     
     if request.method == "POST":
         gift_id = request.POST['giftidnum']
         gift_category = request.POST['giftcategory']
         
-        if gift_category == "마법 재료":
-            target = MagicGift.objects.get(giftID=gift_id)
+        if gift_category == "재료":
+            target = IngredientGift.objects.get(giftID=gift_id)
                 
             if not target.accepted:
 
-                all_items = Inventory_magic.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
+                all_items = Inventory_ingredient.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
                 item = target.itemInfo
                         
                 if item.itemID in all_items:
-                    update_item = Inventory_magic.objects.get(itemInfo=item, user=getUser)
+                    update_item = Inventory_ingredient.objects.get(itemInfo=item, user=getUser)
                     update_item.itemCount += target.itemCount
                     update_item.save()
                 else:
-                    inven = Inventory_magic(itemCount=target.itemCount,
+                    inven = Inventory_ingredient(itemCount=target.itemCount,
                                         itemInfo=item,
                                         user=getUser)
                     inven.save()        
 
                 target.accepted = True
                 target.save()
-        
-        elif gift_category == "가챠":
-            target = GachaGift.objects.get(giftID=gift_id)
+
+        elif gift_category == "조합":
+            target = RecipeGift.objects.get(giftID=gift_id)
                 
             if not target.accepted:
 
-                all_items = Inventory_gacha.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
+                all_items = Inventory_recipe.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
                 item = target.itemInfo
                         
                 if item.itemID in all_items:
-                    update_item = Inventory_gacha.objects.get(itemInfo=item, user=getUser)
+                    update_item = Inventory_recipe.objects.get(itemInfo=item, user=getUser)
                     update_item.itemCount += target.itemCount
                     update_item.save()
                 else:
-                    inven = Inventory_gacha(itemCount=target.itemCount,
-                                    itemInfo=item,
-                                    user=getUser)
+                    inven = Inventory_recipe(itemCount=target.itemCount,
+                                        itemInfo=item,
+                                        user=getUser)
                     inven.save()        
 
                 target.accepted = True
                 target.save()
-                
+         
         else:
             target = Gift.objects.get(giftID=gift_id)
             
             if not target.accepted:
                 
-                if target.itemInfo.itemName == "우정 반지":
-                    inven = Inventory_ring(itemCount=1,
-                                        itemInfo=Item.objects.get(itemName="우정 반지"),
-                                        user=getUser,
-                                        user2=target.giver_user)
-                    inven.save()        
-
-                    target.accepted = True
-                    target.save()
-                
-                else:
-                    all_items = Inventory.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
-                    item = target.itemInfo
+                all_items = Inventory.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
+                item = target.itemInfo
                         
-                    if item.itemID in all_items:
-                        update_item = Inventory.objects.get(itemInfo=item, user=getUser)
-                        update_item.itemCount += target.itemCount
-                        update_item.save()
-                    else:
-                        inven = Inventory(itemCount=target.itemCount,
+                if item.itemID in all_items:
+                    update_item = Inventory.objects.get(itemInfo=item, user=getUser)
+                    update_item.itemCount += target.itemCount
+                    update_item.save()
+                else:
+                    inven = Inventory(itemCount=target.itemCount,
                                         itemInfo=item,
                                         user=getUser)
-                        inven.save()        
+                    inven.save()        
 
-                    target.accepted = True
-                    target.save()
+                target.accepted = True
+                target.save()
                 
-                
+        return JsonResponse({'status': 'success', 'message': '선물이 수락되었습니다.'})
 
     context = {
         'gifts':combined_gifts

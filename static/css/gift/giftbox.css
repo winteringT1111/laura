@@ -1,26 +1,46 @@
 .content_wrap {
     background: url("../../img/giftbox_content.png");
-    width: 1356px;   
-    height: 800px;
+    width: 854px;   
+    height: 860px;
     background-repeat: no-repeat;
     background-size: cover;
     position: fixed;
-    bottom: 0%;
+    bottom: 0;
     left: 50%;
-    transform: translate(-50%, 0%);
-    display: flex;
+    
+    /* ⬇️ 수정된 부분 1: Y축으로 100% 만큼 내려서 완전히 숨깁니다. */
+    transform: translate(-50%, 7%); 
+
     justify-content: center;
-    font-family: "Hahmlet", serif;
+    align-items: center;
+    animation: fadeUp 1.2s ease forwards;
+    filter: drop-shadow(2px 2px 8px #dac17f);
+    
+    /* (선택) 애니메이션 시작 전에는 투명하게 만듭니다. */
+    opacity: 0;
 }
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+
+        /* ⬇️ 수정된 부분 2: 최종 위치에도 가로 중앙 정렬을 유지합니다. */
+        transform: translate(-50%, 0);
+    }
+}
+
 
 .content {
     margin-top: 100px;
-    margin-left: 15px;
-    width: 80%;
-    height: 670px; 
-    overflow-x: visible !important;
+    width: 85%;
+    height: 660px; 
     overflow-y: auto;
     position: relative;
+    display: flex;
+    margin: auto;
+    margin-top: 200px;
+    flex-direction: column;
+    gap: 0px;
 }
 
 .blank_info {
@@ -49,29 +69,35 @@
 }
 
 .content_list {
-    width: 98%;
+    width: 100%;
+    height: auto;
     text-align: center;
     color: rgb(35, 35, 46);
-    padding: 20px 30px;
-    background-color: #D3D1C9;
+    padding: 20px 20px;
+    background: #2b2923;
+    border: 3px solid #857d65;
     border-radius: 10px;
-    margin: 20px 0px;
+    margin: 6px 0px;
     user-select: none;
     font-weight: 400;
     display: flex;
     position: relative;
+    color: #dad7c9;
 } .content_list2 {
-    width: 98%;
+    width: 100%;
+    height: auto;
     text-align: center;
     color: rgb(35, 35, 46);
-    padding: 20px 30px;
-    background-color: #b5b5b5;
+    padding: 20px 20px;
+    background: #49463d;
+    border: 3px solid #2b2823;
     border-radius: 10px;
-    margin: 20px 0px;
+    margin: 6px 0px;
     user-select: none;
     font-weight: 400;
     display: flex;
     position: relative;
+    color: #dad7c9;
 }
 
 
@@ -80,7 +106,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 30px;
+    margin-right: 20px;
 }
 .profile_name1 {
     max-width: 120px;
@@ -89,8 +115,8 @@
 }
 
 .profile_image1 img {
-    width: 90px;
-    border: 2px solid #474F5D;
+    width: 120px;
+    background: linear-gradient(to bottom, #1d1d1d, #979797);
     border-radius: 50%;
 }
 
@@ -100,22 +126,23 @@ p {
 
 .message_info {
     display: flex;
-    width: 667px;
+    width: 410px;
     margin-left: 5px;
     margin-bottom: -5px;
     justify-content: space-between;
 }
 
 .message_content {
-    background-color: #474F5D;
-    width: 680px;
+    background: linear-gradient(to bottom, #6b6152, rgb(181, 172, 147));
+    border: 1px solid #ad9a75;
+    width: 418px;
     height: auto;
     min-height: 90px;
-    max-height: 120px;
+    max-height: 220px;
     padding: 12px 20px;
-    border-radius: 14px;
+    border-radius: 10px;
     text-align: left;
-    color: #dbdbdb;
+    color: #f2f0ed;
     position: relative;
 } .message_content img {
     width: 20px;
@@ -132,7 +159,7 @@ p {
     align-items: center;
     position: absolute;
     top: 50%;
-    right: -1%;
+    right: -3%;
     transform: translate(-50%, -50%);
 }
 
@@ -153,15 +180,16 @@ p {
 .not_accepted {
     width: 80px;
     height: 30px;
-    background-color: #48526D;
-    color: #dbdbdb;
+    background-color: #998f79;
+    color: #332b1c;
+    font-weight: 500;
     border-radius: 10px;
     border: none;
     margin-top: 8px;
 } .accepted {
     width: 80px;
     height: 30px;
-    background-color: #383838;
+    background-color: #3a3938;
     color: #dbdbdb;
     border-radius: 10px;
     border: none;
@@ -181,23 +209,22 @@ p {
     transform: translate(50%, 50%); /* 수평 중앙 정렬 */
     color: #dbdbdb;
     z-index: 2;
-    font-family: "Hahmlet", serif;
 }
 
 
 
 .item_description {
     position: absolute;
-    background-color: rgba(219, 219, 219, 0.8); 
-    padding: 5px;
+    background-color: rgba(219, 219, 219, 0.9); 
+    padding: 12px;
     border-radius: 5px;
+    border: 1px solid #c4b48b; /* 테두리 추가 */
     display: none; /* Hide by default */
     z-index: 10; 
     width: 150px; 
     height: auto;
     text-align: center;
-    color: #2e3942;
-    font-family: "Hahmlet", serif;
+    color: #302f2c;
 }
 
 .item_image:hover .item_description {
@@ -212,18 +239,17 @@ p {
 }
 
 .category {
-    background-color: #d3bb8e;
+    background-color: #c4b48b;
     color: white;
-    padding: 2px;
+    padding: 2px 15px;
     font-size: small;
     border-radius: 8px;
-    width: 80px;
     display: inline-block; 
     text-align: center;
 }
 
 .item_info {
-    font-size: small;
+    font-size: 13px;
     margin-top: 4px !important;
 }
 
@@ -243,33 +269,41 @@ p {
 }
 
 
-#modal_contents {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 500px;
-    height: 160px;
+
+
+/* 구매 완료 모달의 스타일 */
+#exampleModal .modal-content {
+    background-color: #282828; /* 현재 모달의 어두운 배경색과 유사하게 설정 */
+    border: 2px solid rgb(145,133,118);/* 테두리도 어두운 톤으로 맞춤 */
+    border-radius: 8px; /* 모서리를 살짝 둥글게 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
 }
 
-#modal_contents h4 {
-    color: #dbdbdb;
-    font-family: "Hahmlet", serif;
+#exampleModal .modal-body {
     text-align: center;
-    font-weight: 400;
+    padding: 40px;
+    color: #e0e0e0 !important; /* 텍스트 색상을 밝은 회색으로 변경 */
+    font-size: 1.3rem;
 }
 
-#modal_contents button {
-    color: #2b2f44;
-    padding: 10px 30px;
-    background-color: #aaaaaa;
-    border-radius: 10px;
-    border: none;
-    font-family: "Hahmlet", serif;
-    text-align: center;
-    font-weight: 400;
+#exampleModal .modal-body p {
+    margin-bottom: 25px; /* 메시지와 버튼 사이 간격 */
+    font-weight: 600; /* 텍스트 굵기 조절 */
 }
+
+#exampleModal .modal-body .btn-primary {
+    background-color: rgb(145,133,118); /* 현재 디자인의 버튼 색상과 유사하게 설정 */
+    border-color: #8C704F; /* 버튼 테두리 색상 */
+    color: #ecece7; /* 버튼 텍스트 색상 */
+    padding: 8px 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+#exampleModal .modal-body .btn-primary:hover {
+    background-color: #B5A489; /* 호버 시 색상 변경 */
+    border-color: #A18359;
+}
+
+

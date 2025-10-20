@@ -1,0 +1,212 @@
+/* 기본 설정 */
+body {
+    background-color: #333;
+    color: #eee;
+    font-family: 'Malgun Gothic', sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* 전체 컨테이너 */
+.story-container {
+    display: flex;
+    width: 90%;
+    height: 800px;
+
+}
+
+/* 왼쪽: 상세 정보 패널 */
+.story-details-panel {
+    flex: 3.5; /* 3:1 비율로 오른쪽보다 3배 넓게 */
+    position: relative; /* 정보 박스 위치의 기준점 */
+    overflow: hidden; /* 이미지가 넘치지 않게 */
+}
+
+#chapter-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 비율을 유지하며 꽉 차게 */
+}
+
+.info-box {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background-color: rgba(32, 28, 22, 0.85);
+    padding: 30px 20px;
+    border-radius: 5px;
+    border-left: 3px solid #c4b48b;
+}
+
+.info-box h1 {
+    margin-top: 0;
+    font-size: 1.8rem;
+    color: #c4b48b;
+    font-family: "source-han-serif-korean", serif;
+    font-weight: bold;
+    font-style: normal;
+}
+
+.info-box p {
+    font-size: 1rem;
+    font-family: "Noto Sans", sans-serif;
+    line-height: 1.6;
+    font-weight: 300;
+    margin-top: 15px;
+}
+
+.read-more-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #c4b48b;
+    color: #252525;
+    text-decoration: none;
+    font-family: "source-han-serif-korean", serif;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.read-more-btn:hover {
+    background-color: #e0d1a6;
+    text-decoration: none;
+    color: #252525;
+}
+
+
+/* === 오른쪽 챕터 목록 패널 === */
+.chapter-list-panel {
+    flex: 1;
+    background: rgba(34, 33, 30, 0.4);
+    background-blend-mode: multiply;
+    margin-left: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* 입체감 */
+    backdrop-filter: blur(6px);    /* 유리처럼 흐림 효과 (optional) */
+}
+
+.chapter-scroll-list {
+    height: 100%;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+/* ⬇️ 이 부분을 통째로 교체하세요 */
+
+/* 개별 챕터 이미지 카드 */
+.chapter-card {
+    height: 130px; /* 카드의 높이를 지정 */
+    margin-bottom: 10px;
+    cursor: pointer;
+    position: relative; /* 오버레이 위치의 기준점 */
+    overflow: hidden; /* 모서리를 벗어나는 이미지를 숨김 */
+    
+    /* 배경 이미지 스타일 */
+    background-size: cover;
+    background-position: center;
+    
+    border: 3px solid #585856; /* 비활성화 상태의 테두리 */
+    transition: all 0.2s ease-in-out;
+}
+
+.section-header {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #e4d19e; /* 이미지에 보이는 별과 글자 색 */
+    margin-top: 20px;
+    margin-bottom: 15px;
+    padding-left: 5px;
+    font-family: "source-han-serif-korean", serif;
+    font-weight:200;
+    font-style: normal;
+}
+
+/* 첫 번째 헤더는 위쪽 여백을 없애서 딱 붙게 만듭니다 */
+.section-header:first-of-type {
+    margin-top: 0;
+}
+
+/* 텍스트를 담는 어두운 오버레이 */
+.chapter-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 15px 10px; /* 위, 좌우, 아래 */
+    color: white;
+    /* 글자가 잘 보이도록 아래에서 위로 어두워지는 그라데이션 적용 */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3) 20%, transparent 100%);
+}
+
+.chapter-overlay h3,
+.chapter-overlay p {
+    margin: 0;
+    /* 텍스트 가독성을 위한 그림자 효과 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.chapter-overlay h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    margin-left: 20px;
+    font-family: "source-han-serif-korean", serif;
+    font-weight:200;
+    font-style: normal;
+    color: #f5efe0;
+}
+
+.chapter-overlay p {
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+    margin-left: 15px;
+    color: #e4e2dd;
+    font-family: "source-han-serif-korean", serif;
+    font-weight:200;
+}
+
+/* 마우스를 올렸을 때 효과 */
+.chapter-card:hover {
+    transform: scale(1.03); /* 살짝 확대 */
+    border-color: #888;
+}
+
+/* 현재 선택된(활성화된) 카드 스타일 */
+.chapter-card.active {
+    border-color: #c4b48b;
+    transform: scale(1.05);
+}
+
+/* ... 기존 CSS ... */
+
+/* 스토리 뷰를 담을 컨테이너의 초기 상태 */
+#story-view-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; /* 처음엔 투명하게 */
+    pointer-events: none; /* 클릭 안되게 */
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* ⬇️ .story-active 클래스가 붙으면 일어날 변화들 */
+
+/* 스토리 뷰가 나타남 (이 부분은 그대로 둡니다) */
+.story-container.story-active #story-view-container {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ❗️ 기존 정보창만 사라지도록 수정하고, chapter-list-panel은 제거합니다. */
+.story-container.story-active .info-box {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+

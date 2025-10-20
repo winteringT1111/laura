@@ -1,558 +1,482 @@
-html, body {
-    width: 100%;
-    height: 100vh; /* 높이 100%로 설정 */
-    margin: 0; /* 기본 여백 제거 */
-    position: relative;
-    overflow: hidden;
-    user-select: none;
-}
-
-.hidden {
-    display: none;
-}
-
-.background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('../../img/potion_back1.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    z-index: -2; /* 다른 콘텐츠 아래로 배치 */
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: blur(5px); 
-    z-index: -1; 
-}
-
-.gradient-overlay {
-    position: fixed; 
-    top: 0;
-    left: 0;
-    width: 100vw; 
-    height: 100vh;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)); /* 그라데이션 */
-    z-index: 0; 
-}
-
-
-.content-wrapper {
-    display: flex; /* Use flexbox to position items side by side */
-    align-items: center; /* Center items vertically */
-    position: fixed;
-    top: 50%;
-    right: 0%;
-    transform: translate(0%, -50%);
-}
-
-.goback {
-    position: fixed;
-    top: 30px;
-    left: 50px;
-    z-index: 30;
-    width: 45px;
-    height: 45px;
-    background-color: #3D485A;
-    border: 2px solid #DCC599;
+/* === Page Layout === */
+body {
+    background-color: #3d3831;
+    color: #c8bca6;
+    font-family: sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
-} .a {
-    text-decoration: none;
-    color: #dbdbdb !important;
-    user-select: none;
-} .goback i {
-    color: #dbdbdb !important;
-    font-size: 22px;
+    min-height: 100vh;
+    
+}
+
+.background{
+background: url("../../img/bg2.png") !important;
+}
+
+.potion-container {
+    display: flex;
+    bottom: 0;
+    position: fixed;
+    height: 100%;
+    width: 90%;
+    gap: 3%;
+    padding: 20px;
+}
+
+/*  Crafting Area */
+
+/* === Left Side: Kettle & Crafting === */
+.kettle_area {
+    flex: 2.2;
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Add a background image of the kettle here */
+    background-image: url('../../img/event/recipe_pot.png');
+    background-repeat: no-repeat;
+    background-position: bottom center; /* 아래쪽 중앙 정렬 */
+    background-size: 100% auto; /* 가로로 꽉 차게, 세로 비율 유지 */
+    background-clip: border-box;
+    background-origin: content-box;
+}
+
+.crafting-slots-wrapper {
+    width: 400px;
+    height: 500px;
+    background-image: url('../../img/event/recipe_modal.png');
+    background-repeat: no-repeat;
+    background-position: top center; /* 아래쪽 중앙 정렬 */
+    background-size: 100% auto; /* 가로로 꽉 차게, 세로 비율 유지 */
+    background-clip: border-box;
+    background-origin: content-box;
+    text-align: center;
+    position: relative;
 }
 
 
-.btnss {
-    margin: 0px -15px 200px 0px;
+.crafting-slots {
+    display: flex;
+    gap: 2.8px;
+    position: absolute;
+    top: 43.3%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.slot {
+    width: 69px;
+    height: 69px;
+    background-color: #8b8272;
+    border: 1px solid #70624b;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slot img {
+    width: 75%;
+    height: 75%;
+}
+
+.crafting-slots-wrapper p {
+    font-size: 1rem;
+    color: #b4a791;
+    line-height: 1.5;
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.kettle-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    position: absolute;
+    bottom: 13%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.kettle-buttons button {
+    padding: 6px 18px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#reset-btn {
+    background-color: #5a5245;
+    color: #c8bca6;
+    border: 1px solid #8c7f69;
+}
+
+#reset-btn:hover {
+    background-color: #6b5f4b;
+}
+
+#craft-btn {
+    background-color: #4a4133;
+    color: #dac17f;
+    border: 1px solid #dac17f;
+}
+
+#craft-btn:hover {
+    background-color: #978963;
+    color: white;
+    border-color: #af9344;
+    box-shadow: 0 0 4px 1px rgba(201, 181, 118, 0.6);
+    transform: translateY(-2px);
+}
+
+
+/* Inventory Area=== */
+
+/* === Right Side: Inventory === */
+
+.inventory-area {
+    flex: 1;
+
+    height: 700px;
+    margin-top: 5%;
+    
+    display: flex;
+    flex-direction: column;
+
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(30, 25, 20, 0.7);
+    backdrop-filter: blur(3px);
+    border: 3px solid #6b5f4b;
+    border-radius: 8px;
+}
+
+@font-face {
+    font-family: 'JoseonBoldMyongjo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunKm.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+
+.inventory-header {
+    padding: 15px;
+    background-color: #4a4133;
+    color: #c0b596;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 3px;
+    font-family: 'JoseonBoldMyongjo';
+    border-bottom: 2px solid #6b5f4b;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    column-gap: 15px; /* Only apply gap between columns */
+    padding:15px;
+    gap: 15px;
+    overflow-y: auto;
+    flex-grow: 1; /* Take up available space */
+    min-height: 0; /* The crucial fix */
+    align-content: start; 
+} .inventory-grid::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+}
+
+.item {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background-color: #3d3831;
+    border: 1px solid #6b5f4b;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    
+}
+
+.item:hover {
+    transform: scale(1.1);
+    border-color: #dac17f;
+    z-index: 5;
+}
+
+.item.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.item img {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.item-count {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 0.8rem;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* Tooltip for item name */
+.item .item-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 105%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2a2620;
+    color: #dac17f;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    z-index: 10 !important;
+}
+
+.item:hover .item-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+.item-name {
+    margin: 0;
+}
+
+.inventory-footer {
+    padding: 10px;
+    text-align: right;
+    border-top: 2px solid #6b5f4b;
+    background-color: #4a4133;
+    color: #a0937d;
+}
+
+
+
+/* === Result Modal === */
+.result-modal-content {
+    background-color: #2a2620;
+    color: #c8bca6;
+    border: 2px solid #6b5f4b;
+    text-align: center;
+    padding: 25px;
+}
+
+.result-modal-content .modal-title {
+    color: #dac17f;
+    font-weight: bold;
+}
+
+.result-image-container {
+    margin: 20px 0;
+}
+
+.result-image-container img {
+    width: 70px;
+    image-rendering: pixelated;
+}
+
+.close-result-btn {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dac17f;
+    background-color: #4a4133;
+    color: #dac17f;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.close-result-btn:hover {
+    background-color: #dac17f;
+    color: #4a4133;
+}
+
+
+
+
+
+
+
+
+/* ... 기존 CSS 코드 ... */
+
+/* === 인벤토리 푸터 및 조합 기록 버튼 === */
+.inventory-footer {
+    padding: 0; /* 버튼에 맞게 패딩 제거 */
+    text-align: center;
+}
+
+#recipe-book-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background-color: #4a4133;
+    color: #dac17f;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-top: 2px solid #6b5f4b;
+}
+
+#recipe-book-btn:hover {
+    background-color: #6b5f4b;
+}
+
+/* === 레시피 북 모달 === */
+.recipe-book-content {
+    background-color: #2a2620;
+    border: 3px solid #6b5f4b;
+    color: #c8bca6;
+    padding: 20px;
+    height: 70vh;
     display: flex;
     flex-direction: column;
 }
 
-.recipe_btn {
-    width: 133px;
-    height: 45px;
-    border: none;
-    background: url("../../img/레시피.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    user-select: none;
-    margin: 7px 0px;
+.recipe-book {
+    flex-grow: 1;
+    overflow: hidden; /* 페이지 넘김 효과를 위해 */
+    position: relative;
 }
 
-.status_btn {
-    width: 133px;
-    height: 45px;
-    border: none;
-    background: url("../../img/포션현황.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    user-select: none;
-    margin: 7px 0px;
+.recipe-page {
+    display: none; /* JS로 제어 */
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 15px; /* 스크롤바 공간 */
+    overflow-y: auto;
+    height: 100%;
 }
-
-.recipe_box {
-    width: 658px;
-    height: 949px;
-    background: url("../../img/class_inventory.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    filter: drop-shadow(5px 5px 5px #52595f);
-    position: relative; /* Change to relative for flex alignment */
-    user-select: none;
-    overflow: visible;
-}
-
-
-
-.carousel {
-    width: 500px;
-    height: 500px;
-
-    position: absolute;
-    top: 25%; /* 위쪽에 고정 */
-    left: 50%; /* 수평 중앙 */
-    transform: translateX(-50%); /* 수평 중앙 정렬 */
-    overflow: visible;
-}
-
-.carousel-inner {
-    width: 400px;
-    height: 450px;
-
-    position: absolute;
-    top: 0%; /* 위쪽에 고정 */
-    left: 50%; /* 수평 중앙 */
-    transform: translateX(-50%); /* 수평 중앙 정렬 */
-    overflow: visible;
-}
-
-.item_wrap {
-    width: 400px;
-    height: auto;
-    max-height: 450px;
-    overflow: visible;
-    
+.recipe-page.active {
     display: flex;
+}
+
+.recipe-entry {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.result-item {
+    text-align: center;
+    flex-basis: 120px;
+    flex-shrink: 0;
+}
+.result-item h5 { margin: 5px 0 0 0; font-size: 1rem; }
+.result-item small { font-size: 0.75rem; color: #8c7f69; }
+
+.recipe-icon {
+    width: 60px;
+    height: 60px;
+    /* object-fit은 이미지 비율을 유지하면서 공간에 맞추는 속성입니다. */
+    object-fit: contain; 
+    background-color: rgba(0, 0, 0, 0.2); /* 투명한 이미지를 위한 배경 */
+    border-radius: 4px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.recipe-icon-small { width: 40px; height: 40px; }
+
+.undiscovered {
+    filter: grayscale(100%) brightness(40%);
+}
+
+.equals-sign {
+    font-size: 2rem;
+    color: #6b5f4b;
+}
+
+.ingredient-list {
+    display: flex;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
-.item {
-    width: 90px;
-    height: 90px;
-    background: url("../../img/item_box.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+/* 네비게이션 */
+.book-navigation {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    margin: 7px 5px;
-    overflow: visible;
+    padding-top: 15px;
+    border-top: 1px solid #4a4133;
 }
-
-.item img {
-    width: 50%;
-}
-
-.item_count {
-    margin: 0;
-    position: absolute;
-    bottom: 15px;
-    right: 17px;
-    transform: translate(50%, 50%); /* 수평 중앙 정렬 */
-    color: #dbdbdb;
-    z-index: 2;
-    font-family: "Hahmlet", serif;
-}
-
-.kettle_background {
-    width: 1139px;
-    height: 520px;
-    background: url("../../img/class_back.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    position: fixed;
-    bottom: 0px;    
-    left: 5%; 
-    transform: translate(0, 0);
-    z-index: 0;
-    user-select: none;
-}
-
-.select_background {
-    width: 500px;
-    height: 500px;
-    background: url("../../img/class_make.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    position: absolute;
-    top: -17%;    
-    left: 50%; 
-    transform: translate(-50%, -50%); /* 수평 중앙 정렬 */
-    z-index: 1;
-    user-select: none;
-}
-
-.select_wrap {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.select_content1 {
-    width: 110px;
-    height: 110px;
-    position: absolute;
-    top: 6%;
-    left: 51.2%;
-    transform: translate(-50%, 0);
-} .select_content2 {
-    width: 110px;
-    height: 110px;
-    position: absolute;
-    top: 48%;
-    left: 6.2%;
-    transform: translate(0%, -50%);
-} .select_content3 {
-    width: 110px;
-    height: 110px;
-    position: absolute;
-    top: 48%;
-    right: 4.5%;
-    transform: translate(0%, -50%);
-} .select_content4 {
-    width: 110px;
-    height: 110px;
-    position: absolute;
-    bottom: 6%;
-    left: 51.2%;
-    transform: translate(-50%, 0);
-}
-
-#scontent img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    width: 50%;
-}
-
-
-.make_btn {
-    width: 390px;
-    height: 111px;
-    background: url("../../img/조합하기.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    text-align: center;
-    border: none;
-
-    position: absolute;
-    bottom: -8%;    
-    left: 50%; 
-    z-index: 2;
-    transform: translate(-50%, -50%); /* 수평 중앙 정렬 */
-    font-family: "Hahmlet", serif;
-    font-size: 25px;
-    color: #dbdbdb;
-    padding-bottom: 40px; /* Adjust this value to move the text up */
-}
-
-.make_btn:hover,
-.make_btn:active {
-    background: url("../../img/조합하기.png") !important;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
-    color: white;
-    transition: color 0.3s ease;
-}
-
-
-.reset_btn {
-    position: absolute;
-    bottom: 23%;    
-    left: 50%; 
-    z-index: 2;
-    transform: translate(-50%, -50%); /* 수평 중앙 정렬 */
-    font-family: "Hahmlet", serif;
-    font-size: 25px;
-    color: #52595f;
-    background-color: #dbdbdb;
-    border: none;
-    border-radius: 5px;
-    width: 110px;
-    height: 40px;
-    font-size: 20px;
-}
-
-
-.item_description {
-    position: absolute;
-    background-color: rgba(219, 219, 219, 0.8); 
-    padding: 5px;
-    border-radius: 5px;
-    display: none; /* Hide by default */
-    z-index: 3000; 
-    width: 150px; 
-    height: auto;
-    text-align: center;
-    color: #2e3942;
-    font-family: "Hahmlet", serif;
-}
-
-.item:hover .item_description {
-    display: block; /* Show on hover */
-    top: 105%; /* Position it below the item */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%);
-}
-
-.item_description p {
-    margin: 0;
-}
-
-.category {
-    background-color: #d3bb8e;
-    color: white;
-    padding: 2px;
-    font-size: small;
-    border-radius: 8px;
-    width: 80px;
-    display: inline-block; 
-    text-align: center;
-}
-
-.item_info {
-    font-size: small;
-    margin-top: 4px !important;
-}
-
-
-/* 레세피 북 */
-.book {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1161px;
-    height: 733px;
-    background: url("../../img/recipe_book.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: 10; /* Ensure it's above other content */
-}
-
-
-/* 모달 */
-.modal-content {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 728px;
-    height: 607px;
-    background: url("../../img/gift_modal.png");
-    background-size: contain;
-    border: none;
-    user-select: none;
-    filter: drop-shadow(8px 8px 8px #232425);
-}
-
-#body_content{
-    text-align: center;
-    font-family: "Hahmlet", serif;
-}
-
-.selected_box {
-    background-color: #161718;
-    border-radius: 10px;
-    padding: 20px 70px;
-    color: rgb(255, 220, 105);
-    position: absolute;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} .selected_box p {
-    margin: 0;
-    margin-bottom: 5px;
-}
-.selected span {
-    margin: 0px 3px;
-}
-
-#modalTitle {
-    position: absolute;
-    top: 18%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 80px;
-    font-weight: 500;
-    color: #eeeeee;
-    z-index: 5;
-    font-family: 'Tangerine', cursive;
-
-}
-.selected_image_box {
-    position: absolute;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.selected_image {
-    display: flex;
-}
-
-.selected_image span {
-    background: url("../../img/potion_box.png");
-    width: 110px;
-    height: 110px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-    margin: 2px;
-} .selected_image span img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    width: 50%;
-} 
-
-.modal_info {
-    position: absolute;
-    top: 72%;
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    color: #dbdbdb;
-}
-
-.modal_info p {
-    margin: 0;
-} .modal_info span {
-    margin-right: 5px;
-}
-
-.modal_btns {
-    position: absolute;
-    bottom: 7%;
-    left: 50%;
-    transform: translate(-50%, -50%); 
-} .modal_btns button { 
-    background-color: #dbdbdb;
-    font-size: large;
-    border: none;
-    border-radius: 5px;
-    width:110px;
-    height: 50px;
-    margin: 0px 10px;
-}
-
-
-
-
-
-
-
-/* 모달 */
-#secondmodal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 641px;
-    height: 281px;
-    background: url("../../img/purchase_modal.png");
-    background-size: contain;
-    border: none;
-    user-select: none;
-    filter: drop-shadow(8px 8px 8px #232425);
-    text-align: center;
-    color: #dbdbdb;
-}
-
-#resultModalTitle {
-    position: absolute;
-    top: 22%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 30px;
-    font-family: "Arima", system-ui;
-}
-
-#resultModalImage {
-    background: url("../../img/potion_box.png");
-    width: 90px;
-    height: 90px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} #resultModalImage img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    width: 50%;
-} 
-
-#resultModalBody {
-    position: absolute;
-    bottom: 2%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 16px;
-    font-family: "Hahmlet", serif;
-}
-
-.xbtn {
-    position: absolute;
-    top: 18%;
-    right: 7%;
-    transform: translate(-50%, -50%);
+.book-navigation button {
     background: none;
-    border: none;
-    color: white;
-    font-size: 30px;
+    border: 1px solid #6b5f4b;
+    color: #dac17f;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+.book-navigation button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+#page-number-display {
+    margin: 0 20px;
+    font-size: 1.2rem;
+}
+
+.placeholder-box {
+    width: 40px;
+    height: 40px;
+    background-color: #3d3831;
+    border: 1px solid #6b5f4b;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #6b5f4b;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 
-#plsmodal {
-    color: #dbdbdb;
-    text-align: center;
-    font-family: "Hahmlet", serif;
+
+
+/* 처음엔 숨김 상태 */
+
+.inventory-area {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-#statusModalTitle {
-    position: fixed;
-    top: 23%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+.kettle_area{
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-#statusModalBody {
-    position: fixed;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+
+/* 페이지 로드 후 active 클래스가 붙으면 애니메이션 실행 */
+.kettle_area.active {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.1s; /* 첫 번째 요소 약간 딜레이 */
+}
+
+.inventory-area.active {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s; /* 두 번째 요소는 좀 더 늦게 등장 */
 }

@@ -26,7 +26,7 @@
                     <img src="{% static 'img/profile/frame' %}.png">
                 </div>  
                 <div class="member_overlay"></div> </a>                           
-                <img class="member_img" src="{% static 'img/charac/' %}{{ char.charEngName|add:'_crop.png' }}" alt="{{ char.charName }} Image">
+                <img class="member_img" src="{% static 'img/charac/' %}{{ char.charEngName|add:'1.png' }}" alt="{{ char.charName }} Image">
                 <div class="member_info">
                     <h3 class="char_name">{{char.charName}}</h3>
                     <p class="char_origin">{{char.charRealm}}</p>
@@ -39,5 +39,23 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".member_card");
+    const columns = 5; // 한 줄당 열 개수
+
+    // ✅ wrap을 보이게 설정
+    document.querySelector(".member_content_wrap").style.visibility = "visible";
+
+    cards.forEach((card, index) => {
+        const columnIndex = index % columns; 
+        const delay = columnIndex * 0.1;
+        card.style.animationDelay = `${delay}s`;
+    });
+});
+
+</script>
+
 
 {% endblock %}

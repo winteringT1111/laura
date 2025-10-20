@@ -1,7 +1,7 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render
 from store.models import Item, Ingredient
 from users.models import CharInfo
-from member.models import Characters, Purchase, Inventory, Gift
+from member.models import *
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
@@ -20,6 +20,7 @@ def store_main(request):
         
         if assort == "purchase":
             name = request.POST['itemName']
+            category = request.POST['category']
             itemPrice = request.POST['totalPrice']
             count = int(request.POST['quantity'])
             
@@ -27,49 +28,74 @@ def store_main(request):
             userinfo.gold = int(userinfo.gold) - int(itemPrice.split(' ')[0]) 
             userinfo.save()
             
-            # 구매내역 저장
-            char = Purchase(itemCount=count,
-                            orderDate=datetime.today(),
-                            itemInfo=Item.objects.get(itemName=name),
-                            user=getUser)
-            char.save()
-            
-            # 인벤토리 저장
-            all_items = Inventory.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
-            item = Item.objects.get(itemName=name)
-            
-            if item.itemID in all_items:
-                update_item = Inventory.objects.get(itemInfo=item, user=getUser)
-                update_item.itemCount += count
-                update_item.save()
-            else:
-                inven = Inventory(itemCount=count,
-                                itemInfo=item,
-                                user=getUser)
-                inven.save()
+            if category == '재료':
+                # 인벤토리 저장
+                all_items = Inventory_ingredient.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
+                item = Ingredient.objects.get(itemName=name)
                 
+                if item.itemID in all_items:
+                    update_item = Inventory_ingredient.objects.get(itemInfo=item, user=getUser)
+                    update_item.itemCount += count
+                    update_item.save()
+                else:
+                    inven = Inventory_ingredient(itemCount=count,
+                                    itemInfo=item,
+                                    user=getUser)
+                    inven.save()
+
+            else:
+                # 구매내역 저장
+                char = Purchase(itemCount=count,
+                                orderDate=datetime.today(),
+                                itemInfo=Item.objects.get(itemName=name),
+                                user=getUser)
+                char.save()
+                
+                # 인벤토리 저장
+                all_items = Inventory.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
+                item = Item.objects.get(itemName=name)
+                
+                if item.itemID in all_items:
+                    update_item = Inventory.objects.get(itemInfo=item, user=getUser)
+                    update_item.itemCount += count
+                    update_item.save()
+                else:
+                    inven = Inventory(itemCount=count,
+                                    itemInfo=item,
+                                    user=getUser)
+                    inven.save()
+                    
                 
         elif assort == "gift":
             item_name = request.POST['itemName2']   
             itemPrice = request.POST['totalPrice2']
             count = int(request.POST['quantity2'])
+            category = request.POST['category2']
             
             if_anonymous = request.POST.get('anonymous') == 'on'
             receiver = request.POST['receiver']
             receiver_char = Characters.objects.get(charName=receiver)
             item_message = request.POST.get('message')
             
-            print(item_name,itemPrice,count,if_anonymous,receiver,item_message,datetime.today())
-            
-            # 구매내역 저장
-            char = Gift(anonymous=if_anonymous,
+            if category == '재료':
+                char = IngredientGift(anonymous=if_anonymous,
                         message=item_message,
                         orderDate=datetime.today(),
                         itemCount=count,
-                        itemInfo=Item.objects.get(itemName=item_name),
-                        giver_user=getUser,
-                        receiver_user=CharInfo.objects.get(char=receiver_char).user)
-            char.save()
+                        itemInfo=Ingredient.objects.get(itemName=item_name),
+                        giver_user=CharInfo.objects.get(user=getUser),
+                        receiver_user=CharInfo.objects.get(char=receiver_char))
+                char.save()
+            
+            else:
+                char = Gift(anonymous=if_anonymous,
+                            message=item_message,
+                            orderDate=datetime.today(),
+                            itemCount=count,
+                            itemInfo=Item.objects.get(itemName=item_name),
+                            giver_user=CharInfo.objects.get(user=getUser),
+                            receiver_user=CharInfo.objects.get(char=receiver_char))
+                char.save()
             
             # 갈레온 차감
             userinfo.gold = int(userinfo.gold) - int(itemPrice.split(' ')[0]) 

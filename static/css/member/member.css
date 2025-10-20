@@ -121,30 +121,6 @@
 }
 
 
-
-
-.member_content_wrap.fade-in-left-to-right {
-    visibility: visible;  /* 애니메이션 시작 후 보이게 */
-    animation: fadeInLeftToRight 1s ease-out forwards; /* 애니메이션 적용 */
-}
-
-
-/* Left-to-right fade-in animation */
-@keyframes fadeInLeftToRight {
-    0% {
-        opacity: 0;
-        transform: translateX(-55%);  /* Start slightly off-screen to the left */
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(-50%);  /* End at the center position */
-    }
-}
-
-.fade-in-left-to-right {
-    animation: fadeInLeftToRight 0.3s ease-out forwards;  /* Apply animation */
-}
-
 /* Hide scroll bar */
 .member_content::-webkit-scrollbar {
     display: none;
@@ -207,3 +183,20 @@
 }
 
 
+
+@keyframes fadeInSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.member_card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInSlide 0.8s ease-out forwards;
+}

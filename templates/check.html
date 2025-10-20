@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>스킬체크 데모</title>
+<style>
+  :root{
+    --width: 540px;
+    --height: 48px;
+    --track-bg: #222;
+    --zone-bg: linear-gradient(90deg,#75d89a,#3cb371);
+    --indicator: #ffd166;
+    --success-color: #28a745;
+    --fail-color: #dc3545;
+    --glass: rgba(255,255,255,0.04);
+  }
+
+  body{
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: linear-gradient(180deg,#0f1724,#071025);
+    color: #e6eef8;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:28px;
+    padding:24px;
+  }
+
+  .panel{
+    width: calc(var(--width) + 40px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:14px;
+    padding:20px;
+    box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+    text-align:center;
+  }
+
+  h1{ margin:0 0 12px 0; font-size:18px; font-weight:600; color:#dceffd; }
+  p.small{ margin:0 0 12px 0; color:#9fb1d6; font-size:13px; }
+
+  .skill-check{
+    width: var(--width);
+    height: var(--height);
+    background: var(--track-bg);
+    border-radius:10px;
+    position:relative;
+    margin: 14px auto;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.7), 0 6px 18px rgba(2,6,23,0.5);
+    overflow: hidden;
+    display:flex;
+    align-items:center;
+  }
+
+  /* 목표 존 (green zone) */
+  .zone{
+    position:absolute;
+    top:6px;
+    height: calc(var(--height) - 12px);
+    border-radius:8px;
+    background: var(--zone-bg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.55), inset 0 2px 8px rgba(255,255,255,0.03);
+    pointer-events:none;
+  }
+
+  /* 움직이는 표시기 */
+  .indicator{
+    position:absolute;
+    top:4px;
+    width:14px;
+    height: calc(var(--height) - 8px);
+    border-radius:4px;
+    background: var(--indicator);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    transform: translateX(0);
+    transition: background 160ms, box-shadow 160ms;
+  }
+
+  /* 페이드 라인(가운데 기준선) */
+  .center-line{
+    position:absolute;
+    left:50%;
+    top:0;
+    bottom:0;
+    width:1px;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.06), transparent);
+    transform: translateX(-0.5px);
+    pointer-events:none;
+  }
+
+  .controls{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    margin-top:12px;
+  }
+
+  button{
+    border:0;
+    padding:10px 14px;
+    border-radius:8px;
+    font-weight:600;
+    cursor:pointer;
+    background:var(--glass);
+    color:#dff0ff;
+    box-shadow: 0 4px 12px rgba(2,6,23,0.5);
+  }
+
+  button.primary{
+    background: linear-gradient(90deg,#25527a,#3b82c4);
+  }
+
+  .result{
+    margin-top:12px;
+    min-height:26px;
+    font-weight:700;
+    letter-spacing:0.2px;
+  }
+
+  .result.success{ color: var(--success-color); }
+  .result.fail{ color: var(--fail-color); }
+
+  /* 옵션 라인 */
+  .options{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    margin-top:10px;
+    color:#9fb1d6;
+    font-size:13px;
+  }
+
+  label{ display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  input[type="range"]{ width:120px; }
+
+  /* 작은 도움말 */
+  .hint{ color:#8fa8d0; font-size:12px; margin-top:8px; }
+</style>
+</head>
+<body>
+  <div class="panel" role="application" aria-label="스킬 체크 패널">
+    <h1>스킬체크 데모</h1>
+    <p class="small">Start를 눌러 바를 움직인 뒤 Stop을 눌러 목표 구간에 멈추면 성공!</p>
+
+    <div class="skill-check" id="track" aria-hidden="false">
+      <div id="zone" class="zone" style="left: 38%; width: 18%;"></div>
+      <div class="center-line" aria-hidden="true"></div>
+      <div id="indicator" class="indicator" style="left:0;"></div>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn" class="primary" aria-pressed="false">Start</button>
+      <button id="stopBtn" disabled>Stop</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <div class="options" aria-hidden="false">
+      <label>속도 <input id="speed" type="range" min="0.6" max="3" step="0.1" value="1.6"></label>
+      <label>존 넓이 <input id="zoneWidth" type="range" min="6" max="30" step="1" value="18"></label>
+      <label><input id="autoReverse" type="checkbox"> 왕복</label>
+    </div>
+
+    <div class="result" id="result" aria-live="polite"></div>
+    <div class="hint">Tip: zone 넓이, 속도, 왕복 옵션을 바꿔 난이도 조절 가능.</div>
+  </div>
+
+<script>
+/*
+  작동 원리:
+  - indicator는 시간에 따라 0~100%로 이동.
+  - requestAnimationFrame으로 부드럽게 움직임.
+  - Start 누르면 애니메이션 시작, Stop 누르면 현재 위치로 판정.
+  - '왕복' 옵션이 켜지면 좌우 반복(되돌아오기)로 움직임.
+*/
+
+(function(){
+  const indicator = document.getElementById('indicator');
+  const zoneEl = document.getElementById('zone');
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const speedInput = document.getElementById('speed');
+  const zoneWidthInput = document.getElementById('zoneWidth');
+  const autoReverseInput = document.getElementById('autoReverse');
+  const resultEl = document.getElementById('result');
+  const track = document.getElementById('track');
+
+  let animId = null;
+  let startTime = null;
+  let pos = 0;            // 0 ~ 1
+  let direction = 1;     // 1 오른쪽, -1 왼쪽
+  let running = false;
+
+  // 초기 셋업: zone 위치/크기 반영
+  function applyZone(){
+    const leftPercent = 38; // 기본 left
+    const widthPercent = Number(zoneWidthInput.value); // 사용자 조절
+    zoneEl.style.left = leftPercent + '%';
+    zoneEl.style.width = widthPercent + '%';
+  }
+  applyZone();
+
+  zoneWidthInput.addEventListener('input', ()=>{
+    applyZone();
+  });
+
+  function setIndicatorPercent(p){
+    p = Math.max(0, Math.min(1, p));
+    const px = (track.clientWidth - indicator.clientWidth) * p;
+    indicator.style.left = px + 'px';
+    pos = p;
+  }
+
+  // 애니메이션 루프
+  function loop(ts){
+    if(!startTime) startTime = ts;
+    const elapsed = ts - startTime;
+    const baseSpeed = Number(speedInput.value); // 단위: arbitrary
+    // 이동량: elapsed 밀리초에 비례. (0.001 은 감도)
+    const delta = baseSpeed * (elapsed / 1000) * 0.4;
+    startTime = ts;
+
+    // pos 변화
+    if(autoReverseInput.checked){
+      pos += delta * direction;
+      if(pos >= 1){ pos = 1; direction = -1; }
+      if(pos <= 0){ pos = 0; direction = 1; }
+    } else {
+      // 반복해서 초기화 (한 방향으로 끝까지 가면 다시 처음으로)
+      pos += delta;
+      if(pos >= 1) pos = 0;
+    }
+
+    setIndicatorPercent(pos);
+
+    animId = requestAnimationFrame(loop);
+  }
+
+  startBtn.addEventListener('click', ()=>{
+    if(running) return;
+    running = true;
+    startBtn.setAttribute('aria-pressed','true');
+    stopBtn.disabled = false;
+    resultEl.textContent = '';
+    startTime = null;
+    animId = requestAnimationFrame(loop);
+  });
+
+  stopBtn.addEventListener('click', ()=>{
+    if(!running) return;
+    running = false;
+    startBtn.setAttribute('aria-pressed','false');
+    stopBtn.disabled = true;
+    if(animId) cancelAnimationFrame(animId);
+    animId = null;
+
+    // 판정: indicator의 중심이 zone 내부에 있는지
+    const trackRect = track.getBoundingClientRect();
+    const indRect = indicator.getBoundingClientRect();
+    const zoneRect = zoneEl.getBoundingClientRect();
+
+    const indCenter = indRect.left + indRect.width/2;
+    const zoneLeft = zoneRect.left;
+    const zoneRight = zoneRect.left + zoneRect.width;
+
+    const success = (indCenter >= zoneLeft && indCenter <= zoneRight);
+
+    resultEl.className = 'result ' + (success ? 'success' : 'fail');
+    resultEl.textContent = success ? '성공! 🎉' : '실패... 😵‍💫';
+    // 시각적 효과
+    indicator.style.background = success ? 'var(--success-color)' : 'var(--fail-color)';
+    indicator.style.boxShadow = success ? '0 6px 18px rgba(40,167,69,0.25)' : '0 6px 18px rgba(220,53,69,0.25)';
+
+    // 짧은 애니메이션으로 색 원상복구
+    setTimeout(()=> {
+      indicator.style.background = '';
+      indicator.style.boxShadow = '';
+    }, 700);
+  });
+
+  resetBtn.addEventListener('click', ()=>{
+    if(animId) cancelAnimationFrame(animId);
+    animId = null;
+    running = false;
+    startBtn.setAttribute('aria-pressed','false');
+    stopBtn.disabled = true;
+    setIndicatorPercent(0);
+    resultEl.textContent = '';
+  });
+
+  // 키보드 조작 (스페이스로 Start/Stop toggle)
+  window.addEventListener('keydown',(e)=>{
+    if(e.code === 'Space'){
+      e.preventDefault();
+      if(!running) startBtn.click();
+      else stopBtn.click();
+    }
+  });
+
+  // 트랙 클릭으로 Stop (선택적)
+  track.addEventListener('click', ()=>{
+    if(running) stopBtn.click();
+  });
+
+  // 반응형: 인디케이터 위치 조정
+  window.addEventListener('resize', ()=>{
+    setIndicatorPercent(pos);
+  });
+
+})();
+</script>
+</body>
+</html>

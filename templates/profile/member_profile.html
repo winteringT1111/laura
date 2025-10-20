@@ -3,6 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/member/profile.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/member/inven.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -27,14 +28,16 @@
 
 <div class="wrap fade-in-right">
     <div class="inven">
-
+        <i class="fa-solid fa-circle-user"></i>
+        <!--<i class="fa-solid fa-address-book"></i>-->
+        <i class="fa-solid fa-briefcase"></i>
     </div>
 
 
-    <div class="info_wrap" id="profile-section7">
+    <div class="info_wrap" id="profile-section">
         <div class="content1">
             <div class="catchphrase">
-                <p>{{char.charPhrase}}</p>
+                <p>{{char.charCatchPhrase}}</p>
             </div>
             <div class="name_wrap">
                 <img class="position" src="{% static 'img/profile/'%}{{char.charPosition}}.png" alt="position">
@@ -96,7 +99,6 @@
         </div>
 
         <div class="content_appearance">
-            
             <div class="keyword_wrap">
                 <div class="keyword">
                     {% if char07.charCommission %}
@@ -116,10 +118,8 @@
         </div>
 
         <div class="content_etc">
-            
             <div class="keyword_wrap">
                 <div class="keyword">
-
                 </div>
             </div>
 
@@ -179,10 +179,59 @@
             
 
         </div>
-
-
-
     </div>
+
+    <!-- 
+
+    <div class="info_wrap" id="relation-section">
+        dd
+    </div>
+
+    -->
+
+    <div class="info_wrap" id="inven-section">
+        <div class="inven_content">
+            <img class="header" src="{% static 'img/profile/'%}inventory_header.png" alt="position">
+            
+            <div class="item_scroll">
+                {% for item in items %}
+                <div class="item_image" 
+                 data-name="{{ item.itemInfo.itemName }}"
+                 data-category="{{ item.itemInfo.itemCategory }}"
+                 data-info="{{ item.itemInfo.itemInfo }}"
+                 data-img="{% static 'img/store/' %}{{ item.itemInfo.itemName }}.png"
+                 data-count="{{ item.itemCount }}">
+                
+                <p class="item_count">x{{item.itemCount}}</p>
+                <img src="{% static 'img/store/' %}{{ item.itemInfo.itemName }}.png">
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="gold_content">
+                <div class="token2">
+                    <img src="{% static 'img/갈레온.png' %}" alt="Galleon">
+                    <span>{{charinfo.gold}} G</span>
+                </div>
+                <div class="token2">
+                    <img class="token2_img" src="{% static 'img/토큰.png' %}" alt="Token">
+                    <span>{{charinfo.exp}} EXP</span>
+                </div>
+            </div>
+        </div>
+        
+
+        <div id="itemModal" class="modal-overlay" style="display:none;">
+            <div class="modal-content">
+                <span class="modal-close-btn">&times;</span>
+                <img id="modalItemImage" src="" alt="Item Image">
+                <p id="modalItemName"></p>
+                <p id="modalItemCategory" class="category"></p>
+                <p id="modalItemInfo" class="item_info"></p>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </div>
@@ -191,6 +240,41 @@
 
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const houseIcon = document.querySelector('.fa-circle-user');
+    //const relationIcon = document.querySelector('.fa-address-book');
+    const invenIcon = document.querySelector('.fa-briefcase');
+
+    const profileSection = document.getElementById('profile-section');
+    //const relationSection = document.getElementById('relation-section');
+    const invenSection = document.getElementById('inven-section');
+
+    profileSection.style.display = 'none';
+    //relationSection.style.display = 'none';
+    invenSection.style.display = 'block';
+
+    houseIcon.addEventListener('click', () => {
+        profileSection.style.display = 'block';
+        //relationSection.style.display = 'none';
+        invenSection.style.display = 'none';
+    });
+
+    // '주소록' 아이콘 클릭 이벤트
+    //relationIcon.addEventListener('click', () => {
+    //    profileSection.style.display = 'none';
+    //    relationSection.style.display = 'block';
+    //    invenSection.style.display = 'none';
+    //});
+
+    // '가방' 아이콘 클릭 이벤트
+    invenIcon.addEventListener('click', () => {
+        profileSection.style.display = 'none';
+        //relationSection.style.display = 'none';
+        invenSection.style.display = 'block';
+    });
+
+
+    // --- 2. 기존에 작성하신 프로필 하위 섹션(PERSONALITY 등) 관련 스크립트 ---
     const buttons = document.querySelectorAll('.sub_section');
     const contents = {
         'PERSONALITY': document.querySelector('.content_personality'),
@@ -198,17 +282,78 @@
         'ETC': document.querySelector('.content_etc'),
         'STATS': document.querySelector('.content_stats'),
     };
+    
+    // 페이지 로드 시 PERSONALITY 섹션이 기본으로 보이도록 설정합니다.
+    Object.values(contents).forEach(c => {
+        if (c) c.style.display = 'none';
+    });
+    if (contents['PERSONALITY']) {
+        contents['PERSONALITY'].style.display = 'block';
+    }
+
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            Object.values(contents).forEach(c => c.style.display = 'none');
+            // 모든 하위 섹션을 일단 숨깁니다.
+            Object.values(contents).forEach(c => {
+                if (c) c.style.display = 'none';
+            });
 
+            // 클릭된 버튼에 해당하는 섹션만 보여줍니다.
             const key = button.textContent.trim();
-            if(contents[key]){
+            if (contents[key]) {
                 contents[key].style.display = 'block';
             }
         });
     });
+});
+
+
+// member/profile.html 의 <script> 태그 안에 추가
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- (기존의 다른 스크립트 코드는 여기에 그대로 둡니다) ---
+
+
+    // --- 아이템 클릭 모달 스크립트 ---
+    const itemModal = document.getElementById('itemModal');
+    const closeBtn = document.querySelector('.modal-close-btn');
+    const allItems = document.querySelectorAll('.item_image');
+
+    // 각 아이템에 클릭 이벤트 추가
+    allItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // 1. 클릭된 아이템의 data-* 속성에서 정보 가져오기
+            const name = item.dataset.name;
+            const category = item.dataset.category;
+            const info = item.dataset.info;
+            const imgSrc = item.dataset.img;
+
+            // 2. 가져온 정보로 모달 내부 채우기
+            document.getElementById('modalItemImage').src = imgSrc;
+            document.getElementById('modalItemName').textContent = name;
+            document.getElementById('modalItemCategory').textContent = category;
+            document.getElementById('modalItemInfo').textContent = info;
+            
+            // 3. 모달 보여주기
+            itemModal.style.display = 'flex';
+        });
+    });
+
+    // 닫기 버튼 클릭 시 모달 숨기기
+    closeBtn.addEventListener('click', () => {
+        itemModal.style.display = 'none';
+    });
+
+    // 모달 배경 클릭 시 모달 숨기기
+    itemModal.addEventListener('click', (event) => {
+        if (event.target === itemModal) {
+            itemModal.style.display = 'none';
+        }
+    });
+
+});
 </script>
 
 {% endblock %}

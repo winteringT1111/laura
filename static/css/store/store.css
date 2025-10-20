@@ -203,6 +203,11 @@
     align-content: start; 
 }
 
+.item_list::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+}
+
 /* -------------------- 아이템 카드 (이미지 스타일 적용) -------------------- */
 
 .item_card {
@@ -277,7 +282,7 @@
     margin: 20px 0 0 0;
     text-align: center;
     word-break: break-all;
-    font-family: "Hahmlet", serif; /* 사용중인 폰트 적용 */
+    font-family: "Noto Sans", sans-serif;
 }
 
 
@@ -382,7 +387,7 @@
 .store_spec_wrap {
     opacity: 0;
     /* Combines original centering with the upward animation start */
-    transform: translate(-50%, -50%) translateY(-18px);
+    transform: translate(-50%, -50%) translateY(-15px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
@@ -390,8 +395,8 @@
 .store_info_wrap {
     opacity: 0;
     /* Combines original vertical centering with the rightward animation start */
-    transform: translateY(-50%) translateX(18px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(-50%) translateX(30px);
+    transition: opacity 0.5s ease-out, transform 0.8s ease-out;
 }
 
 

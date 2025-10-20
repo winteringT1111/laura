@@ -1,13 +1,13 @@
 nav {
     background: rgb(26, 25, 23);
-    width: 40px;
-    height: 440px;
+    width: 40px !important;
+    height: 500px !important;
     display: flex;
     justify-content: center; /* 수평 중앙 정렬 */
     align-items: center; /* 수직 중앙 정렬 */
     position: fixed; /* 절대 위치 지정 */
-    top: 50%;
-    left: 1.1%;
+    top: 50% !important;
+    left: 1.1% !important;
     transform: translate(-50%, -50%);
     z-index: 10; /* 다른 요소보다 위에 오도록 설정 */
 }
@@ -19,14 +19,14 @@ nav ul {
 }
 
 nav li {
-    margin: 22px 0; /* 항목 사이의 간격 조정 */
+    margin: 22px 0 !important; /* 항목 사이의 간격 조정 */
     display: flex;
     justify-content: center; /* 아이콘을 중앙에 정렬 */
     align-items: center; /* 수직 중앙 정렬 */
 }
 
 .fa-regular {
-    font-size: 23px; /* 아이콘 크기 조정 */
+    font-size: 23px !important; /* 아이콘 크기 조정 */
     color: rgba(212, 195, 136, 0.733); /* 아이콘 색상 설정 */
 }
 

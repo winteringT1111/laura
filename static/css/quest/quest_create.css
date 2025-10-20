@@ -1,0 +1,152 @@
+/* === 전체 페이지 배경 === */
+body {
+    background-color: #3d3831;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* === 폼을 감싸는 메인 컨테이너 === */
+.form-container {
+    width: 90%;
+    max-width: 700px;
+    padding: 40px;
+    background-color: #4d463b; /* 이미지의 회색 배경 */
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+} .form-container img {margin-left: 79px;
+    filter: drop-shadow(2px 2px 5px #9989658a);
+    margin-bottom: 40px;
+}
+
+/* === 장식 테두리 (별도 이미지 필요) === */
+.form-frame {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    border: 30px solid transparent;
+    border-image: url('../../img/event/quest_modal.png') 40 stretch; /* 장식 이미지 경로 */
+    pointer-events: none; /* 클릭 방지 */
+}
+
+
+
+/* === 폼 필드 그룹 === */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #d4c9b4;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+/* === 모든 input, select, textarea 공통 스타일 === */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #6d6557; /* 어두운 갈색 */
+    color: #f0e6d2;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: 2px solid #a38f65;
+}
+
+/* === 로그 작성(Textarea) 높이 조절 === */
+.form-group textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+/* === 파일 첨부 버튼 스타일링 === */
+/* 기본 파일 input 숨기기 */
+input[type="file"] {
+    display: none;
+}
+/* 파일 input을 위한 커스텀 버튼 */
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #6d6557;
+    color: #c8bca6;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+/* === "수행하기" 제출 버튼 === */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2c2a26;
+    color: #dac17f;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.background{
+    filter: blur(3px) !important;
+}
+
+
+
+.submit-btn:hover {
+    background-color: #695c46;
+}
+
+.form-container {
+    opacity: 0;
+    transform: translateY(-20px); /* 시작 시 위쪽에 위치 */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* 페이지 로드 후 애니메이션 활성화 */
+.form-container.show {
+    opacity: 1;
+    transform: translateY(0); /* 제자리로 이동 */
+}
+
+
+/* === 선택된 파일 이름 표시 스타일 === */
+.file-name-display {
+    margin-left: 15px;
+    color: #a0937d; /* 다른 텍스트보다 약간 어두운 색 */
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #d6cab4; /* 밝은 회갈색으로 변경 */
+    opacity: 1; /* 일부 브라우저에서 투명도를 1로 고정 */
+}
+
+
+/* === Form Error Styling === */
+.errorlist {
+    list-style-type: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    font-size: 0.9rem;
+    color: #e74c3c; /* A noticeable red color */
+    font-weight: bold;
+}

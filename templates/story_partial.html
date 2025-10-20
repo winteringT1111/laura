@@ -1,0 +1,60 @@
+{% load static %}
+
+<div id="vn-container" style="position: relative; width: 100%; height: 100%; overflow: hidden;">
+
+    <img src="{{ background_image_url }}" alt="배경" style="width: 100%; height: 100%; object-fit: cover;">
+
+    <div id="dialogue-box" style="position: absolute; bottom: 0; width: 100%; height:30%; background: rgba(0,0,0,0.8); color: rgb(243, 240, 233); white-space: pre-wrap; padding: 20px; padding-left: 35px;box-sizing: border-box;">
+        <h3 id="char-name" style="margin: 0px; margin-top: -35px; margin-bottom: 10px; font-weight: bold; color: #ffd700;"></h3>
+        <p id="char-text" style="margin: 0px; margin-top: -35px; font-size: 18px;"></p>
+        <button id="next-btn" style="position: absolute; bottom: 15px; right: 20px; padding: 6px 12px; background: none; color: white; border: none; cursor: pointer;">▶</button>
+    </div>
+</div>
+
+{{ script|json_script:"script-data" }}
+
+<script>
+    const script = {{ script_json|safe }};
+    let index = 0;
+    const nameBox = document.getElementById("char-name");
+    const textBox = document.getElementById("char-text");
+    const nextBtn = document.getElementById("next-btn");
+    let typing = false;
+    let typingTimeout;
+
+    function showNextLine() {
+        if (typing) {
+            completeLine();
+            return;
+        }
+        if (index < script.length) {
+            nameBox.textContent = script[index].name;
+            textBox.textContent = "";
+            typeWriter(script[index].text, 0);
+            index++;
+        } else {
+            nextBtn.disabled = true;
+            nextBtn.textContent = "끝";
+            nextBtn.style.cursor = "default";
+        }
+    }
+
+    function typeWriter(text, i) {
+        typing = true;
+        if (i < text.length) {
+            textBox.textContent += text.charAt(i);
+            typingTimeout = setTimeout(() => typeWriter(text, i + 1), 40);
+        } else {
+            typing = false;
+        }
+    }
+
+    function completeLine() {
+        clearTimeout(typingTimeout);
+        textBox.textContent = script[index - 1].text;
+        typing = false;
+    }
+
+    nextBtn.addEventListener("click", showNextLine);
+    showNextLine();
+</script>

@@ -1,26 +1,278 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Chat Rooms</title>
-</head>
-<body>
-    What chat room would you like to enter?<br>
-    <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter">
+{% extends "base.html" %}
+{% load static %}
 
+{% block head %}
+    <meta charset="UTF-8">
+    <title>스토리 챕터</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/story.css' %}">
     <script>
-        document.querySelector('#room-name-input').focus();
-        document.querySelector('#room-name-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#room-name-submit').click();
-            }
-        };
+  (function(d) {
+    var config = {
+      kitId: 'baa3wec',
+      scriptTimeout: 3000,
+      async: true
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
 
-        document.querySelector('#room-name-submit').onclick = function(e) {
-            var roomName = document.querySelector('#room-name-input').value;
-            window.location.pathname = '/chat/' + roomName + '/';
-        };
-    </script>
-</body>
-</html>
+{% endblock %}
+
+    
+{% block content %}
+
+    <div class="story-container">
+        <div class="story-details-panel">
+            <div id="story-view-container"></div>
+            <img id="chapter-image" src="{% static 'img/chap.png' %}" alt="챕터 이미지">
+            
+            <div class="info-box">
+                <h1 id="chapter-title">Chapter 01. 태초의 마을, 아르카디아에 관하여</h1>
+                <p id="chapter-summary">
+                    과거의 위그드라실은 누구에게나 평등하게 행동해야만 했다.
+                    누구 하나 우대해서는 안 되었고, 인간들은 성스러운 나무의 존재 자체에 목적을 남기면 안됐다.
+                    아이들은 뿌리 위에서 뛰놀았고, 연인들은 은은한 야광 이끼 아래에서 사랑을 속삭였다.
+                </p>
+                <a href="/story/1" id="read-more-link" class="read-more-btn">
+                    스토리 열람
+                </a>
+            </div>
+        </div>
+
+        <div class="chapter-list-panel">
+
+    <div class="chapter-scroll-list">
+
+        <h2 class="section-header">✶  MAINSTORY</h2>
+        {% for chapter in main_stories %}
+            <div class="chapter-card 
+                {% if forloop.first %}active{% endif %}
+                 {% if chapter.id in completed_chapter_ids %}completed{% endif %}"   {# 완료했다면 completed #}
+                 
+                 style="background-image: url('{{ chapter.list_image.url }}')"
+                 data-chapter-id="{{ chapter.id }}" 
+                 data-title="{{ chapter.title }}"
+                 data-summary="{{ chapter.summary }}"
+                 data-image-src="{{ chapter.background_image.url }}"> {# 👈 스토리 열람 시 배경이 될 이미지 #}
+                
+                <div class="chapter-overlay">
+                    {# 챕터 번호를 항상 두 자리로 표시 (예: 1 -> 01) #}
+                    <h3>CHAPTER {{ chapter.chapter_number|stringformat:"02d" }}</h3>
+                    <p>{{ chapter.subtitle }}</p>
+                </div>
+            </div>
+        {% endfor %}
+
+        <h2 class="section-header">✶  SUBSTORY</h2>
+        {% for chapter in sub_stories %}
+            <div class="chapter-card
+                 {% if not main_stories and forloop.first %}active{% endif %} {# 메인 스토리가 없을 때만 첫 번째에 active #}
+                 {% if chapter.id in completed_chapter_ids %}completed{% endif %}"
+                 
+                 style="background-image: url('{{ chapter.list_image.url }}')"
+                 data-chapter-id="{{ chapter.id }}" 
+                 data-title="{{ chapter.title }}"
+                 data-summary="{{ chapter.summary }}"
+                 data-image-src="{{ chapter.background_image.url }}">
+                
+                <div class="chapter-overlay">
+                    <h3>CHAPTER {{ chapter.chapter_number|stringformat:"02d" }}</h3>
+                    <p>{{ chapter.subtitle }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        
+    </div>
+</div>
+    </div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. 필요한 모든 HTML 요소를 스크립트 최상단에서 한 번만 찾아 변수에 저장합니다.
+    const storyContainer = document.querySelector('.story-container');
+    const storyViewContainer = document.getElementById('story-view-container');
+    const chapterCards = document.querySelectorAll('.chapter-card');
+    const chapterImage = document.getElementById('chapter-image');
+    const chapterTitle = document.getElementById('chapter-title');
+    const chapterSummary = document.getElementById('chapter-summary');
+    const readMoreLink = document.getElementById('read-more-link');
+
+    let currentChapterId = null; // ✅ 현재 선택된 챕터 ID를 저장할 변수
+
+    // --- 챕터 카드 선택 로직 ---
+    function updateDetails(card) {
+        const chapterId = card.dataset.chapterId;
+        const title = card.dataset.title;
+        const summary = card.dataset.summary;
+        const imageSrc = card.dataset.imageSrc;
+
+        currentChapterId = chapterId; // ✅ 클릭된 카드의 ID를 변수에 저장
+
+        chapterImage.src = imageSrc;
+        chapterTitle.textContent = title;
+        chapterSummary.textContent = summary;
+        readMoreLink.href = `/story/${chapterId}`;
+    }
+
+    chapterCards.forEach(card => {
+        card.addEventListener('click', () => {
+            chapterCards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            updateDetails(card);
+        });
+    });
+
+    // ✅✅✅ 이 부분이 빠져있었습니다! ✅✅✅
+    // 페이지가 처음 로드될 때, 기본으로 'active' 클래스를 가진 카드를 찾아 내용을 업데이트합니다.
+    const initialActiveCard = document.querySelector('.chapter-card.active');
+    if (initialActiveCard) {
+        updateDetails(initialActiveCard);
+    }
+
+    // --- 비주얼 노블 초기화 및 보상 요청 로직 ---
+    function initializeVisualNovel(container) {
+        // --- START OF DEBUGGING VERSION ---
+    console.log("--- 1. Initializing Visual Novel ---");
+
+    // Step 1: Find the script tag by its ID
+    const scriptElement = document.getElementById('script-data');
+    console.log("--- 2. Found script tag element:", scriptElement);
+
+    if (!scriptElement) {
+        console.error("CRITICAL ERROR: Could not find the <script> tag with ID 'script-data'. Make sure it's in your story_partial.html file.");
+        return; // Stop the function if the tag isn't found
+    }
+
+    // Step 2: Get the text content from that tag
+    const rawJsonString = scriptElement.textContent;
+    console.log("--- 3. Raw JSON string from tag:", rawJsonString);
+
+    // Step 3: Parse the string into a JavaScript object
+    let scriptData;
+    try {
+        scriptData = JSON.parse(rawJsonString);
+        console.log("--- 4. Successfully parsed data:", scriptData);
+    } catch (e) {
+        console.error("CRITICAL ERROR: Failed to parse JSON. The data might be malformed.", e);
+        return; // Stop if parsing fails
+    }
+
+    // Step 4: Find the elements to put the text into
+    const nameBox = container.querySelector("#char-name");
+    const textBox = container.querySelector("#char-text");
+    const nextBtn = container.querySelector("#next-btn");
+    console.log("--- 5. Found display elements:", { nameBox, textBox, nextBtn });
+    // --- END OF DEBUGGING VERSION ---
+
+        let index = 0;
+        let typing = false;
+        let typingTimeout;
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function claimRewardAndReload() {
+            fetch('/room/claim_reward/', { // ✅ URL은 실제 환경에 맞게 확인해주세요.
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                // ✅ 어떤 챕터를 완료했는지 ID를 body에 담아 보냅니다.
+                body: JSON.stringify({ chapter_id: currentChapterId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success' || data.status === 'already_claimed') {
+                    location.reload();
+                } else {
+                    alert('보상을 받는 중 오류가 발생했습니다: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function showNextLine() {
+        if (typing) {
+            completeLine();
+            return;
+        }
+
+        if (index < scriptData.length) {
+            const currentLine = scriptData[index];
+
+            nameBox.textContent = currentLine.name;
+            // ❗️ 이미지 업데이트 로직을 여기서 완전히 삭제했습니다.
+            
+            textBox.innerHTML = ""; // innerHTML 사용은 유지
+            typeWriter(currentLine.text, 0);
+            index++;
+        } else {
+            // 스토리 끝 로직 (버튼 변경)
+            nextBtn.disabled = false;
+            nextBtn.textContent = "처음으로";
+            nextBtn.removeEventListener("click", showNextLine);
+            nextBtn.addEventListener("click", claimRewardAndReload);
+
+            // ❗️ 스토리 끝날 때 이미지 숨기는 로직도 삭제했습니다.
+        }
+    }
+
+    function typeWriter(text, i) {
+        typing = true;
+        if (i < text.length) {
+            // ✅ Change textContent to innerHTML
+            textBox.innerHTML += text.charAt(i);
+            typingTimeout = setTimeout(() => typeWriter(text, i + 1), 40);
+        } else {
+            typing = false;
+        }
+    }
+
+    // This function also needs the same change
+    function completeLine() {
+        clearTimeout(typingTimeout);
+        // ✅ Change textContent to innerHTML
+        textBox.innerHTML = scriptData[index - 1].text; 
+        typing = false;
+    }
+
+        nextBtn.addEventListener("click", showNextLine);
+        showNextLine();
+    }
+
+    // --- '스토리 열람' 버튼 클릭 로직 (Fetch) ---
+    readMoreLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        const url = readMoreLink.href;
+
+        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(response => response.text())
+            .then(html => {
+                storyViewContainer.innerHTML = html;
+                storyContainer.classList.add('story-active');
+                
+                const vnContainer = storyViewContainer.querySelector('#vn-container');
+                if (vnContainer) {
+                    initializeVisualNovel(vnContainer);
+                }
+            })
+            .catch(error => console.error('Error loading story:', error));
+    });
+});
+</script>
+{% endblock %}

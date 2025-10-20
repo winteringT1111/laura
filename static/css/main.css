@@ -1,6 +1,16 @@
+.noto-sans-sans {
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
 html, body {
     overflow: hidden; 
     user-select: none;
+    font-family: "Noto Sans", sans-serif;
 }
 
 .background {

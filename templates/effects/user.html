@@ -4,11 +4,11 @@
 
     <div class="profile_section">
         <div class="profile_image">
-            <img src="{% static 'img/charac/' %}test.png" alt="User Profile Image">
+            <img src="{% static 'img/charac/' %}{{ user.username }}2.png" alt="User Profile Image">
         </div>
 
         <div class="profile_name">
-            <p>캐릭터 이름</p>
+            <p>{{ charInfo.char.charName }}</p>
             <p>{{ user.username }}</p>
         </div>
     </div>

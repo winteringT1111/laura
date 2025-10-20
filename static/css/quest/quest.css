@@ -1,0 +1,364 @@
+/* === 전체 페이지 레이아웃 === */
+body {
+    background-color: #3d3831; /* 어두운 배경색 */
+}
+
+.background{
+    filter: blur(3px) !important;
+}
+
+
+.quest-page-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+/* === 퀘스트 목록 === */
+.quest-list-container {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 8px;
+    backdrop-filter: blur(7px);
+}
+
+.quest-list-container h3 {
+    color: #dac17f;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(218, 193, 127, 0.2);
+}
+
+.quest-item {
+    display: flex;
+    align-items: center;
+    background-color: rgba(85, 77, 65, 0.7);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quest-item:hover {
+    border-color: #dac17f;
+    background-color: rgba(50, 45, 40, 0.7);
+}
+
+.quest-icon {
+    font-size: 2rem;
+    margin-right: 20px;
+    color: #dac17f;
+}
+
+.quest_left {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.quest-info {
+    margin-left: 20px;
+}
+
+.quest-info h5 {
+    margin: 0 0 5px 0;
+    color: #f0e6d2;
+
+    font-size: 1.5rem;
+}
+
+.quest-info h6 {
+    margin: 0 0 5px 0;
+    color: #ceb88c;
+
+    font-size: 1.1rem;
+}
+
+.quest-info p {
+    margin: 0;
+    color: #ccc1ab;
+    font-size: 0.9rem;
+    background-color: #2a2620;
+    border-radius: 5px;
+    padding: 8px 15px;
+    margin-top: 13px;
+}
+
+.quest-duration {
+    color: #bbac93;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap; /* 줄바꿈 방지 */
+} .quest_left img {
+    margin-left: 20px;
+}
+
+
+/* === "퀘스트 수행" 버튼 === */
+.perform-quest-btn {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 20px auto; /* 중앙 정렬 */
+    padding: 12px 30px;
+    background-color: #4a4133;
+    color: #dac17f;
+    text-decoration: none;
+    font-weight: bold;
+    border: 2px solid #ad9d6f;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.perform-quest-btn:hover {
+    background-color: #dac17f;
+    color: #4a4133;
+    text-decoration: none;
+}
+
+
+/* === 퀘스트 로그 피드 === */
+.quest-log-feed {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.log-post {
+    background-color: rgba(30, 25, 20, 0.5);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border-left: 3px solid #6b5f4b;
+}
+
+.log-post h5, .log-post p {
+    color: #c8bca6;
+}
+
+.log-post .auto-comment {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    font-style: italic;
+    color: #8c7f69;
+    font-size: 0.9rem;
+}
+
+
+/* === 모달 창 스타일 === */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    color: #c8bca6;
+    padding: 30px 15px 30px 30px;
+    border-radius: 5px;
+    position: relative;
+    width: 600px;
+    height: 818px;
+    background: url("../../img/event/quest_banner.png");
+    text-align: center;
+    background-size: cover;
+    /* ✨ 장식 이미지가 있다면 여기에 추가하세요 */
+    /* border-image: url('path/to/your/frame.png') 30 round; */
+}
+
+
+.modal-section {
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 15px;
+    width: 80%;
+    text-align: center;
+    margin-left: 58px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.modal-section h4 {
+    color: #dac5a2;
+    font-size: 1.1rem;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+}
+
+.wow{
+    height: 230px;
+    margin-top: 150px;
+}
+
+.wow2{
+    height: 260px;
+}
+
+
+#modal-title {
+    margin-top: 160px;
+    margin-bottom: 35px;
+}
+
+#modal-description, #modal-reward {
+    margin: 0;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+#modal-reward-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 아이템 간의 간격 */
+}
+
+.reward-item {
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.reward-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    margin-left: 10px;
+    font-weight: 200;
+    object-fit: contain;
+}
+
+.reward-name {
+    color: #f0e6d2;
+    font-weight: bold;
+}
+
+.reward-quantity {
+    margin-left: auto; /* 수량을 오른쪽 끝으로 밀어내기 */
+    color: #cebda1;
+    margin-right: 10px;
+}
+
+.notseen {
+    display: none;
+}
+
+
+
+
+
+/* === 퀘스트 로그 피드 === */
+.quest-log-feed {
+    background-color: rgba(153, 141, 118, 0.4);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px; /* "퀘스트 수행" 버튼과의 간격 */
+    backdrop-filter: blur(7px);
+}
+
+.log-post {
+    background-color: rgba(30, 25, 20, 0.7);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border-left: 3px solid #6b5f4b;
+    transition: border-color 0.3s;
+}
+
+.log-post:hover {
+    border-left-color: #dac17f;
+}
+
+.log-head-header {
+    display: flex;
+    gap: 20px;
+} .log-head-header img {
+    width: 80px;
+    border-radius: 50%;
+    border: 2px solid #a79d82;
+}
+
+
+.log-header h4 {
+    color: #f0e6d2;
+    font-weight: bold;
+    margin: 0;
+    margin-top: 10px;
+}
+
+.log-header .log-meta {
+    font-size: 1rem;
+    color: #b8ac97;
+    margin-top: 5px;
+    display: block;
+}
+
+.log-content {
+    margin-top: 40px;
+    color: #c8bca6;
+    line-height: 1.7;
+    font-size: 1.1rem;
+}
+
+.log-image {
+    max-width: 80%;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.auto-comment {
+    margin-top: 50px;
+    padding: 12px 15px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    font-style: italic;
+    color: #9c8f79;
+    font-size: 0.9rem;
+    border-top: 1px solid #4a4133;
+}
+
+.auto-comment p {
+    margin: 0;
+}
+
+.no-logs {
+    text-align: center;
+    color: #8c7f69;
+    padding: 40px 0;
+}
+
+
+.quest-page-container {
+    max-height: 100vh;
+    overflow-y: scroll; /* 내부는 스크롤되지만 바는 숨김 */
+    scrollbar-width: none; /* Firefox용 */
+    -ms-overflow-style: none; /* IE, Edge용 */
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+/* Chrome, Safari용 스크롤바 숨김 */
+.quest-page-container::-webkit-scrollbar {
+    display: none;
+}
+
+.quest-page-container.show {
+    opacity: 1;
+    transform: translateY(0);
+}

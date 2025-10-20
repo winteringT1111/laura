@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from store import models as itemModels
+from users import models as userModels
 # Create your models here.
 
 class Characters(models.Model):
@@ -56,12 +57,12 @@ class Purchase(models.Model):
 class Gift(models.Model):
     giftID = models.AutoField(primary_key=True)  
     giver_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        userModels.CharInfo,
         on_delete=models.CASCADE,
         related_name='gifts_given'  # Custom related name for the giver
     )
     receiver_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        userModels.CharInfo,
         on_delete=models.CASCADE,
         related_name='gifts_received'  # Custom related name for the receiver
     )
@@ -76,19 +77,19 @@ class Gift(models.Model):
         db_table = "gift"
      
         
-class MagicGift(models.Model):
+class IngredientGift(models.Model):
     giftID = models.AutoField(primary_key=True)  
     giver_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        userModels.CharInfo,
         on_delete=models.CASCADE,
         related_name='gifts_given2'  # Custom related name for the giver
     )
     receiver_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        userModels.CharInfo,
         on_delete=models.CASCADE,
         related_name='gifts_received2'  # Custom related name for the receiver
     )
-    itemInfo = models.ForeignKey(itemModels.Item_magic, on_delete=models.CASCADE)
+    itemInfo = models.ForeignKey(itemModels.Ingredient, on_delete=models.CASCADE)
     anonymous = models.BooleanField()
     message = models.TextField(null=True)
     itemCount = models.IntegerField()
@@ -96,22 +97,23 @@ class MagicGift(models.Model):
     accepted = models.BooleanField(default=False)
 
     class Meta:
-        db_table = "magicgift"
-        
-        
-class GachaGift(models.Model):
+        db_table = "ingredientgift"
+
+
+
+class RecipeGift(models.Model):
     giftID = models.AutoField(primary_key=True)  
     giver_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        userModels.CharInfo,
         on_delete=models.CASCADE,
         related_name='gifts_given3'  # Custom related name for the giver
     )
     receiver_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        userModels.CharInfo,
         on_delete=models.CASCADE,
         related_name='gifts_received3'  # Custom related name for the receiver
     )
-    itemInfo = models.ForeignKey(itemModels.Gacha, on_delete=models.CASCADE)
+    itemInfo = models.ForeignKey(itemModels.Recipe, on_delete=models.CASCADE)
     anonymous = models.BooleanField()
     message = models.TextField(null=True)
     itemCount = models.IntegerField()
@@ -119,7 +121,8 @@ class GachaGift(models.Model):
     accepted = models.BooleanField(default=False)
 
     class Meta:
-        db_table = "gachagift"
+        db_table = "recipegift"
+        
    
         
 class Inventory(models.Model):
@@ -131,51 +134,24 @@ class Inventory(models.Model):
         db_table = "inventory"
         
         
-class Inventory_magic(models.Model):
+class Inventory_ingredient(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    itemInfo = models.ForeignKey(itemModels.Item_magic, on_delete=models.CASCADE)
+    itemInfo = models.ForeignKey(itemModels.Ingredient, on_delete=models.CASCADE)
     itemCount = models.IntegerField()
 
     class Meta:
-        db_table = "inventory_magic"
+        db_table = "Inventory_ingredient"
           
           
-class Inventory_potion(models.Model):
+class Inventory_recipe(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    itemInfo = models.ForeignKey(itemModels.Potion, on_delete=models.CASCADE)
+    itemInfo = models.ForeignKey(itemModels.Recipe, on_delete=models.CASCADE)
     itemCount = models.IntegerField()
 
     class Meta:
-        db_table = "inventory_potion"
+        db_table = "Inventory_recipe"
         
-          
-class Inventory_gacha(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    itemInfo = models.ForeignKey(itemModels.Gacha, on_delete=models.CASCADE)
-    itemCount = models.IntegerField()
-
-    class Meta:
-        db_table = "inventory_gacha"
-        
-class Inventory_ring(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='owner'  # Custom related name for the giver
-    )
-    user2 = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='user2'  # Custom related name for the receiver
-    )
-    itemInfo = models.ForeignKey(itemModels.Item, on_delete=models.CASCADE)
-    itemCount = models.IntegerField()
-
-    class Meta:
-        db_table = "inventory_ring"
-          
-          
-          
+    
 class Attendance(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     total_attendance = models.IntegerField(default=0)  # 누적 출석 수

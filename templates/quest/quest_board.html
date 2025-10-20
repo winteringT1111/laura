@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/quest/quest.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="quest-page-container">
+    
+    <div class="quest-list-container">
+        <h3>진행 중인 퀘스트</h3>
+        {% for item in active_quests %}
+            <div class="quest-item"
+                 data-title="{{ item.quest.title }}"
+                 data-description="{{ item.quest.description|linebreaksbr }}"
+                 data-reward-gold="{{ item.quest.reward_gold }}"
+                 data-rewards-json='{{ item.rewards_json }}'>
+                
+                <div class="quest_left">
+                    <img src="{% static 'img/event/quest_img' %}.png" class="quest-icon" alt="quest_img">
+                    <div class="quest-duration">
+                        <span>남은 기한: {{ item.remaining_days }}일</span>
+                    </div>
+                </div>
+                 
+                <div class="quest-info">
+                    <h5>{{ item.quest.title }}</h5>
+                    <h6>아르카디아 마을</h6>
+                    <p>▶   {{ item.quest.description|truncatewords:10 }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if can_perform_quest %}
+        <a href="{% url 'main:create_quest_log' %}" class="perform-quest-btn">퀘스트 수행</a>
+    {% endif %}
+
+    <div class="quest-log-feed">
+        {% for log in quest_logs %}
+            <div class="log-post">
+                <div class="log-head-header">
+                    <img src="{% static 'img/charac/' %}{{ log.author.charEngName }}2.png" class="profile-icon" alt="quest_img">
+                    <div class="log-header">
+                        <h4>{{ log.title }}</h4>
+                        <span class="log-meta">
+                            {{ log.author.charName }} | 수행 퀘스트: {{ log.quest.title }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="log-content">
+                    
+                    <p>{{ log.content|linebreaksbr }}</p>
+                    {% if log.image %}
+                        <img src="{{ log.image.url }}" alt="로그 첨부 이미지" class="log-image">
+                    {% endif %}
+                </div>
+                <div class="log-comments">
+                    {% for comment in log.comments.all %}
+                        <div class="auto-comment">
+                            <p>📜 {{ comment.comment_text }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% empty %}
+            <p class="no-logs">아직 작성된 로그가 없습니다.</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+<div id="questModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <span class="close-btn"></span>
+        <h3 id="modal-title" class="notseen"></h3>
+        <div class="modal-section wow">
+            <h4>내용</h4>
+            <p id="modal-description"></p>
+        </div>
+        <div class="modal-section wow2">
+            <h4>보상</h4>
+            <div id="modal-reward-list"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('questModal');
+    const closeBtn = modal.querySelector('.close-btn');
+    const questItems = document.querySelectorAll('.quest-item');
+
+    // Add a click listener to each quest item in the list
+    questItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const title = item.dataset.title;
+        const description = item.dataset.description;
+        const rewardGold = parseInt(item.dataset.rewardGold, 10); // 숫자로 변환
+        
+        // 1. JSON 문자열을 가져와 JavaScript 객체 배열로 변환
+        const rewardsJson = item.dataset.rewardsJson;
+        const rewards = JSON.parse(rewardsJson);
+
+        // 2. 모달 내용 채우기
+        modal.querySelector('#modal-title').textContent = title;
+        modal.querySelector('#modal-description').innerHTML = description;
+        
+        const rewardListContainer = modal.querySelector('#modal-reward-list');
+        rewardListContainer.innerHTML = ''; // 이전 내용 초기화
+
+        // 3. 보상 목록 HTML 동적 생성
+        let hasRewards = false;
+
+        // 골드 보상 추가
+        if (rewardGold > 0) {
+            rewardListContainer.innerHTML += `
+                <div class="reward-item">
+                    <img src="{% static 'img/갈레온.png' %}" class="reward-icon" alt="골드">
+                    <span class="reward-name">골드</span>
+                    <span class="reward-quantity">x${rewardGold}</span>
+                </div>
+            `;
+            hasRewards = true;
+        }
+
+        // 아이템 보상 추가
+        const staticBase = "{% static 'img/store/' %}";
+
+    // 아이템 보상 추가
+    rewards.forEach(reward => {
+        rewardListContainer.innerHTML += `
+            <div class="reward-item">
+                <img src="${staticBase}${reward.name}.png" class="reward-icon" alt="${reward.name}">
+                <span class="reward-name">${reward.name}</span>
+                <span class="reward-quantity">x${reward.quantity}</span>
+            </div>
+        `;
+        hasRewards = true;
+    });
+
+        // 아무 보상도 없을 경우
+        if (!hasRewards) {
+            rewardListContainer.innerHTML = '<p>보상 없음</p>';
+        }
+        
+        modal.style.display = 'flex';
+    });
+});
+
+    // Function to close the modal
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // Add closing logic to the close button and the background overlay
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => {
+        // Close only if the dark background (the overlay itself) is clicked
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector('.quest-page-container');
+    if (container) {
+        // 약간의 지연을 주어 자연스럽게 페이드다운
+        setTimeout(() => {
+            container.classList.add('show');
+            // 등장 후 내부를 자동 스크롤
+        }, 100);
+    }
+});
+
+
+</script>
+{% endblock %}

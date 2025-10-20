@@ -26,18 +26,20 @@ urlpatterns = [
     path('world/realm/serapium', views.serapium, name='serapium'),
     
 
-    path('attendance/', views.attendance, name='attendance'),
-    # 조사
-    path('search/', views.search, name='search'),
-    path('search/create', views.search_create, name='search'),
+    path('supply/', views.supply, name='supply'),
     # 수업
-    path('class/', views.class_main, name='class'),
     path('class/herbology', views.herb, name='herb'),
 
-    path('check_combination/', views.check_combination, name='check_combination'),
+    path('recipe/', views.recipe, name='recipe'),
+    path('combine/', views.combine, name='combine'),
     
-    path('test/', views.story_view, name='story_view'),
-    path("room/<str:room_name>/", views.room, name="room"),
+    path('story/<str:room_name>/', views.story_view, name='story_view'),
+    path("room/", views.room, name="room"),
+    path('room/claim_reward/', views.claim_story_reward, name='claim_story_reward'),
+
+    # 일일 퀘스트
+    path('quests/', views.quest_board, name='quest_board'),
+    path('quests/submit/', views.create_quest_log, name='create_quest_log'),
 ] 
 
 # 이미지 URL 설정

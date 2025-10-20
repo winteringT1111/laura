@@ -12,77 +12,39 @@
     <div class="content">
         {% if gifts %}
             {% for gift in gifts %}
-                {% if gift.anonymous %}
                     {% if gift.accepted %}
                     <div class="content_list2">
                     {% else %}
                     <div class="content_list">
                     {% endif %}
-                        <div class="profile1">
-                            <div class="profile_image1">
-                                <img src={% static "img/base_profile.png" %}>
-                            </div>
-                            <div class="profile_name1">
-                                익명
-                            </div>
-                        </div>
-                        <div class="message">
-                            <div class="message_info">
-                                <p>[?]님 께서 [ {{gift.itemInfo.itemName}} ] [ {{gift.itemCount}} ] 개를 선물했습니다.</p>
-                                <p>{{gift.orderDate}}</p>
-                            </div>
-                            <div class="message_content">
-                                <img src={% static "img/star.png" %}>
-                                {% if gift.message %}
-                                {{gift.message}}
-                                {% else %}
-                                <span id="blank">메세지가 존재하지 않습니다.</span>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="function">
-                            <div class="item_image">
-                                <p class="item_count">x{{gift.itemCount}}</p>
-                                <img src="{% static 'img/store/' %}{{ gift.itemInfo.itemName }}.png">
-                                <div class="item_description">
-                                    <p>{{ gift.itemInfo.itemName }}</p>
-                                    <p class="category">{{ gift.itemInfo.itemCategory }}</p>
-                                    <p class="item_info">{{ gift.itemInfo.itemInfo }}</p>
-                                </div>
-                            </div>
-                            {% if gift.accepted %}
-                            <button class="accepted">수락</button>
-                            {% else %}
-                            <form method="post" id="giftIDForm">
-                                {% csrf_token %}
-                                <input type="hidden" id="show_gift_modal" name="giftcategory" value="{{ gift.itemInfo.itemCategory }}">
-                                <input type="hidden" id="show_gift_modal" name="giftidnum" value="{{ gift.giftID }}">
-                                <button class="not_accepted" data-toggle="modal" data-target="#exampleModal">수락</button>
-                            </form>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% else %}
-                    {% if gift.accepted %}
-                    <div class="content_list2">
-                    {% else %}
-                    <div class="content_list">
-                    {% endif %}
+                    {% if gift.anonymous %}
                     <div class="profile1">
                         <div class="profile_image1">
-                            <img src="{% static 'img/charac/07/03/'|add:gift.giver_user.username|add:'07-1.png' %}">
-                        </div>
-                        <div class="profile_name1">
-                            {{gift.giver_user.username}}
+                            <img src="{% static 'img/baseprof.png' %}">
                         </div>
                     </div>
-                    <div class="message">
-                        <div class="message_info">
-                            <p>[{{gift.giver_user.username}}]님 께서 [ {{gift.itemInfo.itemName}} ] [ {{gift.itemCount}} ] 개를 선물했습니다.</p>
-                            <p>{{gift.orderDate}}</p>
+                    {% else %}
+                    <div class="profile1">
+                        <div class="profile_image1">
+                            <img src="{% static 'img/charac/'|add:gift.giver_user.char.charEngName|add:'2.png' %}">
                         </div>
+                    </div>
+                    {% endif %}
+                    <div class="message">
+                        {% if gift.anonymous %}
+                        <div class="message_info">
+                            <p>익명님께서 선물이 도착했습니다.</p>
+                            <p>{{ gift.orderDate|date:"n월 j일" }}</p>
+                        </div>
+                        {% else %}
+                        <div class="message_info">
+                            <p>{{gift.giver_user.char.charName}}님으로부터 선물이 도착했습니다.</p>
+                            <p>{{ gift.orderDate|date:"n월 j일" }}</p>
+
+                        </div>
+                        {% endif %}
+
                         <div class="message_content">
-                            <img src={% static "img/star.png" %}>
                             {% if gift.message %}
                             {{gift.message}}
                             {% else %}
@@ -101,9 +63,8 @@
                             </div>
                         </div>
                         {% if gift.accepted %}
-                        <button class="accepted">수락</button>
                         {% else %}
-                        <form method="post" id="giftIDForm">
+                        <form method="post" class="gift-accept-form" action="{% url 'member:giftbox' %}">
                             {% csrf_token %}
                             <input type="hidden" id="show_gift_modal" name="giftcategory" value="{{ gift.itemInfo.itemCategory }}">
                             <input type="hidden" id="show_gift_modal" name="giftidnum" value="{{ gift.giftID }}">
@@ -112,7 +73,6 @@
                         {% endif %}
                     </div>
                 </div>
-                {% endif %}
             {% endfor %}
         {% else %}
             <div class="blank_info">
@@ -124,43 +84,84 @@
 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-100 w-75">
-      <div class="modal-content" id="modal_info">
-        <div class="modal-body" id="modal_contents">
-            <h4>선물이 인벤토리에 보관되었습니다.</h4>
-            <button type="button" data-dismiss="modal">확인</button>
-        </div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body" style="text-align: center; padding: 40px; color: #333; font-size: 1.2rem;">
+        <p>선물이 인벤토리에 보관되었습니다.</p>
+        <button type="button" class="btn-primary" data-dismiss="modal">확인</button>
       </div>
     </div>
   </div>
+</div>
 
 
-
-  <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Select all forms with the class 'giftIDForm'
-    const forms = document.querySelectorAll('form#giftIDForm');
-
-    // Iterate over each form and set up the event listener
-    forms.forEach(function (form) {
-        const acceptButton = form.querySelector('.not_accepted');
-
-        if (acceptButton) {
-            acceptButton.addEventListener('click', function (event) {
-                event.preventDefault(); // Prevent the default form submission
-
-                // Show the modal
-                $('#exampleModal').modal('show');
-
-                // When the modal is hidden, submit the form
-                $('#exampleModal').on('hidden.bs.modal', function () {
-                    form.submit(); // Submit the form
-                });
-            });
+<script>
+$(document).ready(function () {
+    // CSRF 토큰 설정을 위한 코드 (AJAX POST 요청에 필수)
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
         }
     });
-});
 
+    // 1. '.gift-accept-form' 클래스를 가진 폼이 제출될 때 이벤트를 실행합니다.
+    $('.gift-accept-form').on('submit', function (event) {
+        // 2. 기본 동작(페이지 새로고침)을 막습니다.
+        event.preventDefault();
+
+        const form = $(this); // 현재 제출된 폼을 변수에 저장
+
+        // 3. AJAX를 사용해 폼 데이터를 서버로 전송합니다.
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'), // 폼의 action 속성에 지정된 URL
+            data: form.serialize(),   // 폼 안의 모든 데이터를 전송
+
+            // 4. 서버에서 성공적으로 응답을 받으면 이 함수가 실행됩니다.
+            success: function (response) {
+                if (response.status === 'success') {
+                    // 확인 모달을 띄웁니다.
+                    $('#exampleModal').modal('show');
+
+                    // (선택사항) UI를 즉시 업데이트하여 사용자 경험을 향상시킵니다.
+                    const giftCard = form.closest('.content_list');
+                    giftCard.removeClass('content_list').addClass('content_list2');
+                    
+                    const button = form.find('.not_accepted');
+                    button.removeClass('not_accepted').addClass('accepted').text('수락됨').prop('disabled', true);
+                    form.remove(); // 폼 자체를 제거할 수도 있습니다.
+                }
+            },
+            
+            // 에러가 발생했을 경우
+            error: function () {
+                alert('선물을 받는 중 오류가 발생했습니다.');
+            }
+        });
+    });
+
+    // 5. 확인 모달이 닫힐 때 페이지를 새로고침합니다.
+    $('#exampleModal').on('hidden.bs.modal', function () {
+        location.reload();
+    });
+});
 </script>
 
 
