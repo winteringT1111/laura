@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/fishing.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="fishing-action-container">
+    <h3>낚시 준비 완료!</h3>
+    <p>아래 버튼을 눌러 물고기를 잡아보세요. (10 EXP 소모)</p>
+    
+    <form method="POST" action="{% url 'store:cast_rod' %}">
+        {% csrf_token %}
+
+        <div class="action-description-group">
+            <label for="action_description_input">행동 지문 (선택)</label>
+            <textarea id="action_description_input" name="action_description" rows="3" placeholder="예) 미끼를 깊숙이 던졌다."></textarea>
+        </div>
+        
+        <button type="submit" class="catch-button">물고기 잡기!</button>
+    </form>
+    
+    <a href="{% url 'store:fishing_spot' %}" class="cancel-link">취소하고 돌아가기</a>
+</div>
+{% endblock %}

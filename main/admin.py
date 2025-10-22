@@ -15,6 +15,8 @@ admin.site.register(Gift)
 admin.site.register(IngredientGift)
 admin.site.register(Recipe)
 admin.site.register(Attendance)
+admin.site.register(Fish)
+admin.site.register(Trash)
 
 
 @admin.register(Ingredient)

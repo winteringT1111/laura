@@ -14,6 +14,7 @@ class CharInfo(models.Model):
     today_attended = models.BooleanField(default=False)  # 금일 출석 여부 추가
     completed_chapters = models.ManyToManyField(Chapter, blank=True, related_name='completed_by_characters')
     completed_quests = models.ManyToManyField(Quest, blank=True, related_name='completed_by_char_info')
+    fishing_score = models.PositiveIntegerField(default=0, verbose_name="낚시 점수")
 
     class Meta:
         db_table = "charInfo"

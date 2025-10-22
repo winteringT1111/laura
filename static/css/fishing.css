@@ -1,0 +1,378 @@
+/* fishing.css - Dark Fantasy Game Theme */
+
+/* General Body & Container */
+
+
+body {
+    font-family: "Noto Sans", sans-serif !important;
+    color: #c0b596; /* Light, parchment-like text color */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align content to the top */
+    min-height: 100vh;
+    padding: 30px 0;
+    margin: 0; /* Ensure no default body margin */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+
+
+.background{
+background-image: url("../img/fish.png") !important;
+background-size: cover;
+}
+
+
+
+.fishing-page-container {
+    width: 90%;
+    max-width: 900px;
+    height: 95vh;
+    background-color: #3b3734; /* Slightly lighter than body, for contrast */
+    border: 2px solid #5a5245; /* Darker, textured border */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Deeper shadow */
+    padding: 30px;
+    display: grid;
+    gap: 25px;
+    position: relative; /* For background elements */
+    overflow-y: auto;
+    scrollbar-width: none; /* Add Firefox version too */
+}
+
+/* Separate rule for Webkit scrollbar */
+.fishing-page-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Background textures/elements */
+.fishing-page-container::before {
+    content: '';
+    position: absolute;
+    top: -50px; left: -50px; right: -50px; bottom: -50px;
+    opacity: 0.1;
+    z-index: 0;
+    pointer-events: none; /* Allow clicks on elements below */
+}
+
+/* Common Card Style for Panels */
+.info-panel, .user-score, .leaderboard, .fishing-log-feed {
+    background-color: #312e2c; /* Darker card background */
+    border: 1px solid #5a5245;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6); /* Inner shadow for depth */
+    padding: 20px;
+    position: relative;
+    z-index: 1; /* Bring content above texture overlay */
+} .info-panel p {
+    margin: 0;
+}
+
+
+@font-face {
+    font-family: 'hana'; /* 원하는 폰트 이름 */
+    src: url('../../Hana2-Medium.ttf') format('truetype'); /* TTF 파일 경로 */
+    font-weight: normal; /* 폰트 두께 (optional) */
+    font-style: normal; /* 폰트 스타일 (optional) */
+}
+
+/* Titles and Headers */
+h3, h4 {
+    color: #e9dcb5; /* Golden-like color for titles */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1.5px;
+    margin-top: 0;
+    font-family: 'hana' !important; 
+    padding-bottom: 10px;
+    border-bottom: 1px solid #5a5245;
+}
+.info-panel h3 { border-color: #8c7f69; } /* Slightly different border for info */
+
+
+/* Info Panel */
+.info-panel {
+    border-left: 5px solid #8c7f69; /* Emphasize with a thicker border */
+}
+.info-panel p { color: #b4a791; line-height: 1.8; font-size: 0.95rem; }
+
+/* Score and Leaderboard */
+.score-leaderboard {
+    display: flex;
+    gap: 20px;
+}
+.user-score, .leaderboard {
+    flex: 1;
+    text-align: center;
+}
+.user-score h4, .leaderboard h4 {
+    color: #dac17f; /* Brighter gold for these titles */
+    border-bottom: 1px dashed #6b5f4b; /* Dashed separator */
+}
+.user-score p {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #f7e0a8; /* Very bright gold for score */
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+.leaderboard ol {
+    list-style-type: none; /* Remove default bullet/number */
+    padding: 0;
+    text-align: left;
+    margin-top: 15px;
+}
+.leaderboard li {
+    background-color: #4a4133; /* Darker background for each list item */
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    color: #e9dcb5;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between; 
+}
+
+/* static/css/fishing.css 파일 맨 아래에 추가 */
+
+/* 낚시 액션 페이지 스타일 조정 */
+.fishing-action-container {
+    padding: 40px 50px; /* 좌우 패딩 늘리기 */
+    background-color: #312d29d0;
+}
+
+/* 행동 지문 입력 그룹 */
+.action-description-group {
+    margin-bottom: 25px; /* 버튼과의 간격 */
+    text-align: left;
+}
+
+.action-description-group label {
+    display: block;
+    color: #dac17f; /* 라벨 색상 */
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.action-description-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #5a5245; /* 테두리 색상 */
+    border-radius: 4px;
+    background-color: #4a4133; /* 입력창 배경색 */
+    color: #f0e6d2; /* 입력 텍스트 색상 */
+    font-size: 1rem;
+    box-sizing: border-box;
+    resize: vertical; /* 세로 크기 조절만 가능하도록 */
+    min-height: 80px; /* 최소 높이 */
+}
+
+.action-description-group textarea::placeholder {
+    color: #8c7f69; /* 플레이스홀더 색상 */
+    opacity: 1;
+}
+
+.action-description-group textarea:focus {
+    outline: none;
+    border-color: #dac17f; /* 포커스 시 테두리 색상 */
+    box-shadow: 0 0 5px rgba(218, 193, 127, 0.5); /* 은은한 포커스 효과 */
+}
+
+
+
+
+
+
+/* static/css/fishing.css 파일에 추가 */
+
+/* 로그 피드 전체 */
+.fishing-log-feed {
+    background-color: transparent; /* 배경 제거 */
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+.fishing-log-feed h4 { /* 헤더 스타일은 유지 */
+    color: #dac17f;
+    border-bottom: 1px solid #6b5f4b;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* 개별 로그 포스트 (새 디자인) */
+.log-post-new {
+    display: flex;
+    gap: 15px;
+    background-color: #3b3734; /* 어두운 카드 배경 */
+    border: 1px solid #5a5245;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 작성자 프로필 이미지 */
+.log-author-profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 원형 이미지 */
+    border: 2px solid #5a5245;
+    object-fit: cover;
+}
+
+/* 로그 상세 내용 영역 */
+.log-details {
+    flex-grow: 1; /* 남은 공간 모두 차지 */
+}
+
+/* 제목 라인 (작성자 + 결과 요약) */
+.log-title-line {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #5a5245;
+}
+.log-title {
+    font-weight: bold;
+    color: #f7e0a8; /* 밝은 금색 */
+    font-size: 1.1rem;
+}
+.log-quest-info {
+    font-size: 0.9rem;
+    color: #a0937d; /* 연한 회갈색 */
+}
+
+/* 로그 내용 (행동 지문 등) */
+.log-content-new p {
+    margin: 0;
+    color: #e9dcb5; /* 밝은 텍스트 색상 */
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+/* 자동 댓글 영역 */
+.log-comments-new {
+    margin-top: 15px;
+}
+.auto-comment-new {
+    background-color: #4a4133; /* 약간 더 밝은 배경 */
+    border: 1px solid #5a5245;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: flex; /* 아이콘과 텍스트를 나란히 배치 */
+    align-items: center;
+    gap: 10px;
+}
+.auto-comment-new span {
+    font-size: 0.9rem;
+    color: #f7e0a8;
+    font-style: italic;
+}
+
+/* 보상 아이콘 스타일 */
+.reward-icon {
+    width: 24px; /* 작은 아이콘 크기 */
+    height: 24px;
+    object-fit: contain;
+    vertical-align: middle; /* 텍스트와 세로 중앙 정렬 */
+}
+
+.no-logs { /* 로그 없을 때 메시지 */
+    text-align: center;
+    color: #95a5a6;
+    padding: 30px 0;
+    font-style: italic;
+}
+
+/* fishing.css */
+
+/* === 낚싯대 던지기 버튼 (활성화 상태) === */
+.cast-button {
+    display: block; /* 링크를 블록 요소로 만들어 margin 적용 */
+    width: fit-content; /* 내용물 크기에 맞춤 */
+    margin: auto; /* 상하 20px, 좌우 자동(가운데 정렬) */
+    padding: 15px 40px; /* 버튼 크기 (상하, 좌우) */
+    background-color: #6b5f4b; /* 기본 배경색 (갈색 계열) */
+    color: #e9dcb5; /* 기본 글자색 (밝은 베이지) */
+    text-decoration: none; /* 밑줄 제거 */
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid #dac17f; /* 금색 테두리 */
+    border-radius: 5px; /* 약간 둥근 모서리 */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; /* 부드러운 전환 효과 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* 그림자 */
+    text-transform: uppercase; /* 대문자 변환 */
+    letter-spacing: 1px; /* 글자 간격 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.cast-button:hover {
+    background-color: #8c7f69; /* 호버 시 약간 밝은 배경색 */
+    color: #fff; /* 호버 시 흰색 글자 */
+    text-decoration: none;
+    border-color: #f7e0a8; /* 호버 시 더 밝은 금색 테두리 */
+    transform: translateY(-2px); /* 살짝 위로 이동 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6); /* 더 짙은 그림자 */
+}
+
+/* === 낚싯대 던지기 버튼 (비활성화 상태) === */
+.cast-button-disabled {
+    display: block; /* 버튼을 블록 요소로 */
+    width: fit-content; /* 내용물 크기에 맞춤 */
+    margin: 20px auto; /* 상하 20px, 좌우 자동(가운데 정렬) */
+    padding: 15px 40px; /* 활성화 버튼과 동일한 크기 */
+    background-color: #4a4133; /* 더 어두운 배경색 */
+    color: #8c7f69; /* 흐릿한 글자색 */
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid #5a5245; /* 더 어두운 테두리 */
+    border-radius: 5px; /* 약간 둥근 모서리 */
+    cursor: not-allowed; /* 금지 커서 */
+    opacity: 0.7; /* 약간 투명하게 */
+    text-transform: uppercase; /* 대문자 변환 */
+    letter-spacing: 1px; /* 글자 간격 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+
+.cancel-link {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    margin-left: 33%;
+} .cancel-link:hover {
+    color: white;
+}
+
+
+/* fishing.css */
+
+/* === 물고기 잡기 버튼 === */
+.catch-button {
+    display: block; /* 버튼을 블록 요소로 만들어 margin 적용 */
+    width: fit-content; /* 내용물 크기에 맞춤 */
+    margin: 30px auto 0 auto; /* 위쪽 여백 추가, 좌우 자동(가운데 정렬), 아래 여백 없음 */
+    padding: 15px 40px; /* 버튼 크기 (상하, 좌우) */
+    background-color: #6b5f4b; /* 기본 배경색 (갈색 계열) */
+    color: #e9dcb5; /* 기본 글자색 (밝은 베이지) */
+    text-decoration: none; /* 밑줄 제거 */
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid #dac17f; /* 금색 테두리 */
+    border-radius: 5px; /* 약간 둥근 모서리 */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; /* 부드러운 전환 효과 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* 그림자 */
+    text-transform: uppercase; /* 대문자 변환 */
+    letter-spacing: 1px; /* 글자 간격 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    margin-bottom: 20px;
+}
+
+.catch-button:hover {
+    background-color: #8c7f69; /* 호버 시 약간 밝은 배경색 */
+    color: #fff; /* 호버 시 흰색 글자 */
+    border-color: #f7e0a8; /* 호버 시 더 밝은 금색 테두리 */
+    transform: translateY(-2px); /* 살짝 위로 이동 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6); /* 더 짙은 그림자 */
+}
