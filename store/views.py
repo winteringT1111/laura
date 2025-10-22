@@ -193,7 +193,7 @@ def cast_rod(request): # Add request parameter
 
     if outcome < PROB_SALMON:
         try:
-            caught_item_instance = Fish.objects.get(name="2M 연어")
+            caught_item_instance = Fish.objects.get(name="황금 연어")
             catch_description = f"엄청난 월척! [{caught_item_instance.name}]을(를) 낚았다!"
             score_gain = 10000
             caught_item_image_name = f"{caught_item_instance.name}.png"
@@ -202,7 +202,7 @@ def cast_rod(request): # Add request parameter
             caught_item_image_name = "놓친 아이템.png"
 
     elif outcome < PROB_SALMON + PROB_GRADE1:
-        fish_list = Fish.objects.filter(grade=1)
+        fish_list = Fish.objects.filter(grade=1).exclude(name='황금 연어')
         if fish_list.exists():
             caught_item_instance = random.choice(fish_list)
             catch_description = f"강한 손맛! [{caught_item_instance.name}(1등급)]을(를) 낚았다!"
