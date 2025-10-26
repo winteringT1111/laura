@@ -233,7 +233,7 @@
             </div>
         </div>
         
-
+        {# 아이템 상세 모달 #}
         <div id="itemModal" class="modal-overlay" style="display:none;">
             <div class="modal-content">
                 <span class="modal-close-btn">&times;</span>
@@ -241,132 +241,294 @@
                 <p id="modalItemName"></p>
                 <p id="modalItemCategory" class="category"></p>
                 <p id="modalItemInfo" class="item_info"></p>
+                
+
+                {# ✨ 양도 버튼이 들어갈 자리 #}
+                <div id="modal-actions">
+                    {# JavaScript가 여기에 버튼들을 추가합니다 #}
+                </div>
             </div>
         </div>
     </div>
 
+
+    
 </div>
 
 </div>
+
+{# ✨ 새로운 양도 대상 선택 모달 추가 #}
+<div class="modal fade" id="transferModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content transfer-modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">아이템 양도</h5>
+            </div>
+            <div class="modal-body">
+                <p><strong id="transferItemName"></strong> 아이템을 양도합니다.</p>
+                <input type="hidden" id="transfer-item-name-input"> {# JS가 채울 아이템 이름 #}
+                
+                <div class="form-group">
+                    <label for="recipient-select">받는 사람:</label>
+                    <select id="recipient-select" class="form-control" size="5">
+                        <option value="">-- 캐릭터 선택 --</option>
+                        {# 뷰에서 전달받은 recipient_list로 옵션 채우기 #}
+                        {% for recipient in recipient_list %}
+                            <option value="{{ recipient.charName }}">{{ recipient.charName }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="transfer-quantity">수량:</label>
+                    <input type="number" id="transfer-quantity" value="1" min="1">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirm-transfer-btn">양도하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{# ✨ 아이템 사용 결과를 보여줄 새 모달 #}
+<div class="modal fade" id="itemUseResultModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content result-modal-content"> {# 기존 결과 모달과 스타일 공유 가능 #}
+            <div id="itemUseResultMessage"></div>
+            <div id="itemUseObtainedItems" class="obtained-items-list"></div> {# 포춘쿠키 결과 표시 영역 #}
+        </div>
+    </div>
+</div>
+
 
 
 
 
 <script>
+
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- 1. 모든 요소 선택 (스크립트 상단에서 한 번만) ---
     const houseIcon = document.querySelector('.fa-circle-user');
-    //const relationIcon = document.querySelector('.fa-address-book');
     const invenIcon = document.querySelector('.fa-briefcase');
-
     const profileSection = document.getElementById('profile-section');
-    //const relationSection = document.getElementById('relation-section');
     const invenSection = document.getElementById('inven-section');
-
-    profileSection.style.display = 'block';
-    //relationSection.style.display = 'none';
-    invenSection.style.display = 'none';
-
-    houseIcon.addEventListener('click', () => {
-        profileSection.style.display = 'block';
-        //relationSection.style.display = 'none';
-        invenSection.style.display = 'none';
-    });
-
-    // '주소록' 아이콘 클릭 이벤트
-    //relationIcon.addEventListener('click', () => {
-    //    profileSection.style.display = 'none';
-    //    relationSection.style.display = 'block';
-    //    invenSection.style.display = 'none';
-    //});
-
-    // '가방' 아이콘 클릭 이벤트
-    invenIcon.addEventListener('click', () => {
-        profileSection.style.display = 'none';
-        //relationSection.style.display = 'none';
-        invenSection.style.display = 'block';
-    });
-
-
-    // --- 2. 기존에 작성하신 프로필 하위 섹션(PERSONALITY 등) 관련 스크립트 ---
-    const buttons = document.querySelectorAll('.sub_section');
-    const contents = {
+    
+    const subSectionButtons = document.querySelectorAll('.sub_section');
+    const profileContents = {
         'PERSONALITY': document.querySelector('.content_personality'),
         'APPEARANCE': document.querySelector('.content_appearance'),
         'ETC': document.querySelector('.content_etc'),
         'STATS': document.querySelector('.content_stats'),
     };
+
+    const itemModal = document.getElementById('itemModal');
+    const itemModalCloseBtn = itemModal.querySelector('.modal-close-btn'); // 모달 내부에서 찾기
+    const allInventoryItems = document.querySelectorAll('#inven-section .item_image');
+    const actionsPlaceholder = document.getElementById('modal-actions'); // 아이템 모달 내 버튼 영역
     
-    // 페이지 로드 시 PERSONALITY 섹션이 기본으로 보이도록 설정합니다.
-    Object.values(contents).forEach(c => {
+    const transferModalElement = document.getElementById('transferModal');
+    const transferModal = new bootstrap.Modal(transferModalElement);
+    const confirmTransferBtn = document.getElementById('confirm-transfer-btn');
+    const recipientSelect = document.getElementById('recipient-select');
+    const transferItemNameInput = document.getElementById('transfer-item-name-input');
+    const transferItemNameDisplay = document.getElementById('transferItemName');
+    const quantityInput = document.getElementById('transfer-quantity');
+    
+    const useResultModalElement = document.getElementById('itemUseResultModal');
+    const useResultModal = new bootstrap.Modal(useResultModalElement);
+    const useResultMessage = document.getElementById('itemUseResultMessage');
+    const useResultObtained = document.getElementById('itemUseObtainedItems');
+
+    const isOwnProfile = {{ is_own_profile|yesno:"true,false" }};
+
+    // --- 2. 프로필/인벤토리 탭 전환 로직 ---
+    profileSection.style.display = 'block'; // 기본으로 프로필 보이기
+    invenSection.style.display = 'none';
+
+    houseIcon.addEventListener('click', () => {
+        profileSection.style.display = 'block';
+        invenSection.style.display = 'none';
+    });
+
+    invenIcon.addEventListener('click', () => {
+        profileSection.style.display = 'none';
+        invenSection.style.display = 'block';
+    });
+
+    // --- 3. 프로필 하위 섹션 전환 로직 ---
+    // 초기 상태 설정 (PERSONALITY 보이기)
+    Object.values(profileContents).forEach(c => {
         if (c) c.style.display = 'none';
     });
-    if (contents['PERSONALITY']) {
-        contents['PERSONALITY'].style.display = 'block';
+    if (profileContents['PERSONALITY']) {
+        profileContents['PERSONALITY'].style.display = 'block';
     }
-
-
-    buttons.forEach(button => {
+    // 버튼 클릭 이벤트
+    subSectionButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // 모든 하위 섹션을 일단 숨깁니다.
-            Object.values(contents).forEach(c => {
+            Object.values(profileContents).forEach(c => {
                 if (c) c.style.display = 'none';
             });
-
-            // 클릭된 버튼에 해당하는 섹션만 보여줍니다.
             const key = button.textContent.trim();
-            if (contents[key]) {
-                contents[key].style.display = 'block';
+            if (profileContents[key]) {
+                profileContents[key].style.display = 'block';
             }
         });
     });
-});
 
-
-// member/profile.html 의 <script> 태그 안에 추가
-
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // --- (기존의 다른 스크립트 코드는 여기에 그대로 둡니다) ---
-
-
-    // --- 아이템 클릭 모달 스크립트 ---
-    const itemModal = document.getElementById('itemModal');
-    const closeBtn = document.querySelector('.modal-close-btn');
-    const allItems = document.querySelectorAll('.item_image');
-
-    // 각 아이템에 클릭 이벤트 추가
-    allItems.forEach(item => {
+    // --- 4. 아이템 클릭 및 모달 로직 ---
+    allInventoryItems.forEach(item => {
         item.addEventListener('click', () => {
-            // 1. 클릭된 아이템의 data-* 속성에서 정보 가져오기
+            console.log("Item clicked:", item.dataset.name); // ✨ 디버깅 로그 추가
+
             const name = item.dataset.name;
             const category = item.dataset.category;
             const info = item.dataset.info;
             const imgSrc = item.dataset.img;
+            const count = parseInt(item.dataset.count, 10);
 
-            // 2. 가져온 정보로 모달 내부 채우기
+            // 모달 내용 채우기
             document.getElementById('modalItemImage').src = imgSrc;
             document.getElementById('modalItemName').textContent = name;
             document.getElementById('modalItemCategory').textContent = category;
             document.getElementById('modalItemInfo').textContent = info;
             
-            // 3. 모달 보여주기
-            itemModal.style.display = 'flex';
+            // 버튼 영역 초기화
+            actionsPlaceholder.innerHTML = ''; 
+            const usableItems = ["스테미나", "수정구", "포춘쿠키"]; // 실제 아이템 이름 확인
+
+            if (isOwnProfile && count > 0) {
+                // 사용 버튼 추가 (조건부)
+                if (usableItems.includes(name)) {
+                    const useBtn = document.createElement('button');
+                    useBtn.textContent = '사용';
+                    useBtn.classList.add('btn', 'btn-success', 'use-btn');
+                    useBtn.dataset.itemName = name;
+
+                    useBtn.addEventListener('click', () => {
+                        // ... (use_item fetch 로직은 여기에 그대로 둡니다) ...
+                         fetch("{% url 'member:use_item' %}", { // 앱 이름 확인!
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}',
+                            },
+                            body: JSON.stringify({ item_name: name }), // 'name' 변수 사용
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                             if (data.success) {
+                                useResultMessage.textContent = data.message;
+                                useResultObtained.innerHTML = '';
+                                if (data.obtained_items && data.obtained_items.length > 0) {
+                                    data.obtained_items.forEach(obtained => {
+                                        useResultObtained.innerHTML += `
+                                            <div class="reward-item">
+                                                <img src="${obtained.icon_url}" class="reward-icon">
+                                                <span class="reward-name">${obtained.name}</span>
+                                                <span class="reward-quantity">x${obtained.quantity}</span>
+                                            </div>`;
+                                    });
+                                }
+                                itemModal.style.display = 'none'; // 현재 모달 닫기
+                                useResultModal.show(); // 결과 모달 표시
+                            } else {
+                                alert('아이템 사용 실패: ' + (data.error || '알 수 없는 오류'));
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error using item:', error);
+                            alert('아이템 사용 중 오류가 발생했습니다.');
+                        });
+                    });
+                    actionsPlaceholder.appendChild(useBtn);
+                }
+
+                // 양도 버튼 추가
+                const transferBtn = document.createElement('button');
+                transferBtn.textContent = '양도';
+                transferBtn.classList.add('btn', 'btn-warning', 'transfer-btn');
+                transferBtn.dataset.itemName = name;
+
+                transferBtn.addEventListener('click', () => {
+                    transferItemNameInput.value = name;
+                    transferItemNameDisplay.textContent = name;
+                    recipientSelect.value = "";
+                    if (quantityInput) {
+                       quantityInput.max = count;
+                       quantityInput.value = 1;
+                    }
+                    itemModal.style.display = 'none';
+                    transferModal.show();
+                });
+                actionsPlaceholder.appendChild(transferBtn);
+            }
+            
+            console.log("Showing item modal..."); // ✨ 디버깅 로그 추가
+            itemModal.style.display = 'flex'; // 아이템 상세 모달 표시
         });
     });
 
-    // 닫기 버튼 클릭 시 모달 숨기기
-    closeBtn.addEventListener('click', () => {
+    // --- 5. 모달 닫기 로직 ---
+    // 아이템 상세 모달
+    itemModalCloseBtn.addEventListener('click', () => {
         itemModal.style.display = 'none';
     });
-
-    // 모달 배경 클릭 시 모달 숨기기
     itemModal.addEventListener('click', (event) => {
         if (event.target === itemModal) {
             itemModal.style.display = 'none';
         }
     });
+    // 결과 모달 (Bootstrap이 data-dismiss로 처리하지만, 새로고침 위해 이벤트 추가)
+     useResultModalElement.addEventListener('hidden.bs.modal', function () {
+        location.reload(); 
+    });
 
-});
+    // --- 6. 양도 확인 버튼 로직 ---
+    confirmTransferBtn.addEventListener('click', () => {
+        // ... (transfer_item fetch 로직은 여기에 그대로 둡니다) ...
+        const itemName = transferItemNameInput.value;
+        const recipientCharName = recipientSelect.value;
+        const quantity = parseInt(quantityInput.value, 10);
+        const maxQuantity = parseInt(quantityInput.max, 10);
+
+        if (!recipientCharName) { alert('받는 사람을 선택해주세요.'); return; }
+        if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
+            alert(`수량은 1개 이상, ${maxQuantity}개 이하로 입력해주세요.`); return;
+        }
+
+        fetch("{% url 'member:transfer_item' %}", { // 앱 이름 확인!
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({
+                item_name: itemName,
+                character_id: recipientCharName, 
+                quantity: quantity
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('아이템을 성공적으로 양도했습니다.');
+                transferModal.hide();
+                location.reload();
+            } else {
+                alert('아이템 양도에 실패했습니다: ' + (data.error || '알 수 없는 오류'));
+            }
+        })
+        .catch(error => {
+            console.error('Error transferring item:', error);
+            alert('아이템 양도 중 오류가 발생했습니다.');
+        });
+    });
+
+}); // End of the single DOMContentLoaded listener
+
 </script>
-
 {% endblock %}

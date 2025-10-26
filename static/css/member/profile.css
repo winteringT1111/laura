@@ -481,3 +481,192 @@ progress[value]::-webkit-progress-value {
     margin-bottom: 40px;
     padding: 0;
 } 
+
+
+
+
+
+
+
+
+
+
+/* profile.css 또는 inven.css */
+
+/* 아이템 상세 모달 내 액션 버튼 영역 */
+.modal-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+/* 양도 버튼 스타일 */
+.transfer-btn {
+    /* 필요에 따라 Bootstrap 스타일 외 추가 스타일 지정 */
+    background-color: #857c6f;
+    color: #f0e6d2;
+    border: 1px solid #e6d5a8;
+}
+
+/* 양도 대상 선택 모달 스타일 */
+.transfer-modal-content {
+    background-color: #3b3734; /* 기존 테마 색상 */
+    color: #c8bca6;
+    border: 2px solid #5a5245;
+}
+.transfer-modal-content .modal-header {
+    border-bottom: 1px solid #5a5245;
+}
+.transfer-modal-content .modal-title {
+    color: #dac17f;
+}
+.transfer-modal-content .close {
+    color: #c8bca6;
+    opacity: 0.7;
+}
+.transfer-modal-content .modal-footer {
+    border-top: 1px solid #5a5245;
+}
+.transfer-modal-content .form-control {
+    background-color: #4a4133;
+    border-color: #5a5245;
+    color: #f0e6d2;
+}
+.transfer-modal-content .form-control:focus {
+    background-color: #4a4133;
+    color: #f0e6d2;
+    border-color: #dac17f;
+    box-shadow: 0 0 5px rgba(218, 193, 127, 0.5);
+}
+
+#confirm-transfer-btn,#close-result-btn {
+    background-color: #857c6f;
+    color: #f0e6d2;
+    border: 1px solid #e6d5a8;
+}
+
+#close-result-btn:hover {
+    background-color: #e6d5a8;
+    color: #4b463d;
+    border: 1px solid #e6d5a8;
+}
+
+#confirm-transfer-btn:hover {
+    background-color: #e6d5a8;
+    color: #4b463d;
+    border: 1px solid #e6d5a8;
+}
+
+/* profile.css 또는 inven.css 파일에 추가 */
+
+/* 양도 수량 입력 필드 스타일 */
+#transfer-quantity {
+    width: 80px; /* 적절한 너비 설정 */
+    padding: 6px 10px;
+    margin-left: 10px; /* 받는 사람 선택란과의 간격 */
+    background-color: #4a4133;
+    border: 1px solid #5a5245;
+    border-radius: 4px;
+    color: #f0e6d2;
+    text-align: center; /* 숫자 가운데 정렬 */
+    -moz-appearance: textfield; /* Firefox에서 스피너 버튼 숨기기 */
+}
+
+/* 웹킷 브라우저 (Chrome, Safari 등)에서 스피너 버튼 숨기기 */
+#transfer-quantity::-webkit-outer-spin-button,
+#transfer-quantity::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#transfer-quantity:focus {
+    outline: none;
+    border-color: #dac17f;
+    box-shadow: 0 0 5px rgba(218, 193, 127, 0.5);
+}
+
+/* 수량 입력 필드 그룹 스타일 (선택사항, label과 함께 배치 시) */
+.form-group label[for="transfer-quantity"] {
+    margin-right: 5px; /* 라벨과 입력 필드 간격 */
+}
+
+
+
+
+
+
+/* profile.css 또는 inven.css */
+
+/* 아이템 상세 모달 내 액션 버튼 영역 */
+.modal-actions {
+    margin-top: 20px;
+    text-align: right;
+    display: flex; /* 버튼들을 나란히 배치 */
+    gap: 30px; /* 버튼 사이 간격 */
+}
+
+/* 사용 버튼 스타일 */
+.use-btn {
+    /* 필요에 따라 Bootstrap 스타일 외 추가 스타일 지정 */
+    background-color: #cec7b9; /* 초록색 계열 */
+    border-color: #ccb363;
+    color: #302e25;
+    margin-right: 10px;
+}
+.use-btn:hover {
+     background-color: #5e5a48;
+    border-color: #5e5a48;
+    color: #cec7b9; 
+} .use-btn:focus {
+     background-color: #5e5a48;
+    border-color: #5e5a48;
+    color: #cec7b9; 
+} .use-btn:active {
+     background-color: #5e5a48;
+    border-color: #5e5a48;
+    color: #cec7b9; 
+}
+
+/* 결과 모달 - 얻은 아이템 목록 스타일 */
+.obtained-items-list {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 150px; /* 목록이 길어질 경우 스크롤 */
+    overflow-y: auto;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 4px;
+}
+/* reward-item, reward-icon 등은 기존 CSS 재사용 */
+
+
+.obtained-items-list .reward-item {
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    border-radius: 4px;
+    gap: 10px; /* 아이콘과 텍스트 간격 */
+}
+
+/* ✨ 결과 모달 내 아이콘 크기 고정 ✨ */
+.obtained-items-list .reward-icon {
+    width: 30px;          /* 원하는 너비 */
+    height: 30px;         /* 원하는 높이 */
+    object-fit: contain;  /* 이미지 비율 유지하며 공간 안에 맞춤 */
+    flex-shrink: 0;       /* 아이콘 크기가 줄어들지 않도록 함 */
+    background-color: rgba(0,0,0,0.1); /* 투명 배경 아이콘 대비 */
+    border-radius: 4px;
+}
+
+.obtained-items-list .reward-name {
+    color: #f0e6d2;
+    font-weight: bold;
+    flex-grow: 1; /* 이름이 남은 공간 차지 */
+}
+
+.obtained-items-list .reward-quantity {
+    color: #a0937d;
+    font-weight: bold;
+}

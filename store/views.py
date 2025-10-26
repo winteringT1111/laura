@@ -15,7 +15,7 @@ def store_main(request):
     getUser = request.user
     userinfo = CharInfo.objects.get(user=getUser)
     
-    items = Item.objects.all()
+    items = Item.objects.exclude(itemName="트로피")
     ingredients = Ingredient.objects.filter(itemShow=1)
     
     if request.method == "POST":
