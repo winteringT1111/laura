@@ -45,3 +45,98 @@ def login(request):
             return render(request,'main.html', {'error':'오류입니다'})
     else:
         return render(request,'main.html')
+    
+
+
+
+
+
+
+# your_app/views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.db.models import Sum
+from django.contrib import messages
+from .models import Dungeon, DungeonLog, CharInfo
+from .forms import DungeonLogForm
+
+@login_required
+def dungeon_b1_view(request):
+    """던전 B1 메인 페이지"""
+    dungeon = get_object_or_404(Dungeon, name="엘리시온 던전 B1") # B1 던전 정보 가져오기
+    
+    # 던전 진행률 최신화 (성능 고려: 자주 호출되지 않도록 캐싱 등 고려 가능)
+    # dungeon.update_progress() 
+    
+    try:
+        char_info = CharInfo.objects.get(user=request.user)
+    except CharInfo.DoesNotExist:
+        messages.error(request, "캐릭터 정보가 없습니다.")
+        return redirect('main_page_or_error') # 적절한 URL로 변경
+
+    # 리더보드: 던전 B1 기여도가 높은 상위 3명
+    leaderboard = CharInfo.objects.filter(dungeon_b1_contribution__gt=0).order_by('-dungeon_b1_contribution')[:3]
+
+    # 로그 피드
+    dungeon_logs = DungeonLog.objects.filter(dungeon=dungeon).select_related('author_char')
+
+    context = {
+        'dungeon': dungeon,
+        'user_contribution': char_info.dungeon_b1_contribution,
+        'leaderboard': leaderboard,
+        'dungeon_logs': dungeon_logs,
+    }
+    return render(request, 'dungeon1/dungeon_b1.html', context)
+
+
+@login_required
+def create_dungeon_log_view(request):
+    """던전 로그 생성 페이지 및 처리"""
+    dungeon_name = "엘리시온 던전 B1" # 던전 이름을 변수로 저장하여 일관성 유지
+    dungeon = get_object_or_404(Dungeon, name=dungeon_name)
+    
+    if request.method == 'POST':
+        form = DungeonLogForm(request.POST, request.FILES)
+        if form.is_valid():
+            # --- 유효성 검사 통과 시 ---
+            try:
+                with transaction.atomic(): 
+                    # select_for_update()는 동시 요청 시 데이터 충돌 방지에 도움
+                    char_info = CharInfo.objects.select_for_update().get(user=request.user) 
+
+                    new_log = form.save(commit=False)
+                    new_log.dungeon = dungeon
+                    # CharInfo 모델에 'char' ForeignKey가 있다고 가정
+                    new_log.author_char = char_info.char 
+                    new_log.save()
+
+                    # 사용자 기여도 및 전체 진행도 업데이트
+                    char_info.update_dungeon_contribution(dungeon_name=dungeon_name)
+                    dungeon.update_progress() 
+
+                    messages.success(request, f"{new_log.distance_walked}m 탐험 기록을 남겼습니다!")
+                    # ❗️ 리다이렉트할 URL 이름 확인 ('dungeon_b1_view' 또는 다른 이름)
+                    return redirect('users:dungeon1_b1_view') 
+            except CharInfo.DoesNotExist:
+                 messages.error(request, "캐릭터 정보를 찾을 수 없습니다.")
+            except Exception as e:
+                # 예상치 못한 DB 저장 오류 등
+                messages.error(request, f"기록 저장 중 오류가 발생했습니다: {e}")
+                # 오류 발생 시 폼 페이지를 다시 보여주기 위해 아래로 이동
+        
+        else:
+            # --- ❗️ 유효성 검사 실패 시 ---
+            # 1. 터미널에 정확한 에러 내용 출력 (디버깅용)
+            print(">>> Dungeon Log Form Validation Failed! Errors:")
+            print(form.errors.as_json()) 
+            
+            # 2. 사용자에게 일반적인 에러 메시지 표시
+            messages.error(request, "입력 내용을 확인해주세요. 오류가 있습니다.")
+            # 실패 시 폼과 함께 현재 페이지를 다시 렌더링 (아래 return 문에서 처리)
+
+    else: # GET 요청 시 (페이지 처음 로드)
+        form = DungeonLogForm()
+
+    # GET 요청이거나 POST 요청 실패 시 폼 페이지를 렌더링
+    return render(request, 'dungeon1/create_dungeon_log.html', {'form': form})
