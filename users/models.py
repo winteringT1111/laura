@@ -91,3 +91,13 @@ class TrapMessage(models.Model):
     
     def __str__(self):
         return self.text[:50]
+    
+
+class DungeonComment(models.Model):
+    # This links the comment to a specific log
+    log = models.ForeignKey(DungeonLog, on_delete=models.CASCADE, related_name='comments')
+    comment_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment on {self.log.title}"

@@ -11,7 +11,7 @@
 
     <!-- 진행 상황 -->
     <div class="progress-section panel">
-        <h3>현재 진행도</h3>
+        <h3>탐사 진행도</h3>
         {# B3는 goal_progress가 100(%)입니다 #}
         <p>목표: {{ dungeon.goal_progress }}%</p>
         <div class="progress-bar-container">
@@ -42,49 +42,57 @@
 
     <!-- 로그 피드 -->
     <div class="log-feed panel">
-        <h3>탐험 기록</h3>
-        <div class="log-scroll-container">
-            {% for log in dungeon_logs %}
-                {# 성공/실패에 따라 클래스 부여 #}
-                <div class="log-post {% if log.was_successful %}log-success{% else %}log-fail{% endif %}">
-                    <div class="log-author-profile">
-                        <img src="{% static 'img/charac/' %}{{ log.author_char.charEngName}}2.png" alt="{{ log.author_char.charName }}">
-                    </div>
-                    <div class="log-details">
-                        <div class="log-title-line">
-                            <span class="log-title">{{ log.author_char.charName }}</span>
-                            {# B3는 'm' 대신 성공/실패 태그 표시 #}
-                            <span class="log-meta">
-                                | {{ log.created_at|date:"Y.m.d H:i" }} | 
-                                {% if log.was_successful %}
-                                    <span class="tag-success">함정 통과</span>
-                                {% else %}
-                                    <span class="tag-fail">함정 발동</span>
-                                {% endif %}
-                            </span>
-                        </div>
-                        <div class="log-content">
-                            <p class="needspce">{{ log.action_description|default:"..."|linebreaksbr }}</p>
-                            {% if log.log_image %}
-                                <img src="{{ log.log_image.url }}" alt="로그 이미지" class="log-image">
+    <h3>탐험 기록</h3>
+    <div class="log-scroll-container">
+        
+        {# ⬇️ 변수 이름이 'log_data'로 변경되었습니다 #}
+        {% for log_data in dungeon_logs %}
+            <div class="log-post {% if log_data.log.was_successful %}log-success{% else %}log-fail{% endif %}">
+                <div class="log-author-profile">
+                    <img src="{% static 'img/charac/' %}{{ log_data.log.author_char.charEngName}}2.png" alt="{{ log_data.log.author_char.charName }}">
+                </div>
+                <div class="log-details">
+                    <div class="log-title-line">
+                        <span class="log-title">{{ log_data.log.author_char.charName }}</span>
+                        <span class="log-meta">
+                            | {{ log_data.log.created_at|date:"Y.m.d H:i" }} | 
+                            {% if log_data.log.was_successful %}
+                                <span class="tag-success">함정 통과</span>
+                            {% else %}
+                                <span class="tag-fail">함정 발동</span>
                             {% endif %}
-                            
-                        </div>
-
-			<div class="log-comments-new">
-                        {% for comment_data in log.processed_comments %}
+                        </span>
+                    </div>
+                    
+                    {# ⬇️ 이 부분이 수정되었습니다 #}
+                    <div class="log-content">
+                        {% if log_data.log.log_image %}
+                            <img src="{{ log_data.log.log_image.url }}" alt="로그 이미지" class="log-image">
+                        {% endif %}
+                        
+                        {# 행동 지문이 있으면 표시, 없으면 기본 텍스트 표시 #}
+                        {% if log_data.log.action_description %}
+                            <p class="needspce">{{ log_data.log.action_description|linebreaksbr }}</p>
+                        {% else %}
+                            <p class="needspce"><i>(특별한 행동 지문은 없었다.)</i></p>
+                        {% endif %}
+                    </div>
+                    
+                    {# ⬇️ 댓글 표시 부분 수정 (낚시 페이지와 동일) #}
+                    <div class="log-comments-new">
+                        {% for comment_data in log_data.processed_comments %}
                             <div class="auto-comment-new">
                                 <span>{{ comment_data.text }}</span>
                             </div>
                         {% endfor %}
-                    	</div>
                     </div>
                 </div>
-            {% empty %}
-                <p class="no-logs">아직 탐험 기록이 없습니다.</p>
-            {% endfor %}
-        </div>
+            </div>
+        {% empty %}
+            <p class="no-logs">아직 탐험 기록이 없습니다.</p>
+        {% endfor %}
     </div>
+</div>
 </div>
 
 {% endblock %}

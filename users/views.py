@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from member.models import Characters
 from users.models import CharInfo
 from django.contrib.auth.decorators import login_required
-from .models import Dungeon, DungeonLog, CharInfo, TrapMessage
+from .models import *
 from .forms import DungeonLogFormB3 # B3 폼 임포트
 import random
 
@@ -160,6 +160,8 @@ def dungeon_b3_view(request):
         return redirect('main_page_or_error')
 
     # B3 기여도 랭킹
+    leaderboard = CharInfo.objects.filter(dungeon_b3_contribution__gt=0).order_by('-dungeon_b3_contribution')[:3]
+
     # --- ✨ 로그 및 댓글 사전 처리 (낚시 페이지와 동일) ---
     dungeon_logs_raw = DungeonLog.objects.filter(dungeon=dungeon).select_related('author_char').prefetch_related('comments')
     
@@ -212,25 +214,27 @@ def create_dungeon_log_b3_view(request):
 
                     print(bonus_rate, final_success_rate, roll)
 
+                    # Save the new log
                     new_log = form.save(commit=False)
                     new_log.dungeon = dungeon
                     new_log.author_char = character
                     new_log.was_successful = is_success
+                    new_log.save() # ❗️ Save the log FIRST
 
+                    # Determine the comment text
                     if is_success:
-                        # 성공
-                        messages.success(request, f"함정을 무사히 통과해 앞으로 나아갔습니다. (성공률: {final_success_rate}%)")
+                        comment_text = f"⛓️ 함정을 무사히 통과했습니다! (성공률: {final_success_rate}%)"
+                        messages.success(request, "함정을 무사히 통과했습니다!")
                     else:
-                        # 실패
                         trap_message = TrapMessage.objects.order_by('?').first()
                         fail_text = trap_message.text if trap_message else "함정에 걸려 부상을 입었습니다."
-                        # 실패 시, 사용자가 작성한 행동 지문 대신 함정 메시지를 기록
-                        new_log.action_description = fail_text
+                        comment_text = f"💀 {fail_text} (성공률: {final_success_rate}%)"
                         messages.error(request, fail_text)
                     
-                    new_log.save()
+                    # ⬇️ FIX: Create a DungeonComment linked to new_log
+                    DungeonComment.objects.create(log=new_log, comment_text=comment_text)
 
-                    # 기여도 및 진행도 업데이트
+                    # Update contributions and progress
                     char_info.update_dungeon_contribution(dungeon_name=dungeon_name)
                     dungeon.update_progress() 
 
