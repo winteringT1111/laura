@@ -70,6 +70,14 @@
                             {% endif %}
                             
                         </div>
+
+			<div class="log-comments-new">
+                        {% for comment_data in log.processed_comments %}
+                            <div class="auto-comment-new">
+                                <span>{{ comment_data.text }}</span>
+                            </div>
+                        {% endfor %}
+                    	</div>
                     </div>
                 </div>
             {% empty %}

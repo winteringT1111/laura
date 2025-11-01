@@ -160,15 +160,28 @@ def dungeon_b3_view(request):
         return redirect('main_page_or_error')
 
     # B3 기여도 랭킹
-    leaderboard = CharInfo.objects.filter(dungeon_b3_contribution__gt=0).order_by('-dungeon_b3_contribution')[:3]
-
-    dungeon_logs = DungeonLog.objects.filter(dungeon=dungeon).select_related('author_char')
+    # --- ✨ 로그 및 댓글 사전 처리 (낚시 페이지와 동일) ---
+    dungeon_logs_raw = DungeonLog.objects.filter(dungeon=dungeon).select_related('author_char').prefetch_related('comments')
+    
+    processed_logs = []
+    for log in dungeon_logs_raw:
+        processed_comments = []
+        # FishingComment 또는 DungeonComment 모델 사용
+        for comment in log.comments.all(): 
+            # B3는 이미지 아이콘이 없으므로 | 구분자 처리가 필요 없습니다.
+            processed_comments.append({'text': comment.comment_text, 'icon_name': None})
+            
+        processed_logs.append({
+            'log': log,
+            'processed_comments': processed_comments
+        })
+    # --- 처리 끝 ---
 
     context = {
         'dungeon': dungeon,
         'user_contribution': char_info.dungeon_b3_contribution,
         'leaderboard': leaderboard,
-        'dungeon_logs': dungeon_logs,
+        'dungeon_logs': processed_logs, # 👈 처리된 로그 전달
     }
     return render(request, 'dungeon1/dungeon_b3.html', context)
 

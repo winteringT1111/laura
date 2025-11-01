@@ -1,5 +1,5 @@
 from django.contrib import admin
-from users.models import CharInfo, Dungeon
+from users.models import *
 from member.models import *
 from store.models import *
 from main.models import *
@@ -18,6 +18,7 @@ admin.site.register(Attendance)
 admin.site.register(Fish)
 admin.site.register(Trash)
 admin.site.register(Dungeon)
+admin.site.register(TrapMessage)
 
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
