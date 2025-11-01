@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/dungeon.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dungeon-page-container">
+    
+    <h2>엘리시온 던전 B3</h2>
+
+    <!-- 진행 상황 -->
+    <div class="progress-section panel">
+        <h3>현재 진행도</h3>
+        {# B3는 goal_progress가 100(%)입니다 #}
+        <p>목표: {{ dungeon.goal_progress }}%</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: {{ dungeon.progress_percentage }}%;"></div>
+        </div>
+        <p class="progress-percentage">{{ dungeon.progress_percentage }}%</p>
+        <p class="user-contribution">나의 기여도: {{ user_contribution }}회 통과</p>
+    </div>
+
+    <!-- 리더보드 -->
+    <div class="leaderboard panel">
+        <h3>기여도 랭킹 TOP 3</h3>
+        <ol>
+            {% for player in leaderboard %}
+                <li>
+                    <span class="rank">{{ forloop.counter }}</span> 
+                    <span class="player-name">{{ player.char.charName }}</span>
+                    <span class="player-score">{{ player.dungeon_b3_contribution }}회</span>
+                </li>
+            {% empty %}
+                <li>아직 랭킹이 없습니다.</li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <!-- 미궁 걷기 버튼 -->
+    <a href="{% url 'users:create_dungeon_log_b3' %}" class="action-button">탐험하기</a>
+
+    <!-- 로그 피드 -->
+    <div class="log-feed panel">
+        <h3>탐험 기록</h3>
+        <div class="log-scroll-container">
+            {% for log in dungeon_logs %}
+                {# 성공/실패에 따라 클래스 부여 #}
+                <div class="log-post {% if log.was_successful %}log-success{% else %}log-fail{% endif %}">
+                    <div class="log-author-profile">
+                        <img src="{% static 'img/charac/' %}{{ log.author_char.charEngName}}2.png" alt="{{ log.author_char.charName }}">
+                    </div>
+                    <div class="log-details">
+                        <div class="log-title-line">
+                            <span class="log-title">{{ log.author_char.charName }}</span>
+                            {# B3는 'm' 대신 성공/실패 태그 표시 #}
+                            <span class="log-meta">
+                                | {{ log.created_at|date:"Y.m.d H:i" }} | 
+                                {% if log.was_successful %}
+                                    <span class="tag-success">함정 통과</span>
+                                {% else %}
+                                    <span class="tag-fail">함정 발동</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="log-content">
+                            <p class="needspce">{{ log.action_description|default:"..."|linebreaksbr }}</p>
+                            {% if log.log_image %}
+                                <img src="{{ log.log_image.url }}" alt="로그 이미지" class="log-image">
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="no-logs">아직 탐험 기록이 없습니다.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

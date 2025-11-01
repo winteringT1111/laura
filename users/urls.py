@@ -10,4 +10,6 @@ urlpatterns = [
     path('signup/', views.signup, name='users_signup'),
     path('dungeon1/b1/', views.dungeon_b1_view, name='dungeon1_b1_view'),
     path('dungeon1/b1/submit/', views.create_dungeon_log_view, name='create_dungeon_log'),
+    path('dungeon1/b3/', views.dungeon_b3_view, name='dungeon_b3_view'),
+    path('dungeon1/b3/submit/', views.create_dungeon_log_b3_view, name='create_dungeon_log_b3'),
 ]   

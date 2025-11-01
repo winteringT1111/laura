@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from member.models import Characters
 from users.models import CharInfo
 from django.contrib.auth.decorators import login_required
+from .models import Dungeon, DungeonLog, CharInfo, TrapMessage
+from .forms import DungeonLogFormB3 # B3 폼 임포트
+import random
+
 # Create your views here.
 
 
@@ -140,3 +144,89 @@ def create_dungeon_log_view(request):
 
     # GET 요청이거나 POST 요청 실패 시 폼 페이지를 렌더링
     return render(request, 'dungeon1/create_dungeon_log.html', {'form': form})
+
+
+
+@login_required
+def dungeon_b3_view(request):
+    """던전 B3 메인 페이지"""
+    dungeon_name = "엘리시온 던전 B3"
+    dungeon = get_object_or_404(Dungeon, name=dungeon_name)
+    
+    try:
+        char_info = CharInfo.objects.get(user=request.user)
+    except CharInfo.DoesNotExist:
+        messages.error(request, "캐릭터 정보가 없습니다.")
+        return redirect('main_page_or_error')
+
+    # B3 기여도 랭킹
+    leaderboard = CharInfo.objects.filter(dungeon_b3_contribution__gt=0).order_by('-dungeon_b3_contribution')[:3]
+
+    dungeon_logs = DungeonLog.objects.filter(dungeon=dungeon).select_related('author_char')
+
+    context = {
+        'dungeon': dungeon,
+        'user_contribution': char_info.dungeon_b3_contribution,
+        'leaderboard': leaderboard,
+        'dungeon_logs': dungeon_logs,
+    }
+    return render(request, 'dungeon1/dungeon_b3.html', context)
+
+
+@login_required
+def create_dungeon_log_b3_view(request):
+    """B3 던전 로그 생성 및 함정 판정"""
+    dungeon_name = "엘리시온 던전 B3"
+    dungeon = get_object_or_404(Dungeon, name=dungeon_name)
+    
+    if request.method == 'POST':
+        form = DungeonLogFormB3(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                with transaction.atomic():
+                    char_info = CharInfo.objects.select_for_update().get(user=request.user)
+                    character = char_info.char # 'Characters' 모델 인스턴스
+
+                    # --- 함정 판정 로직 ---
+                    base_success_rate = 40.0  # 기본 성공률 50%
+                    luk_stat = character.charLUK if hasattr(character, 'charLUK') else 0 # 캐릭터의 LUK 스탯
+                    bonus_rate = luk_stat * 4.0   # 1 LUK 당 4%
+                    final_success_rate = min(base_success_rate + bonus_rate, 95.0) # 최대 95%
+                    
+                    roll = random.random() * 100
+                    is_success = roll < final_success_rate
+                    # --- 판정 끝 ---
+
+                    print(bonus_rate, final_success_rate, roll)
+
+                    new_log = form.save(commit=False)
+                    new_log.dungeon = dungeon
+                    new_log.author_char = character
+                    new_log.was_successful = is_success
+
+                    if is_success:
+                        # 성공
+                        messages.success(request, f"함정을 무사히 통과해 앞으로 나아갔습니다. (성공률: {final_success_rate}%)")
+                    else:
+                        # 실패
+                        trap_message = TrapMessage.objects.order_by('?').first()
+                        fail_text = trap_message.text if trap_message else "함정에 걸려 부상을 입었습니다."
+                        # 실패 시, 사용자가 작성한 행동 지문 대신 함정 메시지를 기록
+                        new_log.action_description = fail_text
+                        messages.error(request, fail_text)
+                    
+                    new_log.save()
+
+                    # 기여도 및 진행도 업데이트
+                    char_info.update_dungeon_contribution(dungeon_name=dungeon_name)
+                    dungeon.update_progress() 
+
+                    return redirect('users:dungeon_b3_view')
+            except Exception as e:
+                messages.error(request, f"기록 저장 중 오류 발생: {e}")
+        else:
+            messages.error(request, "입력 내용을 확인해주세요.")
+    else: # GET 요청
+        form = DungeonLogFormB3()
+
+    return render(request, 'dungeon1/create_dungeon_log_b3.html', {'form': form})
