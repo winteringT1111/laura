@@ -12,4 +12,6 @@ urlpatterns = [
     path('dungeon1/b1/submit/', views.create_dungeon_log_view, name='create_dungeon_log'),
     path('dungeon1/b3/', views.dungeon_b3_view, name='dungeon_b3_view'),
     path('dungeon1/b3/submit/', views.create_dungeon_log_b3_view, name='create_dungeon_log_b3'),
+    path('dungeon/drakus-b1/', views.dungeon_b1_drakus_view, name='dungeon_b1_drakus_view'),
+    path('dungeon/drakus-b1/submit/', views.create_dungeon_log_drakus_view, name='create_dungeon_log_drakus'),
 ]   

@@ -33,3 +33,20 @@ class DungeonLogFormB3(forms.ModelForm): # B3 전용 폼
             'action_description': '행동 지문',
             'log_image': '로그 첨부',
         }
+
+class DungeonLogFormDrakusB1(forms.ModelForm): # 👈 드라쿠스 B1 전용 폼
+    class Meta:
+        model = DungeonLog
+        # 'distance_walked', 'was_successful' 필드 제외
+        fields = ['title', 'action_description', 'points_earned', 'log_image']
+        widgets = {
+            'action_description': forms.Textarea(attrs={'rows': 5, 'placeholder': '행동 지문을 적어주세요.'}),
+            'title': forms.TextInput(attrs={'placeholder': '기록 제목'}),
+            'points_earned': forms.NumberInput(attrs={'placeholder': '예: 5000'}),
+        }
+        labels = {
+            'title': '제목',
+            'action_description': '행동 지문',
+            'points_earned': '획득 포인트(pt)', # 👈 라벨 변경
+            'log_image': '기록 첨부',
+        }

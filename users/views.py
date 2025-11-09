@@ -5,7 +5,7 @@ from member.models import Characters
 from users.models import CharInfo
 from django.contrib.auth.decorators import login_required
 from .models import *
-from .forms import DungeonLogFormB3 # B3 폼 임포트
+from .forms import *
 import random
 
 # Create your views here.
@@ -247,3 +247,65 @@ def create_dungeon_log_b3_view(request):
         form = DungeonLogFormB3()
 
     return render(request, 'dungeon1/create_dungeon_log_b3.html', {'form': form})
+
+
+
+@login_required
+def dungeon_b1_drakus_view(request):
+    """드라쿠스 던전 B1 메인 페이지"""
+    dungeon_name = "드라쿠스 던전 B1"
+    dungeon = get_object_or_404(Dungeon, name=dungeon_name)
+    
+    try:
+        char_info = CharInfo.objects.get(user=request.user)
+    except CharInfo.DoesNotExist:
+        messages.error(request, "캐릭터 정보가 없습니다.")
+        return redirect('main_page_or_error')
+
+    # 드라쿠스 B1 기여도 랭킹
+    leaderboard = CharInfo.objects.filter(dungeon_b1_drakus_contribution__gt=0).order_by('-dungeon_b1_drakus_contribution')[:3]
+
+    dungeon_logs = DungeonLog.objects.filter(dungeon=dungeon).select_related('author_char')
+
+    context = {
+        'dungeon': dungeon,
+        'user_contribution': char_info.dungeon_b1_drakus_contribution,
+        'leaderboard': leaderboard,
+        'dungeon_logs': dungeon_logs,
+    }
+    return render(request, 'dungeon1/dungeon_b1_drakus.html', context)
+
+@login_required
+def create_dungeon_log_drakus_view(request):
+    """드라쿠스 B1 던전 로그 생성"""
+    dungeon_name = "드라쿠스 던전 B1"
+    dungeon = get_object_or_404(Dungeon, name=dungeon_name)
+    
+    if request.method == 'POST':
+        form = DungeonLogFormDrakusB1(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                with transaction.atomic():
+                    char_info = CharInfo.objects.select_for_update().get(user=request.user)
+
+                    new_log = form.save(commit=False)
+                    new_log.dungeon = dungeon
+                    new_log.author_char = char_info.char
+                    new_log.save()
+
+                    # 사용자 기여도 및 전체 진행도 업데이트
+                    char_info.update_dungeon_contribution(dungeon_name=dungeon_name)
+                    dungeon.update_progress() 
+
+                    messages.success(request, f"{new_log.points_earned}pt 탐험 기록을 남겼습니다!")
+                    return redirect('users:dungeon_b1_drakus_view') # 👈 드라쿠스 B1 뷰로 리다이렉트
+            except Exception as e:
+                messages.error(request, f"기록 저장 중 오류 발생: {e}")
+        else:
+            print(">>> Drakus B1 Log Form Validation Failed! Errors:")
+            print(form.errors.as_json()) 
+            messages.error(request, "입력 내용을 확인해주세요.")
+    else: # GET 요청
+        form = DungeonLogFormDrakusB1()
+
+    return render(request, 'dungeon1/create_dungeon_log_drakus.html', {'form': form})

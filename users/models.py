@@ -19,6 +19,7 @@ class CharInfo(models.Model):
 
     dungeon_b1_contribution = models.PositiveIntegerField(default=0, verbose_name="엘리시온 던전 B1 기여도(m)")
     dungeon_b3_contribution = models.PositiveIntegerField(default=0, verbose_name="던전 B3 기여도(성공 횟수)") # 👈 B3 기여도
+    dungeon_b1_drakus_contribution = models.PositiveIntegerField(default=0, verbose_name="드라쿠스 B1 기여도(pt)") # 👈 드라쿠스 B1 기여도
 
     def update_dungeon_contribution(self, dungeon_name):
         """캐릭터의 던전별 기여도를 업데이트합니다."""
@@ -29,6 +30,10 @@ class CharInfo(models.Model):
             # B3는 성공한 로그의 개수를 기여도로 계산
             total = DungeonLog.objects.filter(author_char=self.char, dungeon__name=dungeon_name, was_successful=True).count()
             self.dungeon_b3_contribution = total if total is not None else 0
+        elif dungeon_name == "드라쿠스 던전 B1": # 👈 드라쿠스 B1 로직
+            total = DungeonLog.objects.filter(author_char=self.char, dungeon__name=dungeon_name).aggregate(Sum('points_earned'))['points_earned__sum']
+            self.dungeon_b1_drakus_contribution = total if total is not None else 0
+   
         self.save()
         
 
@@ -43,6 +48,8 @@ class Dungeon(models.Model):
     # B3의 경우, 목표를 100(%)으로 설정합니다.
     goal_progress = models.PositiveIntegerField(default=100, verbose_name="목표 진행도(%)")
     current_progress = models.PositiveIntegerField(default=0, verbose_name="현재 진행도(%)")
+    goal_points = models.PositiveIntegerField(default=1000000, verbose_name="목표 포인트")
+    current_points = models.PositiveIntegerField(default=0, verbose_name="현재 누적 포인트")
 
     def __str__(self):
         return self.name
@@ -57,6 +64,9 @@ class Dungeon(models.Model):
             # B1는 기존의 거리 합산 로직을 유지
             total_distance = DungeonLog.objects.filter(dungeon=self).aggregate(Sum('distance_walked'))['distance_walked__sum']
             self.current_progress = total_distance if total_distance is not None else 0
+        elif self.name == "드라쿠스 던전 B1": # 👈 드라쿠스 B1 로직
+            total = DungeonLog.objects.filter(dungeon=self).aggregate(Sum('points_earned'))['points_earned__sum']
+            self.current_points = total if total is not None else 0
         self.save()
 
     @property
@@ -80,6 +90,8 @@ class DungeonLog(models.Model):
     distance_walked = models.PositiveIntegerField(default=0, verbose_name="걸은 거리(m)")
     # --- B3 전용 ---
     was_successful = models.BooleanField(default=False, verbose_name="함정 통과 여부")
+
+    points_earned = models.PositiveIntegerField(default=0, verbose_name="획득 포인트") # 👈 포인트 필드 추가
 
     class Meta:
         ordering = ['-created_at']
