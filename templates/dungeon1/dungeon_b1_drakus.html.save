@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/dungeon.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dungeon-page-container">
+    
+    <h2>드라쿠스 던전 B1</h2>
+
+    <div class="progress-section panel">
+        <h3>현재 진행도</h3>
+        <p>목표: {{ dungeon.goal_points|floatformat:0 }}pt / 현재: {{ dungeon.current_points|floatformat:0 }}pt</p>
+        <div class="progress-bar-container">
+            {# ⬇️ dungeon.progress_percentage가 B1(드라쿠스)용으로 작동해야 함 #}
+            <div class="progress-bar-fill" style="width: {{ dungeon.progress_percentage }}%;"></div>
+        </div>
+        <p class="progress-percentage">{{ dungeon.progress_percentage }}%</p>
+        <p class="user-contribution">나의 기여도: {{ user_contribution|floatformat:0 }}pt</p>
+    </div>
+
+    <div class="leaderboard panel">
+        <h3>기여도 랭킹 TOP 3</h3>
+        <ol>
+            {% for player in leaderboard %}
+                <li>
+                    <span class="rank">{{ forloop.counter }}</span> 
+                    <span class="player-name">{{ player.char.charName }}</span>
+                    <span class="player-score">{{ player.dungeon_b1_drakus_contribution|floatformat:0 }}pt</span>
+                </li>
+            {% empty %}
+                <li>아직 랭킹이 없습니다.</li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <a href="{% url 'users:create_dungeon_log_drakus' %}" class="action-button">광석 캐기</a>
+
+    <div class="log-feed panel">
+        <h3>탐험 기록</h3>
+        <div class="log-scroll-container">
+            {% for log in dungeon_logs %}
+                <div class="log-post">
+                    <div class="log-author-profile">
+                        <img  alt="{{ log.author_char.charName }}">
+                    </div>
+                    <div class="log-details">
+                        <div class="log-title-line">
+                            <span class="log-title">{{ log.author_char.charName }}</span>
+                            <span class="log-meta"> | {{ log.created_at|date:"Y.m.d H:i" }} | +{{ log.points_earned|floatformat:0 }}pt</span>
+                        </div>
+                        <div class="log-content">
+                            {% if log.log_image %}
+                                <img src="{{ log.log_image.url }}" alt="로그 이미지" class="log-image">
+                            {% endif %}
+                            <p>{{ log.action_description|default:"특별한 행동은 없었다."|linebreaksbr }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="no-logs">아직 탐험 기록이 없습니다.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{# ... (Django 메시지 표시) ... #}
+{% endblock %}

@@ -43,7 +43,7 @@
             {% for log in dungeon_logs %}
                 <div class="log-post">
                     <div class="log-author-profile">
-                        <img src="{{ log.author_char.profile_image.url | default:'/static/img/default_profile.png' }}" alt="{{ log.author_char.charName }}">
+                        <img src="{% static 'img/charac/' %}{{ log.author_char.charEngName}}2.png" alt="{{ log.author_char.charName }}">
                     </div>
                     <div class="log-details">
                         <div class="log-title-line">

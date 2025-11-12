@@ -74,7 +74,7 @@ class Dungeon(models.Model):
         """진행률 계산 (0~100 사이 값)"""
         if self.goal_progress == 0:
             return 0
-        return min(int((self.current_progress / self.goal_progress) * 100), 100)
+        return min(int((self.current_points / self.goal_points) * 100), 100)
 
 
 class DungeonLog(models.Model):

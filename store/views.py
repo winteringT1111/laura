@@ -15,7 +15,13 @@ def store_main(request):
     getUser = request.user
     userinfo = CharInfo.objects.get(user=getUser)
     
-    items = Item.objects.exclude(itemName="트로피")
+    items_to_exclude = [
+    "트로피", 
+    "행운의 편지", 
+    "장미 향수", 
+    "마녀 묘약", 
+    "초콜릿 세트"]
+    items = Item.objects.exclude(itemName__in=items_to_exclude)
     ingredients = Ingredient.objects.filter(itemShow=1)
     
     if request.method == "POST":
