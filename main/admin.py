@@ -19,6 +19,7 @@ admin.site.register(Fish)
 admin.site.register(Trash)
 admin.site.register(Dungeon)
 admin.site.register(TrapMessage)
+admin.site.register(MonsterTrapMessage)
 admin.site.register(DungeonLog)
 
 @admin.register(Ingredient)

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/dungeon.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dungeon-page-container">
+    
+    <h2>드라쿠스 던전 B3</h2>
+
+    <div class="progress-section panel">
+        <h3>폭주한 제련 괴수 HP</h3>
+        <p>총 HP: {{ dungeon.goal_hp|floatformat:0 }} / 남은 HP: {{ dungeon.remaining_hp|floatformat:0 }}</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: {{ dungeon.progress_percentage }}%;"></div>
+        </div>
+        <p class="progress-percentage">{{ dungeon.progress_percentage }}%</p>
+        <p class="user-contribution">나의 누적 데미지: {{ user_contribution|floatformat:0 }}</p>
+    </div>
+
+    <div class="leaderboard panel">
+        <h3>기여도 랭킹 TOP 3</h3>
+        <ol>
+            {% for player in leaderboard %}
+                <li>
+                    <span class="rank">{{ forloop.counter }}</span> 
+                    <span class="player-name">{{ player.char.charName }}</span>
+                    <span class="player-score">{{ player.dungeon_b3_drakus_contribution|floatformat:0 }} 데미지</span>
+                </li>
+            {% empty %}
+                <li>아직 랭킹이 없습니다.</li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <a href="{% url 'users:create_dungeon_log_drakus_b3' %}" class="action-button">공격하기</a>
+
+    <div class="log-feed panel">
+        <h3>전투 기록</h3>
+        <div class="log-scroll-container">
+            {% for log in dungeon_logs %}
+                <div class="log-post {% if log.was_successful %}log-success{% else %}log-fail{% endif %}">
+                    <div class="log-author-profile">
+                        <img src="{% static 'img/charac/' %}{{ log.author_char.charEngName}}2.png" alt="{{ log.author_char.charName }}">
+                    </div>
+                    <div class="log-details">
+                        <div class="log-title-line">
+                            <span class="log-title">{{ log.author_char.charName }}</span>
+                            <span class="log-meta"> | {{ log.created_at|date:"Y.m.d H:i" }} |
+                                {% if log.was_successful %}
+                                    <span class="tag-success">공격 성공 (+{{ log.damage_dealt }} 데미지)</span>
+                                {% else %}
+                                    <span class="tag-fail">공격 실패</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="log-content">
+                            {% if log.log_image %}
+                                <img src="{{ log.log_image.url }}" alt="로그 이미지" class="log-image">
+                            {% endif %}
+                            <p>{{ log.action_description|default:"..."|linebreaksbr }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="no-logs">아직 전투 기록이 없습니다.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{# ... (Django 메시지 표시) ... #}
+{% endblock %}

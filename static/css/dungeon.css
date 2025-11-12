@@ -181,3 +181,30 @@ h2, h3 {
 .needspce {
     margin-bottom: 20px !important;
 }
+
+
+/* static/css/dungeon.css 파일 맨 아래에 추가 */
+
+.log-meta .tag-success,
+.log-meta .tag-fail {
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+.log-meta .tag-success {
+    background-color: #27ae60; /* 녹색 */
+}
+
+.log-meta .tag-fail {
+    background-color: #c0392b; /* 빨간색 */
+}
+
+/* 실패한 로그 포스트는 약간 어둡게 처리 (선택 사항) */
+.log-post.log-fail {
+    background-color: #4a4133;
+    opacity: 0.8;
+}
+

@@ -10,6 +10,7 @@
             <input class="hidden" value="gift" type="text" name="assort" id="assort">
             <input class="hidden" value="" type="text" name="itemName2" id="itemName2">
             <input class="hidden" value="" type="text" name="category2" id="category2">
+            <input class="hidden" value="gold" type="text" name="currency" id="giftCurrency">
 
                     
                     <h5 id="modalTitle2">title</h5>
@@ -73,12 +74,12 @@
 
 
 <script>
+  // updateTotalPrice2 함수를 교체
   function updateTotalPrice2() {
       var quantity = parseInt(document.getElementById('quantity2').value, 10);
-      var price = parseInt(document.getElementById('modalPrice2').textContent, 10);
+      var price = parseInt(document.getElementById('modalPrice2').textContent.split(' ')[0], 10);
       var totalPrice = quantity * price;
 
-      // 총 가격을 input 요소에 업데이트
       document.getElementById('modalTotalPrice2').value = totalPrice;
   }
 
@@ -111,52 +112,59 @@
 
     $(document).ready(function () {
     // --- ✅ REPLACE your old '#liveToastBtn2' click event with this ---
+    // $(document).ready() 내부의 #giftForm submit 핸들러를 교체
     $('#giftForm').on('submit', function (event) {
-        // 1. Prevent the default page reload
         event.preventDefault();
 
         var form = $(this);
         var totalPrice2 = parseInt(form.find('#modalTotalPrice2').val(), 10);
-        var userGaleon = parseInt('{{ user2.gold }}', 10);
+        var currencyType = form.find('#giftCurrency').val(); // 'gold' 또는 'exp'
+        var userGold = parseInt('{{ user2.gold }}', 10);
+        var userExp = parseInt('{{ user2.exp }}', 10);
         var receiver = form.find('.receiver_input').val();
+        
+        var popoverButton = $('#liveToastBtn2');
 
-        // --- Validation Checks ---
+        // --- 유효성 검사 ---
         if (!receiver) {
-            $('#liveToastBtn2').attr('data-content', "선물 대상을 지정하지 않았습니다.").popover('show');
+            popoverButton.attr('data-content', "선물 대상을 지정하지 않았습니다.").popover('show');
             return;
         }
-        if (totalPrice2 > userGaleon) {
-            $('#liveToastBtn2').attr('data-content', "골드가 부족합니다.").popover('show');
-            return;
+        
+        var hasEnoughCurrency = false;
+        if (currencyType === 'exp') {
+            if (totalPrice2 <= userExp) {
+                hasEnoughCurrency = true;
+            } else {
+                popoverButton.attr('data-content', '경험치(EXP)가 부족합니다.').popover('show');
+            }
+        } else {
+            if (totalPrice2 <= userGold) {
+                hasEnoughCurrency = true;
+            } else {
+                popoverButton.attr('data-content', '골드(G)가 부족합니다.').popover('show');
+            }
         }
 
-        // 2. Send form data using AJAX
+        if (!hasEnoughCurrency) {
+            return; // 화폐가 부족하면 제출 중단
+        }
+
+        // AJAX 로직
         $.ajax({
             type: 'POST',
-            url: form.attr('action'), // The URL specified in the form's action attribute
-            data: form.serialize(),   // Send all form data
-
-            // 3. On success, hide the old modal and show the new one
+            url: form.attr('action'),
+            data: form.serialize(),
             success: function (response) {
                 $('#exampleModal2').modal('hide');
                 $('#giftCompleteModal').modal('show');
             },
-
-            // 4. On error, show an alert
             error: function (response) {
-                alert('오류가 발생했습니다. 다시 시도해주세요.');
-                console.error("Gift AJAX Error:", response);
+                var errorMsg = response.responseJSON ? response.responseJSON.error : '오류가 발생했습니다. 다시 시도해주세요.';
+                alert(errorMsg);
             }
         });
     });
-
-    // --- ✅ Add this click handler for the new confirmation button ---
-    $('#giftConfirmBtn').on('click', function() {
-        location.reload(); // Reload the page when the user clicks "확인"
-    });
-
-    // ... your other $(document).ready() code remains the same ...
-});
 
     // popover 초기화
     $('[data-toggle="popover"]').popover({

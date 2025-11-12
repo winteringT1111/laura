@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/dungeon.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-page-container">
+    <div class="form-panel">
+        <a href="{% url 'users:dungeon_b3_drakus_view' %}" class="back-link">&lt; 돌아가기</a>
+        <h3>B3 전투 로그 작성</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.non_field_errors %} <div class="form-errors">{{ form.non_field_errors }}</div> {% endif %}
+
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+            <div class="form-group">
+                {{ form.action_description.label_tag }}
+                {{ form.action_description }}
+                {{ form.action_description.errors }}
+            </div>
+             {# ❗️ 'points_earned' 필드 제거 #}
+             <div class="form-group">
+                {{ form.log_image.label_tag }}
+                {{ form.log_image }}
+                 <span id="file-name-display" class="file-name-display">선택된 파일 없음</span>
+                {{ form.log_image.errors }}
+            </div>
+
+            <button type="submit" class="submit-button">공격하기</button>
+        </form>
+    </div>
+</div>
+{# ... (파일 이름 표시를 위한 스크립트는 B1과 동일) ... #}
+{% endblock %}

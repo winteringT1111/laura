@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from store.models import *
 from users.models import CharInfo
 from member.models import *
@@ -7,116 +7,141 @@ from datetime import datetime
 from django.contrib import messages
 from django.db import transaction 
 import random
+from django.http import JsonResponse
 
 # Create your views here.
 
 @login_required(login_url='/')
+@transaction.atomic
 def store_main(request):
-    getUser = request.user
-    userinfo = CharInfo.objects.get(user=getUser)
-    
+    try:
+        userinfo = CharInfo.objects.select_for_update().get(user=request.user)
+    except CharInfo.DoesNotExist:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'success': False, 'error': '캐릭터 정보를 찾을 수 없습니다.'}, status=404)
+        return redirect('main:main_page') # 👈 메인 페이지 URL 이름
+        
+    # --- POST 요청 (AJAX) 처리 ---
+    if request.method == "POST":
+        # ❗️ AJAX 요청이 아니면 거부 (보안 강화)
+        if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'success': False, 'error': '잘못된 요청입니다.'}, status=400)
+            
+        assort = request.POST.get('assort')
+        
+        try:
+            if assort == "purchase":
+                # --- 아이템 직접 구매 로직 ---
+                item_name = request.POST.get('itemName')
+                category = request.POST.get('category')
+                currency = request.POST.get('currency', 'gold') # 👈 템플릿에서 보낸 화폐 종류
+                count = int(request.POST.get('quantity', 1))
+                if count < 1: raise ValueError("수량이 1보다 작습니다.")
+
+                item_to_buy, InventoryModel = None, None
+                
+                if category == '재료':
+                    item_to_buy = get_object_or_404(Ingredient, itemName=item_name)
+                    InventoryModel = Inventory_ingredient
+                else:
+                    item_to_buy = get_object_or_404(Item, itemName=item_name)
+                    InventoryModel = Inventory
+                
+                total_cost = item_to_buy.itemPrice * count
+                
+                # --- 화폐 종류 확인 및 차감 ---
+                if currency == 'exp':
+                    if userinfo.exp < total_cost:
+                        return JsonResponse({'success': False, 'error': '경험치(EXP)가 부족합니다.'}, status=400)
+                    userinfo.exp -= total_cost
+                else:
+                    if userinfo.gold < total_cost:
+                        return JsonResponse({'success': False, 'error': '골드(G)가 부족합니다.'}, status=400)
+                    userinfo.gold -= total_cost
+                
+                userinfo.save() # 변경사항 저장
+
+                inv_slot, created = InventoryModel.objects.get_or_create(
+                    user=request.user, itemInfo=item_to_buy, defaults={'itemCount': 0}
+                )
+                inv_slot.itemCount += count
+                inv_slot.save()
+                
+                # ❗️ 성공 시 JSON 반환
+                return JsonResponse({'success': True, 'message': '구매가 완료되었습니다.'})
+
+            elif assort == "gift":
+                # --- 아이템 선물 로직 ---
+                item_name = request.POST.get('itemName2')
+                category = request.POST.get('category2')
+                currency = request.POST.get('currency', 'gold') # 👈 템플릿에서 보낸 화폐 종류
+                receiver_name = request.POST.get('receiver')
+                count = int(request.POST.get('quantity2', 1))
+                if count < 1: raise ValueError("수량이 1보다 작습니다.")
+                
+                item_to_gift, GiftModel = None, None
+                
+                if category == '재료':
+                    item_to_gift = get_object_or_404(Ingredient, itemName=item_name)
+                    GiftModel = IngredientGift
+                else:
+                    item_to_gift = get_object_or_404(Item, itemName=item_name)
+                    GiftModel = Gift
+                
+                receiver_char = get_object_or_404(Characters, charName=receiver_name)
+                receiver_info = get_object_or_404(CharInfo, char=receiver_char)
+                
+                total_cost = item_to_gift.itemPrice * count
+                
+                # --- 화폐 종류 확인 및 차감 (선물) ---
+                if currency == 'exp':
+                    if userinfo.exp < total_cost:
+                        return JsonResponse({'success': False, 'error': '경험치(EXP)가 부족합니다.'}, status=400)
+                    userinfo.exp -= total_cost
+                else:
+                    if userinfo.gold < total_cost:
+                        return JsonResponse({'success': False, 'error': '골드(G)가 부족합니다.'}, status=400)
+                    
+                userinfo.save()
+                
+                GiftModel.objects.create(
+                    anonymous=(request.POST.get('anonymous') == 'on'),
+                    message=request.POST.get('message'),
+                    orderDate=datetime.today(),
+                    itemCount=count,
+                    itemInfo=item_to_gift,
+                    giver_user=userinfo,
+                    receiver_user=receiver_info
+                )
+                
+                # ❗️ 성공 시 JSON 반환
+                return JsonResponse({'success': True, 'message': '선물이 전달되었습니다.'})
+            
+            else:
+                return JsonResponse({'success': False, 'error': '알 수 없는 요청입니다.'}, status=400)
+
+        # ❗️ 실패 시 JSON 반환
+        except (Item.DoesNotExist, Ingredient.DoesNotExist, Characters.DoesNotExist, CharInfo.DoesNotExist):
+            return JsonResponse({'success': False, 'error': '데이터를 찾을 수 없습니다.'}, status=404)
+        except ValueError:
+             return JsonResponse({'success': False, 'error': '잘못된 수량입니다.'}, status=400)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': f"알 수 없는 오류가 발생했습니다: {e}"}, status=500)
+
+    # --- GET 요청 처리 (페이지 첫 로드) ---
     items_to_exclude = [
-    "트로피", 
-    "행운의 편지", 
-    "장미 향수", 
-    "마녀 묘약", 
-    "초콜릿 세트"]
+        "트로피", "행운의 편지", "장미 향수", "마녀 묘약", "초콜릿 세트"
+    ]
     items = Item.objects.exclude(itemName__in=items_to_exclude)
     ingredients = Ingredient.objects.filter(itemShow=1)
-    
-    if request.method == "POST":
-        assort = request.POST['assort']
+    charnames = Characters.objects.all().values_list('charName', flat=True)  
         
-        if assort == "purchase":
-            name = request.POST['itemName']
-            category = request.POST['category']
-            itemPrice = request.POST['totalPrice']
-            count = int(request.POST['quantity'])
-            
-            # 갈레온 차감
-            userinfo.gold = int(userinfo.gold) - int(itemPrice.split(' ')[0]) 
-            userinfo.save()
-            
-            if category == '재료':
-                # 인벤토리 저장
-                all_items = Inventory_ingredient.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
-                item = Ingredient.objects.get(itemName=name)
-                
-                if item.itemID in all_items:
-                    update_item = Inventory_ingredient.objects.get(itemInfo=item, user=getUser)
-                    update_item.itemCount += count
-                    update_item.save()
-                else:
-                    inven = Inventory_ingredient(itemCount=count,
-                                    itemInfo=item,
-                                    user=getUser)
-                    inven.save()
-
-            else:
-                # 구매내역 저장
-                char = Purchase(itemCount=count,
-                                orderDate=datetime.today(),
-                                itemInfo=Item.objects.get(itemName=name),
-                                user=getUser)
-                char.save()
-                
-                # 인벤토리 저장
-                all_items = Inventory.objects.filter(user_id=getUser).values_list('itemInfo', flat=True)
-                item = Item.objects.get(itemName=name)
-                
-                if item.itemID in all_items:
-                    update_item = Inventory.objects.get(itemInfo=item, user=getUser)
-                    update_item.itemCount += count
-                    update_item.save()
-                else:
-                    inven = Inventory(itemCount=count,
-                                    itemInfo=item,
-                                    user=getUser)
-                    inven.save()
-                    
-                
-        elif assort == "gift":
-            item_name = request.POST['itemName2']   
-            itemPrice = request.POST['totalPrice2']
-            count = int(request.POST['quantity2'])
-            category = request.POST['category2']
-            
-            if_anonymous = request.POST.get('anonymous') == 'on'
-            receiver = request.POST['receiver']
-            receiver_char = Characters.objects.get(charName=receiver)
-            item_message = request.POST.get('message')
-            
-            if category == '재료':
-                char = IngredientGift(anonymous=if_anonymous,
-                        message=item_message,
-                        orderDate=datetime.today(),
-                        itemCount=count,
-                        itemInfo=Ingredient.objects.get(itemName=item_name),
-                        giver_user=CharInfo.objects.get(user=getUser),
-                        receiver_user=CharInfo.objects.get(char=receiver_char))
-                char.save()
-            
-            else:
-                char = Gift(anonymous=if_anonymous,
-                            message=item_message,
-                            orderDate=datetime.today(),
-                            itemCount=count,
-                            itemInfo=Item.objects.get(itemName=item_name),
-                            giver_user=CharInfo.objects.get(user=getUser),
-                            receiver_user=CharInfo.objects.get(char=receiver_char))
-                char.save()
-            
-            # 갈레온 차감
-            userinfo.gold = int(userinfo.gold) - int(itemPrice.split(' ')[0]) 
-            userinfo.save()            
-            
-    charnames = Characters.objects.all().values_list('charName', flat=True)   
-        
-    context = {'items':items,
-               'ingredients':ingredients,
-               'user2':userinfo,
-               'charnames': charnames}
-
+    context = {
+        'items': items,
+        'ingredients': ingredients,
+        'user2': userinfo,
+        'charnames': charnames
+    }
     return render(request, "store/store_main.html", context)
 
 

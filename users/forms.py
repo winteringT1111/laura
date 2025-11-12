@@ -50,3 +50,22 @@ class DungeonLogFormDrakusB1(forms.ModelForm): # 👈 드라쿠스 B1 전용 폼
             'points_earned': '획득 포인트(pt)', # 👈 라벨 변경
             'log_image': '기록 첨부',
         }
+
+class DungeonLogFormDrakusB3(forms.ModelForm): # 👈 드라쿠스 B3 전용 폼
+    class Meta:
+        model = DungeonLog
+        # 'distance_walked', 'points_earned', 'was_successful', 'damage_dealt' 제외
+        fields = ['title', 'action_description', 'log_image']
+        widgets = {
+            'action_description': forms.Textarea(attrs={'rows': 5, 'placeholder': '(공백제외 200자)'}),
+            'title': forms.TextInput(attrs={'placeholder': '전투 로그 제목'}),
+        }
+        labels = {
+            'title': '제목',
+            'action_description': '행동 지문',
+            'log_image': '전투 기록 첨부',
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 'log_image' 필드를 선택 사항(필수가 아님)으로 설정합니다.
+        self.fields['log_image'].required = False

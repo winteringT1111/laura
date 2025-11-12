@@ -35,7 +35,7 @@
         
         <div class="spec_info_purchase_bar">
             <div class="spec_info_price">
-                <img src="{% static 'img/갈레온.png' %}" class="price-currency-icon">
+                <img id="spec_currency_icon" src="{% static 'img/갈레온.png' %}" class="price-currency-icon">
                 <p id="item_price">100 G</p>
             </div>
             <div class="spec_info_func">
@@ -59,7 +59,8 @@
 
             <div class="item_list" id="store_list">
                 {% for item in items %}
-                <div class="item_card" onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}')">
+                <div class="item_card" 
+                    onclick="updateItemSpec('{{ item.itemName|escapejs }}', '{{ item.itemCategory|escapejs }}', '{{ item.itemInfo|escapejs }}', '{{ item.itemPrice }}', '{{ item.currency|escapejs }}')">
                     <div class="item_content_wrap">
                         <div class="item_card_image_area">
                             <img src="{% static 'img/store/' %}{{item.itemName}}.png" class="item_card_image">
@@ -67,9 +68,12 @@
                         
                         <p class="item_card_name">{{ item.itemName }}</p>
                     </div>
-
                     <div class="item_card_price_bar">
-                        <p class="item_card_price">{{ item.itemPrice }} G</p>
+                        {% if item.currency == 'exp' %}
+                            <p class="item_card_price">{{ item.itemPrice }} EXP</p>
+                        {% else %}
+                            <p class="item_card_price">{{ item.itemPrice }} G</p>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -129,13 +133,23 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
 
-    function updateItemSpec(name, category, info, price, imagePath) {
-        document.getElementById('spec_image').src = `{% static 'img/store/' %}${name}.png`;
-        document.getElementById('spec_name').textContent = name;
-        document.getElementById('spec_category').textContent = category;
-        document.getElementById('information').textContent = info;
-        document.getElementById('item_price').textContent = `${price} G`;
+    function updateItemSpec(name, category, info, price, currency) {
+    document.getElementById('spec_image').src = `{% static 'img/store/' %}${name}.png`;
+    document.getElementById('spec_name').textContent = name;
+    document.getElementById('spec_category').textContent = category;
+    document.getElementById('information').textContent = info;
+    
+    const priceText = document.getElementById('item_price');
+    const priceIcon = document.getElementById('spec_currency_icon');
+    
+    if (currency === 'exp') {
+        priceText.textContent = `${price} EXP`;
+        priceIcon.src = "{% static 'img/토큰.png' %}";
+    } else {
+        priceText.textContent = `${price} G`;
+        priceIcon.src = "{% static 'img/갈레온.png' %}";
     }
+}
 
     function showItemList(listType) {
         const storeList = document.getElementById('store_list');
@@ -160,32 +174,49 @@
         }
     }
 
+        // 카트 아이콘 클릭 리스너를 교체
     document.querySelector('img[src="{% static "img/카트.png" %}"]').addEventListener('click', function() {
-      // spec_name에서 텍스트를 가져와서 모달의 제목으로 설정
-      var itemName = document.getElementById('spec_name').textContent;
-      var itemPrice = document.getElementById('item_price').textContent;
-      var category = document.getElementById('spec_category').textContent;
-      document.getElementById('modalTitle').textContent = itemName;
-      document.getElementById('modalPrice').textContent = itemPrice;
-      // input 요소의 value 속성에 itemName 값을 설정
-      document.getElementById('itemName').value = itemName;    
-      document.getElementById('category').value = category;    
-      document.getElementById('modal_item_image').src = `{% static 'img/store/' %}${itemName}.png`; 
-      $('#exampleModal1').modal('show');
-  });
+        var itemName = document.getElementById('spec_name').textContent;
+        var itemPriceWithUnit = document.getElementById('item_price').textContent; // "100 G" 또는 "200 EXP"
+        var category = document.getElementById('spec_category').textContent;
 
+        // 화폐 단위(G 또는 EXP)와 가격(숫자)을 분리
+        var priceArray = itemPriceWithUnit.split(' ');
+        var currency = priceArray[1]; // "G" 또는 "EXP"
+
+        document.getElementById('modalTitle').textContent = itemName;
+        document.getElementById('modalPrice').textContent = itemPriceWithUnit; // 예: "200 EXP"
+        
+        document.getElementById('itemName').value = itemName;
+        document.getElementById('category').value = category;
+        // ❗️ 화폐 종류를 hidden input에 저장
+        document.getElementById('purchaseCurrency').value = (currency === 'EXP') ? 'exp' : 'gold';
+        
+        document.getElementById('modal_item_image').src = `{% static 'img/store/' %}${itemName}.png`; 
+        $('#exampleModal1').modal('show');
+    });
+
+    // 선물 아이콘 클릭 리스너를 교체
     document.querySelector('img[src="{% static "img/선물.png" %}"]').addEventListener('click', function() {
-      var itemName = document.getElementById('spec_name').textContent;
-      var itemPrice = document.getElementById('item_price').textContent;
-      var category = document.getElementById('spec_category').textContent;
-      document.getElementById('modalTitle2').textContent = itemName;
-      document.getElementById('modalPrice2').textContent = itemPrice;
-      // input 요소의 value 속성에 itemName 값을 설정
-      document.getElementById('itemName2').value = itemName;
-      document.getElementById('category2').value = category;  
-      document.getElementById('modal_item_image').src = `{% static 'img/store/' %}${itemName}.png`; 
-      $('#exampleModal2').modal('show');
-  });
+        var itemName = document.getElementById('spec_name').textContent;
+        var itemPriceWithUnit = document.getElementById('item_price').textContent;
+        var category = document.getElementById('spec_category').textContent;
+
+        var priceArray = itemPriceWithUnit.split(' ');
+        var currency = priceArray[1];
+        
+        document.getElementById('modalTitle2').textContent = itemName;
+        document.getElementById('modalPrice2').textContent = itemPriceWithUnit;
+
+        document.getElementById('itemName2').value = itemName;
+        document.getElementById('category2').value = category;
+        // ❗️ 화폐 종류를 hidden input에 저장
+        document.getElementById('giftCurrency').value = (currency === 'EXP') ? 'exp' : 'gold';
+        
+        // (참고: 이 ID는 gift_modal.html에 없습니다. 필요시 추가하세요.)
+        // document.getElementById('modal_item_image').src = `{% static 'img/store/' %}${itemName}.png`; 
+        $('#exampleModal2').modal('show');
+    });
 
   document.addEventListener("DOMContentLoaded", function() {
     const spec = document.querySelector(".store_spec_wrap");

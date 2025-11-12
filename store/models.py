@@ -9,9 +9,22 @@ class Item(models.Model):
     itemCategory= models.TextField()
     itemInfo = models.TextField()
     itemPrice = models.IntegerField()
+    CURRENCY_CHOICES = [
+        ('gold', '골드 (G)'),
+        ('exp', '경험치 (EXP)'),
+    ]
+    currency = models.CharField(
+        max_length=10,
+        choices=CURRENCY_CHOICES,
+        default='gold', # 기본값은 '골드'
+        verbose_name="화폐 종류"
+    )
 
     class Meta:
         db_table = "items"
+
+    def __str__(self):
+        return self.itemName
         
 
 class Ingredient(models.Model):
@@ -24,6 +37,9 @@ class Ingredient(models.Model):
 
     class Meta:
         db_table = "ingredients"
+
+    def __str__(self):
+        return self.itemName
         
         
 class Recipe(models.Model):

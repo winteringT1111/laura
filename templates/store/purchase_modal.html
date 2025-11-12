@@ -11,6 +11,7 @@
                     <input class="hidden" value="purchase" type="text" name="assort" id="assort">
                     <input class="hidden" value="" type="text" name="itemName" id="itemName">
                     <input class="hidden" value="" type="text" name="category" id="category">
+                    <input class="hidden" value="gold" type="text" name="currency" id="purchaseCurrency">
                     
                     <div class="item_img_wrap">
                         <img class="item_img" id="modal_item_image" src="{% static 'img/store/감자.png' %}">
@@ -67,12 +68,13 @@
         }
     });
 
+    // updateTotalPrice 함수를 교체
     function updateTotalPrice() {
         var quantity = parseInt(document.getElementById('quantity').value, 10);
-        var price = parseInt(document.getElementById('modalPrice').textContent, 10);
+        // "100 G" 또는 "200 EXP"에서 숫자만 추출
+        var price = parseInt(document.getElementById('modalPrice').textContent.split(' ')[0], 10);
         var totalPrice = quantity * price;
 
-        // 총 가격을 input 요소에 업데이트
         document.getElementById('modalTotalPrice').value = totalPrice;
     }
 
@@ -105,41 +107,54 @@
             document.getElementById('modalTotalPrice').value = initialPrice;
         });
 
-        $('#purchaseForm').on('submit', function (event) {
-        // 1. 기본 폼 제출(페이지 새로고침) 동작을 막습니다.
+            // $(document).ready() 내부의 #purchaseForm submit 핸들러를 교체
+    $('#purchaseForm').on('submit', function (event) {
         event.preventDefault(); 
 
         var form = $(this);
         var totalPrice = parseInt(form.find('#modalTotalPrice').val(), 10);
-        var userGaleon = parseInt('{{ user2.gold }}', 10);
+        var currencyType = form.find('#purchaseCurrency').val(); // 'gold' 또는 'exp'
+        
+        // ❗️ 템플릿에서 EXP 값도 가져옵니다.
+        var userGold = parseInt('{{ user2.gold }}', 10);
+        var userExp = parseInt('{{ user2.exp }}', 10);
+        
+        var popoverButton = $('#liveToastBtn');
+        var hasEnoughCurrency = false;
 
-        if (totalPrice > userGaleon) {
-            // 골드가 부족하면 popover를 표시합니다.
-            $('#liveToastBtn').popover('show');
-            return; // 여기서 함수를 중단합니다.
+        // --- ✨ 화폐 종류에 따른 유효성 검사 ---
+        if (currencyType === 'exp') {
+            if (totalPrice <= userExp) {
+                hasEnoughCurrency = true;
+            } else {
+                popoverButton.attr('data-content', '경험치(EXP)가 부족합니다.').popover('show');
+            }
+        } else { // 기본값 'gold'
+            if (totalPrice <= userGold) {
+                hasEnoughCurrency = true;
+            } else {
+                popoverButton.attr('data-content', '골드(G)가 부족합니다.').popover('show');
+            }
+        }
+        // ------------------------------------
+
+        if (!hasEnoughCurrency) {
+            return; // 화폐가 부족하면 제출 중단
         }
 
-        // 2. AJAX를 사용해 폼 데이터를 서버로 전송합니다.
+        // AJAX 로직 (이전과 동일)
         $.ajax({
             type: 'POST',
-            url: form.attr('action'), // form의 action 속성에 지정된 URL
-            data: form.serialize(),   // form 안의 모든 데이터를 전송
-            
-            // 3. 서버에서 성공적으로 응답을 받으면 이 함수가 실행됩니다.
+            url: form.attr('action'),
+            data: form.serialize(),
             success: function (response) {
-                // 구매 모달을 닫습니다.
                 $('#exampleModal1').modal('hide');
-
-                // '구매 완료' 모달을 띄웁니다.
-                // 참고: 여기서는 페이지가 리로드되지 않으므로 setTimeout이 필수는 아닙니다.
                 $('#purchaseCompleteModal').modal('show');
-                
-                // (선택사항) 유저의 골드 표시를 업데이트하는 로직을 추가할 수 있습니다.
             },
-            
-            // 4. 에러가 발생했을 경우 (선택사항)
             error: function (response) {
-                alert('오류가 발생했습니다. 다시 시도해주세요.');
+                // ❗️ 백엔드에서 보낸 에러 메시지 표시 (선택사항)
+                var errorMsg = response.responseJSON ? response.responseJSON.error : '오류가 발생했습니다. 다시 시도해주세요.';
+                alert(errorMsg);
             }
         });
     });
