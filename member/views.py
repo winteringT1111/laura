@@ -250,7 +250,6 @@ def giftbox(request):
 
 
 
-@require_POST
 @login_required
 @transaction.atomic
 def use_item(request):
@@ -264,56 +263,94 @@ def use_item(request):
 
         char_info = get_object_or_404(CharInfo, user=user)
         message = ""
-        obtained_items_details = [] # 포춘쿠키 결과 저장용
+        obtained_items_details = [] # 결과 저장용
 
-        # --- 아이템 찾기 및 수량 확인 (여러 인벤토리 모델 검색) ---
+        # --- [수정됨] 아이템 찾기 및 수량 확인 (모든 인벤토리) ---
         item_instance = None
         inventory_instance = None
+        item_model_type = None # 아이템 타입을 저장할 변수
         
-        # 1. 일반 아이템 인벤토리(Inventory) 확인
         try:
+            # 1. 일반 아이템(Item) 인벤토리 확인
             item_instance = Item.objects.get(itemName=item_name)
             inventory_instance = Inventory.objects.get(user=user, itemInfo=item_instance)
-            if inventory_instance.itemCount < 1:
-                 return JsonResponse({'success': False, 'error': f"'{item_name}' 아이템이 부족합니다."}, status=400)
+            item_model_type = "Item"
         except (Item.DoesNotExist, Inventory.DoesNotExist):
-            return JsonResponse({'success': False, 'error': f"'{item_name}' 아이템을 찾을 수 없거나 보유하고 있지 않습니다."}, status=404)
+            try:
+                # 2. 재료(Ingredient) 인벤토리 확인
+                item_instance = Ingredient.objects.get(itemName=item_name) # ❗️ itemName 사용
+                inventory_instance = Inventory_ingredient.objects.get(user=user, itemInfo=item_instance)
+                item_model_type = "Ingredient"
+            except (Ingredient.DoesNotExist, Inventory_ingredient.DoesNotExist):
+                try:
+                    # 3. 레시피(Recipe) 인벤토리 확인
+                    item_instance = Recipe.objects.get(itemName=item_name)
+                    inventory_instance = Inventory_recipe.objects.get(user=user, itemInfo=item_instance)
+                    item_model_type = "Recipe"
+                except (Recipe.DoesNotExist, Inventory_recipe.DoesNotExist):
+                    # 4. 모든 인벤토리에서 못 찾음
+                    return JsonResponse({'success': False, 'error': f"'{item_name}' 아이템을 찾을 수 없거나 보유하고 있지 않습니다."}, status=404)
 
-
+        # 수량 확인
+        if inventory_instance.itemCount < 1:
+            return JsonResponse({'success': False, 'error': f"'{item_name}' 아이템이 부족합니다."}, status=400)
+        
         # --- 아이템 종류별 로직 실행 ---
 
-        # 스테미나 사용 로직
-        if item_name == "스테미나": # 실제 아이템 이름 확인
+        if item_name == "스테미나":
             if char_info.quest == 0:
                 char_info.quest = 1
                 message = "퀘스트 수행 가능 횟수가 1회 충전되었습니다."
             elif char_info.quest == 1:
                 char_info.quest = 2
                 message = "퀘스트 수행 가능 횟수가 최대로 충전되었습니다. (2회)"
-            else: # 이미 2회 이상이면
+            else:
                  return JsonResponse({'success': False, 'error': '이미 퀘스트 수행 가능 횟수가 최대입니다.'}, status=400)
             char_info.save()
 
-        # 수정구 사용 로직
-        elif item_name == "수정구": # 실제 아이템 이름 확인
+        elif item_name == "수정구":
             all_scrolls = Scroll.objects.all()
             if all_scrolls.exists():
                 random_scroll = random.choice(all_scrolls)
-                message = random_scroll.itemInfo # 스크롤 내용을 메시지로 전달
+                message = random_scroll.itemInfo
             else:
                 message = "수정구가 희미하게 빛나지만 아무것도 보이지 않습니다..."
 
-        # 포춘쿠키 사용 로직
-        elif item_name == "포춘쿠키": # 실제 아이템 이름 확인
+        elif item_name == "마법 주머니":
+            message = "마법 주머니에서 재료가 나왔습니다!"
+            all_ingredients = Ingredient.objects.all()
+            if all_ingredients.exists():
+                random_ingredient = random.choice(all_ingredients)
+                quantity = 1
+                
+                inv_slot, created = Inventory_ingredient.objects.get_or_create(
+                    user=user, itemInfo=random_ingredient, defaults={'itemCount': 0}
+                )
+                inv_slot.itemCount += quantity
+                inv_slot.save()
+                
+                # ⬇️ [수정됨] 'name' 대신 'itemName' 필드 사용
+                item_name_field = random_ingredient.itemName 
+                obtained_items_details.append({
+                    'name': item_name_field,
+                    'quantity': quantity,
+                    'icon_url': f"/static/img/store/{item_name_field}.png" 
+                })
+            else:
+                message = "주머니가 비어있었습니다..."
+
+        elif item_name == "포춘쿠키":
             message = "포춘쿠키를 열어 아이템을 획득했습니다!"
-            is_rare_item = random.random() < 0.5 # 10% 확률로 Item
+            is_rare_item = random.random() < 0.1 # 10% 확률로 Item
             
             if is_rare_item:
-                item_pool = Item.objects.exclude(itemName__in=["포춘쿠키", "수정구", "스테미나"]) # 자신 및 사용 아이템 제외
+                item_pool = Item.objects.exclude(itemName__in=["포춘쿠키", "수정구", "스테미나"])
                 InventoryModel = Inventory
+                name_field = 'itemName' # Item 모델의 이름 필드
             else:
                 item_pool = Ingredient.objects.all()
                 InventoryModel = Inventory_ingredient
+                name_field = 'itemName' # ⬇️ [수정됨] Ingredient 모델의 이름 필드
             
             if item_pool.count() >= 3:
                 selected_items = random.sample(list(item_pool), 3)
@@ -326,16 +363,22 @@ def use_item(request):
                     inv_slot.itemCount += quantity
                     inv_slot.save()
                     
-                    # 결과를 프론트에 전달하기 위한 데이터 구성
+                    item_name_val = getattr(item, name_field) # 동적으로 필드 이름 접근
                     obtained_items_details.append({
-                        'name': item.itemName if hasattr(item, 'itemName') else item.name,
+                        'name': item_name_val,
                         'quantity': quantity,
-                        'icon_url': f"/static/img/store/{item.itemName if hasattr(item, 'itemName') else item.name}.png" # 아이콘 경로 생성 (필요시 모델 필드 사용)
+                        'icon_url': f"/static/img/store/{item_name_val}.png"
                     })
             else:
-                # 아이템 풀이 부족할 경우 처리
                  message += "\n하지만 아무것도 나오지 않았습니다..."
-
+        
+        else:
+            # 위에서 지정한 아이템("스테미나", "수정구" 등)이 아닌 경우
+            if item_model_type != "Item":
+                 return JsonResponse({'success': False, 'error': '해당 아이템은 사용할 수 없습니다.'}, status=400)
+            message = f"'{item_name}'은(는) 지금 사용할 수 없습니다."
+            # 아이템을 소모하지 않고 실패로 반환하려면
+            return JsonResponse({'success': False, 'error': message}, status=400)
 
         # --- 아이템 소모 ---
         inventory_instance.itemCount -= 1
@@ -347,9 +390,9 @@ def use_item(request):
         return JsonResponse({
             'success': True, 
             'message': message,
-            'obtained_items': obtained_items_details # 포춘쿠키 결과 전달
+            'obtained_items': obtained_items_details
         })
 
     except Exception as e:
-        print(f"Error in use_item: {e}") # 디버깅용 로그
+        print(f"Error in use_item: {e}")
         return JsonResponse({'success': False, 'error': '아이템 사용 중 오류가 발생했습니다.'}, status=500)

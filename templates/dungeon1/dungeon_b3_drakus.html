@@ -7,7 +7,10 @@
 {% block content %}
 <div class="dungeon-page-container">
     
+    {# 1. 제목 수정 #}
     <h2>드라쿠스 던전 B3</h2>
+
+ 
 
     <div class="progress-section panel">
         <h3>폭주한 제련 괴수 HP</h3>
@@ -26,6 +29,7 @@
                 <li>
                     <span class="rank">{{ forloop.counter }}</span> 
                     <span class="player-name">{{ player.char.charName }}</span>
+                    {# 3. 기여도 변수 수정 #}
                     <span class="player-score">{{ player.dungeon_b3_drakus_contribution|floatformat:0 }} 데미지</span>
                 </li>
             {% empty %}
@@ -34,40 +38,66 @@
         </ol>
     </div>
 
+
     <a href="{% url 'users:create_dungeon_log_drakus_b3' %}" class="action-button">공격하기</a>
 
-    <div class="log-feed panel">
-        <h3>전투 기록</h3>
-        <div class="log-scroll-container">
-            {% for log in dungeon_logs %}
-                <div class="log-post {% if log.was_successful %}log-success{% else %}log-fail{% endif %}">
-                    <div class="log-author-profile">
-                        <img src="{% static 'img/charac/' %}{{ log.author_char.charEngName}}2.png" alt="{{ log.author_char.charName }}">
-                    </div>
-                    <div class="log-details">
-                        <div class="log-title-line">
-                            <span class="log-title">{{ log.author_char.charName }}</span>
-                            <span class="log-meta"> | {{ log.created_at|date:"Y.m.d H:i" }} |
-                                {% if log.was_successful %}
-                                    <span class="tag-success">공격 성공 (+{{ log.damage_dealt }} 데미지)</span>
+
+
+
+
+
+<div class="log-feed panel">
+    <h3>전투 기록</h3>
+    <div class="log-scroll-container">
+        
+        {# ⬇️ 변수 이름이 'log_data'로 변경되었습니다 #}
+        {% for log_data in dungeon_logs %}
+            <div class="log-post {% if log_data.log.was_successful %}log-success{% else %}log-fail{% endif %}">
+                <div class="log-author-profile">
+                    <img src="{% static 'img/charac/' %}{{ log_data.log.author_char.charEngName}}2.png" alt="{{ log_data.log.author_char.charName }}">
+                </div>
+                <div class="log-details">
+                    <div class="log-title-line">
+                        <span class="log-title">{{ log_data.log.author_char.charName }}</span>
+                        <span class="log-meta">
+                            | {{ log_data.log.created_at|date:"Y.m.d H:i" }} | 
+                            {% if log_data.log.was_successful %}
+                                    <span class="tag-success">공격 성공 (+{{ log_data.log.damage_dealt }})</span>
                                 {% else %}
                                     <span class="tag-fail">공격 실패</span>
                                 {% endif %}
-                            </span>
-                        </div>
-                        <div class="log-content">
-                            {% if log.log_image %}
-                                <img src="{{ log.log_image.url }}" alt="로그 이미지" class="log-image">
-                            {% endif %}
-                            <p>{{ log.action_description|default:"..."|linebreaksbr }}</p>
-                        </div>
+                        </span>
+                    </div>
+                    
+                    {# ⬇️ 이 부분이 수정되었습니다 #}
+                    <div class="log-content">
+                        {% if log_data.log.log_image %}
+                            <img src="{{ log_data.log.log_image.url }}" alt="로그 이미지" class="log-image">
+                        {% endif %}
+                        
+                        {# 행동 지문이 있으면 표시, 없으면 기본 텍스트 표시 #}
+                        {% if log_data.log.action_description %}
+                            <p class="needspce">{{ log_data.log.action_description|linebreaksbr }}</p>
+                        {% else %}
+                            <p class="needspce"><i>(특별한 행동 지문은 없었다.)</i></p>
+                        {% endif %}
+                    </div>
+                    
+                    {# ⬇️ 댓글 표시 부분 수정 (낚시 페이지와 동일) #}
+                    <div class="log-comments-new">
+                        {% for comment_data in log_data.processed_comments %}
+                            <div class="auto-comment-new">
+                                <span>{{ comment_data.text }}</span>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% empty %}
-                <p class="no-logs">아직 전투 기록이 없습니다.</p>
-            {% endfor %}
-        </div>
+            </div>
+        {% empty %}
+            <p class="no-logs">아직 탐험 기록이 없습니다.</p>
+        {% endfor %}
     </div>
 </div>
-{# ... (Django 메시지 표시) ... #}
+</div>
+
 {% endblock %}

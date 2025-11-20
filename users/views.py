@@ -275,6 +275,9 @@ def dungeon_b1_drakus_view(request):
     }
     return render(request, 'dungeon1/dungeon_b1_drakus.html', context)
 
+
+
+
 @login_required
 def create_dungeon_log_drakus_view(request):
     """드라쿠스 B1 던전 로그 생성"""
@@ -313,7 +316,7 @@ def create_dungeon_log_drakus_view(request):
 
 
 STAT_MAP = { 1: 250, 2: 300, 3: 350, 4: 400, 5: 450 }
-HP_MAP = { 1: 3000, 2: 3500, 3: 4000, 4: 4500, 5: 5000 }
+
 
 @login_required
 def dungeon_b3_drakus_view(request):
@@ -325,24 +328,36 @@ def dungeon_b3_drakus_view(request):
         char_info = CharInfo.objects.get(user=request.user)
     except CharInfo.DoesNotExist:
         messages.error(request, "캐릭터 정보가 없습니다.")
-        return redirect('main_page_or_error')
+        return redirect('main:main_page') # 👈 메인 페이지 URL
 
-    # 드라쿠스 B3 기여도(데미지) 랭킹
+    # B3 기여도(데미지) 랭킹
     leaderboard = CharInfo.objects.filter(dungeon_b3_drakus_contribution__gt=0).order_by('-dungeon_b3_drakus_contribution')[:3]
 
-    dungeon_logs = DungeonLog.objects.filter(dungeon=dungeon).select_related('author_char')
+    # 로그 및 댓글 사전 처리
+    dungeon_logs_raw = DungeonLog.objects.filter(dungeon=dungeon).select_related('author_char').prefetch_related('comments')
+    
+    processed_logs = []
+    for log in dungeon_logs_raw:
+        processed_comments = []
+        for comment in log.comments.all():
+            processed_comments.append({'text': comment.comment_text, 'icon_name': None})
+            
+        processed_logs.append({
+            'log': log,
+            'processed_comments': processed_comments
+        })
 
     context = {
         'dungeon': dungeon,
         'user_contribution': char_info.dungeon_b3_drakus_contribution,
         'leaderboard': leaderboard,
-        'dungeon_logs': dungeon_logs,
+        'dungeon_logs': processed_logs,
     }
     return render(request, 'dungeon1/dungeon_b3_drakus.html', context)
 
 @login_required
 def create_dungeon_log_drakus_b3_view(request):
-    """드라쿠스 B3 전투 로그 생성 및 판정"""
+    """드라쿠스 B3 전투 로그 생성 및 판정 (수정됨)"""
     dungeon_name = "드라쿠스 던전 B3"
     dungeon = get_object_or_404(Dungeon, name=dungeon_name)
     
@@ -352,25 +367,25 @@ def create_dungeon_log_drakus_b3_view(request):
             try:
                 with transaction.atomic():
                     char_info = CharInfo.objects.select_for_update().get(user=request.user)
-                    character = char_info.char # 'Characters' 모델 인스턴스
+                    character = char_info.char
 
-                    # --- 1. 공격 유효 확률 계산 (설명 기반: 기본 50% + 운*4%) ---
+                    # 1. 공격 유효 확률 계산
                     luk_stat = character.charLUK if hasattr(character, 'charLUK') else 0
-                    base_success_rate = 40.0  # 👈 기본 50% (설명 예시 기반)
-                    bonus_rate = luk_stat * 4.0   # 1 LUK 당 4%
-                    final_success_rate = min(base_success_rate + bonus_rate, 95.0) # 최대 95%
-                    
+                    base_success_rate = 40.0
+                    bonus_rate = luk_stat * 4.0
+                    final_success_rate = min(base_success_rate + bonus_rate, 95.0)
                     roll = random.random() * 100
                     is_success = roll < final_success_rate
-                    # --- 판정 끝 ---
 
+                    # 2. 로그 저장 (사용자 입력값 보존)
                     new_log = form.save(commit=False)
                     new_log.dungeon = dungeon
                     new_log.author_char = character
                     new_log.was_successful = is_success
-
+                    
+                    comment_text = ""
                     if is_success:
-                        # --- 2. 데미지 계산 ---
+                        # 3. 성공 시 데미지 계산
                         atk = STAT_MAP.get(character.charATK, 250)
                         defense = STAT_MAP.get(character.charDEF, 250)
                         recovery = STAT_MAP.get(character.chaRES, 250)
@@ -384,28 +399,37 @@ def create_dungeon_log_drakus_b3_view(request):
                             damage = int(atk * 0.5 + recovery * 0.5)
                         
                         new_log.damage_dealt = damage
-                        messages.success(request, f"공격 성공! 괴수에게 {damage}의 데미지를 입혔습니다. (성공률: {final_success_rate}%)")
+                        comment_text = f"📜 공격 성공! 괴수에게 {damage}의 데미지를 입혔습니다. (성공률: {final_success_rate}%)"
+                        messages.success(request, f"공격 성공! {damage}의 데미지를 입혔습니다.")
                     else:
-                        # --- 3. 공격 실패 ---
+                        # 4. 실패 시 반격 메시지
                         new_log.damage_dealt = 0
                         trap_message = MonsterTrapMessage.objects.order_by('?').first()
                         fail_text = trap_message.text if trap_message else "공격이 빗나갔습니다. 괴수가 반격합니다!"
-                        # 실패 시, 사용자가 작성한 로그 대신 실패 메시지를 저장
-                        new_log.action_description = fail_text
+                        
+                        # ❗️❗️ 수정된 부분 ❗️❗️
+                        # new_log.action_description = fail_text  <-- 이 줄을 삭제함 (사용자 입력 보존)
+                        
+                        comment_text = f"📜 {fail_text} (성공률: {final_success_rate}%)"
                         messages.error(request, fail_text)
                     
                     new_log.save()
 
-                    # --- 4. 기여도 및 진행도(보스 HP) 업데이트 ---
+                    # 5. 자동 댓글 저장
+                    DungeonComment.objects.create(log=new_log, comment_text=comment_text)
+
+                    # 6. 기여도 및 진행도 업데이트
                     char_info.update_dungeon_contribution(dungeon_name=dungeon_name)
                     dungeon.update_progress() 
 
-                    return redirect('users:dungeon_b3_drakus_view') # 👈 드라쿠스 B3 뷰로 리다이렉트
+                    # ❗️❗️ 수정된 부분 ❗️❗️
+                    # 'dungeon_b3_view' -> 'dungeon_b3_drakus_view'로 변경
+                    return redirect('users:dungeon_b3_drakus_view') 
+            
             except Exception as e:
                 messages.error(request, f"기록 저장 중 오류 발생: {e}")
         else:
-            print(">>> Drakus B3 Log Form Validation Failed! Errors:")
-            print(form.errors.as_json())
+            print(f">>> B3 Log Form Errors: {form.errors.as_json()}")
             messages.error(request, "입력 내용을 확인해주세요.")
     else: # GET 요청
         form = DungeonLogFormDrakusB3()
